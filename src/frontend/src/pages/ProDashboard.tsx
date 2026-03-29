@@ -1,3 +1,4 @@
+import { WeeklyBookingCalendar } from "@/components/calendar/WeeklyBookingCalendar";
 import { CountrySelector } from "@/components/onboarding/CountrySelector";
 import { IncompleteProfileBanner } from "@/components/profile/IncompleteProfileBanner";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +32,7 @@ import {
   Bot,
   Briefcase,
   Calendar,
+  CalendarDays,
   Camera,
   CheckCircle,
   ChevronRight,
@@ -40,6 +42,7 @@ import {
   FileText,
   Globe,
   Image,
+  List,
   Lock,
   MessageSquare,
   PenLine,
@@ -439,6 +442,9 @@ const DASH_PRO_L: Record<
     saveBtn: string;
     fileTooLarge: string;
     fileFormat: string;
+    weeklyView: string;
+    listView: string;
+    bookingDetail: string;
   }
 > = {
   fr: {
@@ -539,6 +545,9 @@ const DASH_PRO_L: Record<
     saveBtn: "Sauvegarder",
     fileTooLarge: "Le fichier dépasse 10 Mo.",
     fileFormat: "Format non autorisé. Utilisez JPG, PNG ou WebP.",
+    weeklyView: "Vue semaine",
+    listView: "Liste",
+    bookingDetail: "Détails de la réservation",
   },
   en: {
     active: "Active",
@@ -636,6 +645,9 @@ const DASH_PRO_L: Record<
     saveBtn: "Save",
     fileTooLarge: "File exceeds 10 MB.",
     fileFormat: "Format not allowed. Use JPG, PNG or WebP.",
+    weeklyView: "Week view",
+    listView: "List",
+    bookingDetail: "Booking details",
   },
   de: {
     active: "Aktive",
@@ -734,6 +746,9 @@ const DASH_PRO_L: Record<
     saveBtn: "Speichern",
     fileTooLarge: "Datei zu groß (max. 10 MB).",
     fileFormat: "Format nicht erlaubt. Verwenden Sie JPG, PNG oder WebP.",
+    weeklyView: "Wochenansicht",
+    listView: "Liste",
+    bookingDetail: "Buchungsdetails",
   },
   es: {
     active: "Activas",
@@ -830,6 +845,9 @@ const DASH_PRO_L: Record<
     saveBtn: "Guardar",
     fileTooLarge: "El archivo supera 10 MB.",
     fileFormat: "Formato no permitido. Usa JPG, PNG o WebP.",
+    weeklyView: "Vista semanal",
+    listView: "Lista",
+    bookingDetail: "Detalles de la reserva",
   },
   it: {
     active: "Attive",
@@ -926,6 +944,9 @@ const DASH_PRO_L: Record<
     saveBtn: "Salva",
     fileTooLarge: "Il file supera 10 MB.",
     fileFormat: "Formato non consentito. Usa JPG, PNG o WebP.",
+    weeklyView: "Vista settimanale",
+    listView: "Lista",
+    bookingDetail: "Dettagli prenotazione",
   },
   pt: {
     active: "Ativas",
@@ -1022,6 +1043,9 @@ const DASH_PRO_L: Record<
     saveBtn: "Guardar",
     fileTooLarge: "O ficheiro excede 10 MB.",
     fileFormat: "Formato não permitido. Usa JPG, PNG ou WebP.",
+    weeklyView: "Vista semanal",
+    listView: "Lista",
+    bookingDetail: "Detalhes da reserva",
   },
   nl: {
     active: "Actieve",
@@ -1118,6 +1142,9 @@ const DASH_PRO_L: Record<
     saveBtn: "Opslaan",
     fileTooLarge: "Bestand te groot (max. 10 MB).",
     fileFormat: "Formaat niet toegestaan. Gebruik JPG, PNG of WebP.",
+    weeklyView: "Weekweergave",
+    listView: "Lijst",
+    bookingDetail: "Boekingsdetails",
   },
   el: {
     active: "Ενεργές",
@@ -1216,6 +1243,9 @@ const DASH_PRO_L: Record<
     saveBtn: "Αποθήκευση",
     fileTooLarge: "Το αρχείο υπερβαίνει τα 10 MB.",
     fileFormat: "Μη επιτρεπόμενη μορφή. Χρησιμοποιήστε JPG, PNG ή WebP.",
+    weeklyView: "Εβδομαδιαία προβολή",
+    listView: "Λίστα",
+    bookingDetail: "Λεπτομέρειες κράτησης",
   },
   lu: {
     active: "Actives",
@@ -1314,6 +1344,9 @@ const DASH_PRO_L: Record<
     saveBtn: "Sauvegarder",
     fileTooLarge: "Le fichier dépasse 10 Mo.",
     fileFormat: "Format non autorisé. Utilisez JPG, PNG ou WebP.",
+    weeklyView: "Vue semaine",
+    listView: "Liste",
+    bookingDetail: "Détails de la réservation",
   },
 };
 
@@ -1388,6 +1421,10 @@ export function ProDashboard() {
   ]);
   const [aiInput, setAiInput] = useState("");
   const [aiTyping, setAiTyping] = useState(false);
+  const [bookingsView, setBookingsView] = useState<"list" | "week">("list");
+  const [selectedBooking, setSelectedBooking] = useState<
+    import("@/lib/calendar-store").Booking | null
+  >(null);
   const aiEndRef = useRef<HTMLDivElement>(null);
 
   const proActiveOffers = myOffers.filter((o) => o.status === "pending").length;
@@ -2334,13 +2371,146 @@ export function ProDashboard() {
                               ? "Agenda beheren"
                               : "Manage schedule"}
                 </Button>
+                {/* View toggle */}
+                <div className="flex items-center gap-1 border border-border rounded-lg p-0.5 bg-muted/30">
+                  <Button
+                    size="sm"
+                    variant={bookingsView === "list" ? "default" : "ghost"}
+                    className="h-7 w-7 p-0"
+                    onClick={() => setBookingsView("list")}
+                    title={dl.listView}
+                    data-ocid="pro.bookings.list.toggle"
+                  >
+                    <List className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={bookingsView === "week" ? "default" : "ghost"}
+                    className="h-7 w-7 p-0"
+                    onClick={() => setBookingsView("week")}
+                    title={dl.weeklyView}
+                    data-ocid="pro.bookings.week.toggle"
+                  >
+                    <CalendarDays className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
               </div>
-              {myBookings.length === 0 ? (
+              {/* Booking detail modal */}
+              {selectedBooking && (
+                <div
+                  className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40"
+                  data-ocid="pro.booking_detail.modal"
+                >
+                  <div
+                    className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 space-y-4"
+                    onClick={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => e.stopPropagation()}
+                  >
+                    <div className="flex items-start justify-between">
+                      <h3 className="font-display font-bold text-lg text-foreground">
+                        {dl.bookingDetail}
+                      </h3>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedBooking(null)}
+                        className="text-muted-foreground hover:text-foreground p-1"
+                        data-ocid="pro.booking_detail.close_button"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="font-semibold text-foreground">
+                          {selectedBooking.clientName}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <span>📅 {selectedBooking.date}</span>
+                        <span>🕐 {selectedBooking.timeSlot}</span>
+                      </div>
+                      {selectedBooking.description && (
+                        <p className="text-sm text-foreground/80 bg-muted/30 rounded-lg p-3">
+                          {selectedBooking.description}
+                        </p>
+                      )}
+                      <div>
+                        {(() => {
+                          const statusColors: Record<string, string> = {
+                            pending:
+                              "bg-amber-100 text-amber-800 border-amber-200",
+                            accepted:
+                              "bg-green-100 text-green-800 border-green-200",
+                            declined: "bg-red-100 text-red-700 border-red-200",
+                            counter_proposed:
+                              "bg-blue-100 text-blue-800 border-blue-200",
+                            confirmed:
+                              "bg-emerald-100 text-emerald-800 border-emerald-200",
+                            cancelled:
+                              "bg-gray-100 text-gray-500 border-gray-200",
+                          };
+                          const statusLabels: Record<string, string> = {
+                            pending: dl.bookingStatusPending,
+                            accepted: dl.bookingStatusAccepted,
+                            declined: dl.bookingStatusDeclined,
+                            counter_proposed: dl.bookingStatusCounterProposed,
+                            confirmed: dl.bookingStatusConfirmed,
+                            cancelled: dl.bookingStatusCancelled,
+                          };
+                          return (
+                            <span
+                              className={`text-xs px-2 py-1 rounded-full border font-medium ${statusColors[selectedBooking.status] ?? ""}`}
+                            >
+                              {statusLabels[selectedBooking.status] ??
+                                selectedBooking.status}
+                            </span>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                    {selectedBooking.status === "pending" && (
+                      <div className="flex gap-2 pt-2">
+                        <Button
+                          size="sm"
+                          className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                          onClick={() => {
+                            respondToProBooking(selectedBooking.id, "accepted");
+                            toast.success(dl.acceptedBookingToast);
+                            setSelectedBooking(null);
+                          }}
+                          data-ocid="pro.booking_detail.confirm_button"
+                        >
+                          {dl.acceptBooking}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1"
+                          onClick={() => {
+                            respondToProBooking(selectedBooking.id, "declined");
+                            setSelectedBooking(null);
+                          }}
+                          data-ocid="pro.booking_detail.cancel_button"
+                        >
+                          ✕
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              {bookingsView === "week" ? (
+                <WeeklyBookingCalendar
+                  bookings={myBookings}
+                  lang={lang}
+                  onBookingClick={setSelectedBooking}
+                />
+              ) : myBookings.length === 0 ? (
                 <div
                   className="bg-white rounded-xl card-shadow border border-border/50 p-12 text-center"
                   data-ocid="pro.bookings.empty_state"
                 >
-                  <p className="text-3xl mb-3">ud83dudcc5</p>
+                  <p className="text-3xl mb-3">📅</p>
                   <p className="text-sm text-muted-foreground">
                     {dl.noBookings}
                   </p>
@@ -2378,8 +2548,8 @@ export function ProDashboard() {
                               {booking.clientName}
                             </p>
                             <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
-                              <span>ud83dudcc5 {booking.date}</span>
-                              <span>ud83dudd50 {booking.timeSlot}</span>
+                              <span>📅 {booking.date}</span>
+                              <span>🕐 {booking.timeSlot}</span>
                             </div>
                             <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                               {booking.description}

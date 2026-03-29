@@ -1,34 +1,44 @@
-# TaskVoilà — Connexion Vrai Flow ICP
+# TaskVoilà
 
 ## Current State
-- `LoginPage.tsx` utilise `useSimulatedICP` (popup simulé, principal aléatoire stocké en localStorage)
-- `useInternetIdentity.ts` existe avec `@dfinity/auth-client` réel mais n'est pas utilisé dans la page login
-- `useActor.ts` utilise déjà `useInternetIdentity` pour créer les acteurs backend authentifiés
-- `auth-store.ts` gère l'état `currentUser` avec localStorage, bridgé manuellement via `loginUser()`
+- ProDashboard booking tab has `ud83dudcc5` (📅) and `ud83dudd50` (🕐) displayed as raw text due to Unicode encoding bug
+- Bookings are shown as a simple list (no weekly calendar view)
+- No reminder notification system exists beyond basic in-app notifications
+- `push-notifications.ts` has basic permission request only
+- `calendar-store.ts` has Booking type with date/timeSlot fields
 
 ## Requested Changes (Diff)
 
 ### Add
-- Branchement du vrai `useInternetIdentity` dans `LoginPage` pour Internet Identity
-- Authentification NFID via `AuthClient` avec l'URL provider NFID (`https://nfid.one/authenticate`)
-- Authentification Plug Wallet via `window.ic.plug` API
-- Hook utilitaire `useICPLogin` centralisant les 3 providers et le bridge vers `auth-store`
+- Weekly calendar view in ProDashboard bookings tab (toggle between list and weekly views)
+  - Current week displayed Mon-Sun, each day a column
+  - Bookings shown as orange cards on their date
+  - Click on a booking card → details modal
+  - Navigation previous/next week
+- Notification reminder system for pros:
+  - Weekly digest (sent every Monday for the week's upcoming bookings)
+  - 72h, 24h, 8h, 4h, 2h before each booking
+  - Default: all enabled
+  - Per-channel: push notification (Web Notifications API) + email
+- Notification preferences UI in ProSchedulePage (new section "Notifications de rappel")
+  - Toggle each reminder interval on/off
+  - Toggle email on/off, push on/off
+  - Saved to localStorage per user
+- `notification-store.ts`: store for notification preferences + scheduling logic
 
 ### Modify
-- `LoginPage.tsx` : remplacer `useSimulatedICP` par le vrai flow ICP
-  - II : appeler `useInternetIdentity().login()`, écouter `isLoginSuccess` via `useEffect`, récupérer `identity.getPrincipal().toString()`
-  - NFID : `AuthClient.create()` + `.login({ identityProvider: "https://nfid.one/authenticate" })`
-  - Plug : `window.ic?.plug?.requestConnect()` puis `window.ic.plug.agent.getPrincipal()`
-  - Après obtention du principal : chercher profil existant en localStorage → redirect dashboard OU redirect `/complete-profile`
-- Supprimer l'import et l'usage de `SimulatedICPModal` et `useSimulatedICP` dans `LoginPage`
+- `ProDashboard.tsx` lines 2343, 2381, 2382: replace `ud83dudcc5` with `📅` and `ud83dudd50` with `🕐`
+- `ProDashboard.tsx` bookings tab: add weekly calendar view toggle (list/calendar icons), render WeeklyBookingCalendar component
+- `ProSchedulePage.tsx`: add notification preferences section at the bottom
+- `push-notifications.ts`: add `scheduleBookingReminders(bookings, prefs)` function
 
 ### Remove
-- Dépendance à `useSimulatedICP` dans `LoginPage`
-- Modal simulé `SimulatedICPModal` dans `LoginPage`
+- Nothing removed
 
 ## Implementation Plan
-1. Créer `src/frontend/src/hooks/useICPLogin.ts` avec logique des 3 providers et bridge auth-store
-2. Mettre à jour `LoginPage.tsx` pour utiliser `useICPLogin` au lieu de `useSimulatedICP`
-3. Garder l'UI exactement identique (mêmes boutons, mêmes textes, même design)
-4. Le loading spinner reste pendant l'auth réelle
-5. Valider (typecheck + build)
+1. Fix emoji encoding in ProDashboard.tsx (3 lines)
+2. Create `src/frontend/src/lib/notification-store.ts` with preferences type, default config, localStorage persistence, and reminder scheduling using setTimeout + Web Notifications API + email hooks
+3. Create `src/frontend/src/components/calendar/WeeklyBookingCalendar.tsx` component showing Mon-Sun grid with orange booking cards
+4. Add view toggle (list/weekly) in ProDashboard bookings tab, wire WeeklyBookingCalendar
+5. Add notification preferences section in ProSchedulePage
+6. Add translations for new UI strings in all 9 languages (fr, en, de, es, it, pt, nl, el, lu)
