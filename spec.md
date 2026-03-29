@@ -1,33 +1,26 @@
-# TaskVoilà — FAQ + Account Recovery
+# TaskVoilà — Backend Persistence
 
 ## Current State
-- Settings page exists at /settings with security, notifications, account sections
-- Footer has links but FAQ link goes to /
-- No FAQ page exists
-- No account recovery information shown anywhere in the app
-- App.tsx has all routes defined
+Missions (open requests) and rental listings are stored only in localStorage via React context providers (mission-store.ts, rental-store.ts). Data is lost on page refresh and is not shared between users. The backend (main.mo) only has User and Document management.
 
 ## Requested Changes (Diff)
 
 ### Add
-- New page `/faq` with full FAQ in all 9 languages (FR, EN, DE, ES, IT, PT, NL, EL, LU)
-- FAQ covers: how TaskVoilà works, how to sign up, how to post a task, how to find a pro, how to book, payments, security, account recovery (Internet Identity / NFID / Plug), DAC7 for pros, GDPR, equipment rental, calendar booking
-- Account recovery section in Settings page: "Comment récupérer mon compte" with instructions per auth method (II, NFID, Plug) + link to identity.ic0.app
-- Toast/modal after first login with message: "Sauvegardez votre méthode de connexion pour ne pas perdre l'accès à votre compte"
-- FAQ route in App.tsx
-- Footer FAQ link updated to point to /faq
+- `createMission` / `listMissions` / `getMission` / `updateMissionStatus` / `deleteMission` backend endpoints
+- `createRentalListing` / `listRentalListings` / `getRentalListing` / `updateRentalListing` / `deleteRentalListing` backend endpoints
+- Mission offer CRUD: `submitOffer` / `listOffersByMission` / `acceptOffer` / `rejectOffer`
+- Frontend: replace localStorage read/write in mission-store and rental-store with backend actor calls
+- Frontend: show loading states while fetching from backend
 
 ### Modify
-- Footer: FAQ link updated from / to /faq
-- SettingsPage: add account recovery card section
-- LoginPage: show one-time advice after login about saving credentials
+- `main.mo`: add Mission, RentalListing, and Offer data types and CRUD functions
+- `mission-store.ts`: switch from localStorage to backend calls
+- `rental-store.ts`: switch from localStorage to backend calls
 
 ### Remove
-- Nothing removed
+- localStorage persistence for missions and rental listings (replaced by backend)
 
 ## Implementation Plan
-1. Create `src/frontend/src/pages/FAQPage.tsx` with accordion Q&A in 9 languages
-2. Add `/faq` route in App.tsx
-3. Update Footer.tsx FAQ link to /faq
-4. Add account recovery card in SettingsPage.tsx
-5. Add first-login advice in auth-store or LoginPage (localStorage flag `tv_recovery_shown`)
+1. Generate updated Motoko backend with Mission, RentalListing, and Offer modules
+2. Update frontend stores to use backend actor calls with async operations
+3. Update components to handle async loading states

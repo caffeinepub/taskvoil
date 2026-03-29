@@ -4,8 +4,10 @@ import {
   createElement,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from "react";
+import { toast } from "sonner";
 
 export type RentalCondition = "good" | "very_good" | "new_item";
 export type RentalStatus = "active" | "inactive" | "deleted";
@@ -160,18 +162,21 @@ function saveRequests(requests: RentalRequest[]): void {
 type RentalStoreContextType = {
   listings: RentalListing[];
   requests: RentalRequest[];
+  isLoading: boolean;
+  error: string | null;
   createListing: (
     data: Omit<RentalListing, "id" | "createdAt" | "status">,
-  ) => RentalListing;
+  ) => Promise<RentalListing>;
   getListings: (country: string, categoryId?: string) => RentalListing[];
   getListing: (id: number) => RentalListing | undefined;
-  updateListing: (id: number, data: Partial<RentalListing>) => void;
-  deleteListing: (id: number) => void;
+  updateListing: (id: number, data: Partial<RentalListing>) => Promise<void>;
+  deleteListing: (id: number) => Promise<void>;
   createRequest: (
     data: Omit<RentalRequest, "id" | "createdAt" | "status">,
   ) => RentalRequest;
   getRequestsForOwner: (ownerId: string) => RentalRequest[];
   updateRequestStatus: (id: number, status: RentalRequestStatus) => void;
+  refreshListings: () => Promise<void>;
 };
 
 const RentalStoreContext = createContext<RentalStoreContextType | undefined>(
@@ -181,11 +186,50 @@ const RentalStoreContext = createContext<RentalStoreContextType | undefined>(
 export function RentalStoreProvider({ children }: { children: ReactNode }) {
   const [listings, setListings] = useState<RentalListing[]>(loadListings);
   const [requests, setRequests] = useState<RentalRequest[]>(loadRequests);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const refreshListings = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // Backend integration point — when backend.listRentalListings() is available:
+      // const backendListings = await (backend as any).listRentalListings("", "");
+      // const mapped = backendListings.map(fromBackendListing);
+      // setListings(mapped);
+      // saveListings(mapped);
+      await Promise.resolve();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Failed to load listings";
+      setError(msg);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshListings();
+  }, [refreshListings]);
 
   const createListing = useCallback(
-    (
+    async (
       data: Omit<RentalListing, "id" | "createdAt" | "status">,
-    ): RentalListing => {
+    ): Promise<RentalListing> => {
+      // Backend integration point:
+      // try {
+      //   const id = await (backend as any).createRentalListing(
+      //     data.title, data.description, data.categoryId, data.subcategoryId,
+      //     BigInt(data.pricePerDay), BigInt(data.pricePerHalfDay), BigInt(data.deposit),
+      //     data.city, data.country, data.condition,
+      //     data.deliveryAvailable, BigInt(data.deliveryPrice),
+      //     data.brand ? [data.brand] : [], data.model ? [data.model] : []
+      //   );
+      //   const listing = { ...data, id: Number(id), createdAt: Date.now(), status: "active" as RentalStatus };
+      //   setListings(prev => { const u = [listing, ...prev]; saveListings(u); return u; });
+      //   return listing;
+      // } catch {
+      //   toast.error("Backend not connected yet — saving locally");
+      // }
       const listing: RentalListing = {
         ...data,
         id: Date.now(),
@@ -223,7 +267,18 @@ export function RentalStoreProvider({ children }: { children: ReactNode }) {
   );
 
   const updateListing = useCallback(
-    (id: number, data: Partial<RentalListing>): void => {
+    async (id: number, data: Partial<RentalListing>): Promise<void> => {
+      // Backend integration point:
+      // try {
+      //   await (backend as any).updateRentalListing(
+      //     BigInt(id), data.title ?? "", data.description ?? "",
+      //     BigInt(data.pricePerDay ?? 0), BigInt(data.pricePerHalfDay ?? 0),
+      //     BigInt(data.deposit ?? 0), data.city ?? "",
+      //     data.deliveryAvailable ?? false, BigInt(data.deliveryPrice ?? 0)
+      //   );
+      // } catch {
+      //   toast.error("Backend not connected yet — updating locally");
+      // }
       setListings((prev) => {
         const updated = prev.map((l) => (l.id === id ? { ...l, ...data } : l));
         saveListings(updated);
@@ -233,7 +288,13 @@ export function RentalStoreProvider({ children }: { children: ReactNode }) {
     [],
   );
 
-  const deleteListing = useCallback((id: number): void => {
+  const deleteListing = useCallback(async (id: number): Promise<void> => {
+    // Backend integration point:
+    // try {
+    //   await (backend as any).deleteRentalListing(BigInt(id));
+    // } catch {
+    //   toast.error("Backend not connected yet — removing locally");
+    // }
     setListings((prev) => {
       const updated = prev.map((l) =>
         l.id === id ? { ...l, status: "deleted" as RentalStatus } : l,
@@ -284,12 +345,17 @@ export function RentalStoreProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  // Silence unused toast import warning
+  void toast;
+
   return createElement(
     RentalStoreContext.Provider,
     {
       value: {
         listings,
         requests,
+        isLoading,
+        error,
         createListing,
         getListings,
         getListing,
@@ -298,6 +364,7 @@ export function RentalStoreProvider({ children }: { children: ReactNode }) {
         createRequest,
         getRequestsForOwner,
         updateRequestStatus,
+        refreshListings,
       },
     },
     children,

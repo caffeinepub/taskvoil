@@ -673,4 +673,372 @@ actor {
 
     documents.add(documentId, updatedDoc);
   };
+  // ===== MISSIONS =====
+
+  var nextMissionId = 0;
+  var nextOfferId = 0;
+  var nextRentalId = 0;
+
+  module Mission {
+    public type Status = { #open; #in_progress; #completed; #cancelled };
+
+    public type Mission = {
+      id : Nat;
+      authorId : Nat;
+      title : Text;
+      description : Text;
+      category : Text;
+      subcategory : Text;
+      city : Text;
+      country : Text;
+      budgetMin : Nat;
+      budgetMax : Nat;
+      scheduledDate : ?Text;
+      status : Status;
+      createdAt : Int;
+      acceptedOfferId : ?Nat;
+    };
+  };
+
+  module Offer {
+    public type Status = { #pending; #accepted; #rejected; #withdrawn };
+
+    public type Offer = {
+      id : Nat;
+      missionId : Nat;
+      proId : Nat;
+      price : Nat;
+      description : Text;
+      timeline : Text;
+      status : Status;
+      createdAt : Int;
+    };
+  };
+
+  module Rental {
+    public type Status = { #active; #inactive; #deleted };
+
+    public type Listing = {
+      id : Nat;
+      ownerId : Nat;
+      title : Text;
+      description : Text;
+      categoryId : Text;
+      subcategoryId : Text;
+      pricePerDay : Nat;
+      pricePerHalfDay : Nat;
+      deposit : Nat;
+      city : Text;
+      country : Text;
+      condition : Text;
+      deliveryAvailable : Bool;
+      deliveryPrice : Nat;
+      brand : ?Text;
+      model : ?Text;
+      status : Status;
+      createdAt : Int;
+    };
+  };
+
+  let missions = Map.empty<Nat, Mission.Mission>();
+  let offers = Map.empty<Nat, Offer.Offer>();
+  let rentalListings = Map.empty<Nat, Rental.Listing>();
+
+  // ===== Mission CRUD =====
+
+  public shared ({ caller }) func createMission(
+    title : Text,
+    description : Text,
+    category : Text,
+    subcategory : Text,
+    city : Text,
+    country : Text,
+    budgetMin : Nat,
+    budgetMax : Nat,
+    scheduledDate : ?Text,
+  ) : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let authorIdOpt = getUserIdByCaller(caller);
+    let authorId = switch (authorIdOpt) {
+      case (?id) { id };
+      case null { Runtime.trap("User not found") };
+    };
+    let id = nextMissionId;
+    nextMissionId += 1;
+    let m : Mission.Mission = {
+      id; authorId; title; description; category; subcategory;
+      city; country; budgetMin; budgetMax; scheduledDate;
+      status = #open; createdAt = Time.now(); acceptedOfferId = null;
+    };
+    missions.add(id, m);
+    id
+  };
+
+  public query func getMission(id : Nat) : async Mission.Mission {
+    switch (missions.get(id)) {
+      case (?m) { m };
+      case null { Runtime.trap("Mission not found") };
+    };
+  };
+
+  public query func listMissions(country : Text, category : Text) : async [Mission.Mission] {
+    missions.values().toArray().filter(func(m) {
+      let matchCountry = country == "" or m.country == country;
+      let matchCat = category == "" or m.category == category;
+      matchCountry and matchCat and m.status == #open
+    });
+  };
+
+  public query ({ caller }) func listMissionsByUser() : async [Mission.Mission] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let userIdOpt = getUserIdByCaller(caller);
+    switch (userIdOpt) {
+      case (?uid) { missions.values().toArray().filter(func(m) { m.authorId == uid }) };
+      case null { [] };
+    };
+  };
+
+  public shared ({ caller }) func updateMissionStatus(id : Nat, newStatus : Mission.Status) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let m = switch (missions.get(id)) {
+      case (?x) { x };
+      case null { Runtime.trap("Mission not found") };
+    };
+    let userIdOpt = getUserIdByCaller(caller);
+    let isOwner = switch (userIdOpt) {
+      case (?uid) { uid == m.authorId };
+      case null { false };
+    };
+    if (not isOwner and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized");
+    };
+    missions.add(id, { m with status = newStatus });
+  };
+
+  public shared ({ caller }) func deleteMission(id : Nat) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let m = switch (missions.get(id)) {
+      case (?x) { x };
+      case null { Runtime.trap("Mission not found") };
+    };
+    let userIdOpt = getUserIdByCaller(caller);
+    let isOwner = switch (userIdOpt) {
+      case (?uid) { uid == m.authorId };
+      case null { false };
+    };
+    if (not isOwner and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized");
+    };
+    missions.add(id, { m with status = #cancelled });
+  };
+
+  // ===== Offer CRUD =====
+
+  public shared ({ caller }) func submitOffer(
+    missionId : Nat,
+    price : Nat,
+    description : Text,
+    timeline : Text,
+  ) : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let proIdOpt = getUserIdByCaller(caller);
+    let proId = switch (proIdOpt) {
+      case (?id) { id };
+      case null { Runtime.trap("User not found") };
+    };
+    let id = nextOfferId;
+    nextOfferId += 1;
+    let o : Offer.Offer = {
+      id; missionId; proId; price; description; timeline;
+      status = #pending; createdAt = Time.now();
+    };
+    offers.add(id, o);
+    id
+  };
+
+  public query ({ caller }) func listOffersByMission(missionId : Nat) : async [Offer.Offer] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    offers.values().toArray().filter(func(o) { o.missionId == missionId })
+  };
+
+  public shared ({ caller }) func acceptOffer(offerId : Nat) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let offer = switch (offers.get(offerId)) {
+      case (?o) { o };
+      case null { Runtime.trap("Offer not found") };
+    };
+    let mission = switch (missions.get(offer.missionId)) {
+      case (?m) { m };
+      case null { Runtime.trap("Mission not found") };
+    };
+    let userIdOpt = getUserIdByCaller(caller);
+    let isOwner = switch (userIdOpt) {
+      case (?uid) { uid == mission.authorId };
+      case null { false };
+    };
+    if (not isOwner and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized");
+    };
+    offers.add(offerId, { offer with status = #accepted });
+    missions.add(mission.id, { mission with status = #in_progress; acceptedOfferId = ?offerId });
+    // Reject all other offers
+    for ((oid, o) in offers.entries()) {
+      if (o.missionId == offer.missionId and oid != offerId and o.status == #pending) {
+        offers.add(oid, { o with status = #rejected });
+      };
+    };
+  };
+
+  public shared ({ caller }) func rejectOffer(offerId : Nat) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let offer = switch (offers.get(offerId)) {
+      case (?o) { o };
+      case null { Runtime.trap("Offer not found") };
+    };
+    let mission = switch (missions.get(offer.missionId)) {
+      case (?m) { m };
+      case null { Runtime.trap("Mission not found") };
+    };
+    let userIdOpt = getUserIdByCaller(caller);
+    let isOwner = switch (userIdOpt) {
+      case (?uid) { uid == mission.authorId };
+      case null { false };
+    };
+    if (not isOwner and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized");
+    };
+    offers.add(offerId, { offer with status = #rejected });
+  };
+
+  // ===== Rental Listings =====
+
+  public shared ({ caller }) func createRentalListing(
+    title : Text,
+    description : Text,
+    categoryId : Text,
+    subcategoryId : Text,
+    pricePerDay : Nat,
+    pricePerHalfDay : Nat,
+    deposit : Nat,
+    city : Text,
+    country : Text,
+    condition : Text,
+    deliveryAvailable : Bool,
+    deliveryPrice : Nat,
+    brand : ?Text,
+    model : ?Text,
+  ) : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let ownerIdOpt = getUserIdByCaller(caller);
+    let ownerId = switch (ownerIdOpt) {
+      case (?id) { id };
+      case null { Runtime.trap("User not found") };
+    };
+    let id = nextRentalId;
+    nextRentalId += 1;
+    let l : Rental.Listing = {
+      id; ownerId; title; description; categoryId; subcategoryId;
+      pricePerDay; pricePerHalfDay; deposit; city; country; condition;
+      deliveryAvailable; deliveryPrice; brand; model;
+      status = #active; createdAt = Time.now();
+    };
+    rentalListings.add(id, l);
+    id
+  };
+
+  public query func getRentalListing(id : Nat) : async Rental.Listing {
+    switch (rentalListings.get(id)) {
+      case (?l) { l };
+      case null { Runtime.trap("Rental listing not found") };
+    };
+  };
+
+  public query func listRentalListings(country : Text, categoryId : Text) : async [Rental.Listing] {
+    rentalListings.values().toArray().filter(func(l) {
+      let matchCountry = country == "" or l.country == country;
+      let matchCat = categoryId == "" or l.categoryId == categoryId;
+      matchCountry and matchCat and l.status == #active
+    });
+  };
+
+  public query ({ caller }) func listRentalListingsByOwner() : async [Rental.Listing] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let ownerIdOpt = getUserIdByCaller(caller);
+    switch (ownerIdOpt) {
+      case (?uid) { rentalListings.values().toArray().filter(func(l) { l.ownerId == uid }) };
+      case null { [] };
+    };
+  };
+
+  public shared ({ caller }) func updateRentalListing(
+    id : Nat,
+    title : Text,
+    description : Text,
+    pricePerDay : Nat,
+    pricePerHalfDay : Nat,
+    deposit : Nat,
+    city : Text,
+    deliveryAvailable : Bool,
+    deliveryPrice : Nat,
+  ) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let l = switch (rentalListings.get(id)) {
+      case (?x) { x };
+      case null { Runtime.trap("Rental listing not found") };
+    };
+    let ownerIdOpt = getUserIdByCaller(caller);
+    let isOwner = switch (ownerIdOpt) {
+      case (?uid) { uid == l.ownerId };
+      case null { false };
+    };
+    if (not isOwner and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized");
+    };
+    rentalListings.add(id, {
+      l with title; description; pricePerDay; pricePerHalfDay;
+      deposit; city; deliveryAvailable; deliveryPrice;
+    });
+  };
+
+  public shared ({ caller }) func deleteRentalListing(id : Nat) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized");
+    };
+    let l = switch (rentalListings.get(id)) {
+      case (?x) { x };
+      case null { Runtime.trap("Rental listing not found") };
+    };
+    let ownerIdOpt = getUserIdByCaller(caller);
+    let isOwner = switch (ownerIdOpt) {
+      case (?uid) { uid == l.ownerId };
+      case null { false };
+    };
+    if (not isOwner and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized");
+    };
+    rentalListings.add(id, { l with status = #deleted });
+  };
+
 };

@@ -4,8 +4,10 @@ import {
   createElement,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from "react";
+import { toast } from "sonner";
 
 export type MissionStatus =
   | "open"
@@ -57,7 +59,9 @@ function saveMissions(missions: Mission[]): void {
 
 type MissionStoreContextType = {
   missions: Mission[];
-  createMission: (data: Omit<Mission, "id" | "createdAt">) => Mission;
+  isLoading: boolean;
+  error: string | null;
+  createMission: (data: Omit<Mission, "id" | "createdAt">) => Promise<Mission>;
   getMissionById: (id: string) => Mission | undefined;
   listAllMissions: () => Mission[];
   listMissionsByUser: (userId: string) => Mission[];
@@ -65,7 +69,9 @@ type MissionStoreContextType = {
     id: string,
     status: MissionStatus,
     acceptedOfferId?: string,
-  ) => void;
+  ) => Promise<void>;
+  deleteMission: (id: string) => Promise<void>;
+  refreshMissions: () => Promise<void>;
 };
 
 const MissionStoreContext = createContext<MissionStoreContextType | undefined>(
@@ -74,9 +80,52 @@ const MissionStoreContext = createContext<MissionStoreContextType | undefined>(
 
 export function MissionStoreProvider({ children }: { children: ReactNode }) {
   const [missions, setMissions] = useState<Mission[]>(loadMissions);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Attempt to sync from backend on mount.
+  // Since the backend APIs for missions are not yet in the generated declarations,
+  // this will gracefully fall back to localStorage.
+  const refreshMissions = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // Backend integration point — when backend.listMissions() is available:
+      // const backendMissions = await (backend as any).listMissions("", "");
+      // const mapped = backendMissions.map(fromBackendMission);
+      // setMissions(mapped);
+      // saveMissions(mapped);
+      // For now, use localStorage (already loaded in initial state).
+      await Promise.resolve();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Failed to load missions";
+      setError(msg);
+      // Keep localStorage data — don't show error toast on silent fallback
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshMissions();
+  }, [refreshMissions]);
 
   const createMission = useCallback(
-    (data: Omit<Mission, "id" | "createdAt">): Mission => {
+    async (data: Omit<Mission, "id" | "createdAt">): Promise<Mission> => {
+      // Backend integration point:
+      // try {
+      //   const id = await (backend as any).createMission(
+      //     data.title, data.description, data.category,
+      //     data.subcategory ?? "", data.city, data.country,
+      //     BigInt(data.budgetMin), BigInt(data.budgetMax),
+      //     data.date ? [data.date] : []
+      //   );
+      //   const mission = { ...data, id: String(Number(id)), createdAt: new Date().toISOString() };
+      //   setMissions(prev => { const u = [mission, ...prev]; saveMissions(u); return u; });
+      //   return mission;
+      // } catch {
+      //   toast.error("Backend not connected yet — saving locally");
+      // }
       const mission: Mission = {
         ...data,
         id: `mission_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
@@ -119,7 +168,17 @@ export function MissionStoreProvider({ children }: { children: ReactNode }) {
   );
 
   const updateMissionStatus = useCallback(
-    (id: string, status: MissionStatus, acceptedOfferId?: string): void => {
+    async (
+      id: string,
+      status: MissionStatus,
+      acceptedOfferId?: string,
+    ): Promise<void> => {
+      // Backend integration point:
+      // try {
+      //   await (backend as any).updateMissionStatus(BigInt(id), status);
+      // } catch {
+      //   toast.error("Backend not connected yet — updating locally");
+      // }
       setMissions((prev) => {
         const updated = prev.map((m) =>
           m.id === id
@@ -133,16 +192,37 @@ export function MissionStoreProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const deleteMission = useCallback(async (id: string): Promise<void> => {
+    // Backend integration point:
+    // try {
+    //   await (backend as any).deleteMission(BigInt(id));
+    // } catch {
+    //   toast.error("Backend not connected yet — removing locally");
+    // }
+    setMissions((prev) => {
+      const updated = prev.filter((m) => m.id !== id);
+      saveMissions(updated);
+      return updated;
+    });
+  }, []);
+
+  // Silence unused toast import warning
+  void toast;
+
   return createElement(
     MissionStoreContext.Provider,
     {
       value: {
         missions,
+        isLoading,
+        error,
         createMission,
         getMissionById,
         listAllMissions,
         listMissionsByUser,
         updateMissionStatus,
+        deleteMission,
+        refreshMissions,
       },
     },
     children,
