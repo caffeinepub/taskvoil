@@ -20,6 +20,7 @@ export const LANG_TO_COUNTRY: Record<Language, string> = {
   pt: "PT",
   nl: "NL",
   el: "GR",
+  lu: "LU",
 };
 
 // Country code → display info
@@ -39,6 +40,7 @@ export const COUNTRY_META: Record<
       pt: "França",
       nl: "Frankrijk",
       el: "Γαλλία",
+      lu: "Γαλλία",
     },
   },
   BE: {
@@ -53,6 +55,7 @@ export const COUNTRY_META: Record<
       pt: "Bélgica",
       nl: "België",
       el: "Βέλγιο",
+      lu: "Βέλγιο",
     },
   },
   IE: {
@@ -67,6 +70,7 @@ export const COUNTRY_META: Record<
       pt: "Irlanda",
       nl: "Ierland",
       el: "Ιρλανδία",
+      lu: "Ιρλανδία",
     },
   },
   GB: {
@@ -81,6 +85,7 @@ export const COUNTRY_META: Record<
       pt: "Reino Unido",
       nl: "Verenigd Koninkrijk",
       el: "Ηνωμένο Βασίλειο",
+      lu: "Ηνωμένο Βασίλειο",
     },
   },
   DE: {
@@ -95,6 +100,7 @@ export const COUNTRY_META: Record<
       pt: "Alemanha",
       nl: "Duitsland",
       el: "Γερμανία",
+      lu: "Γερμανία",
     },
   },
   ES: {
@@ -109,6 +115,7 @@ export const COUNTRY_META: Record<
       pt: "Espanha",
       nl: "Spanje",
       el: "Ισπανία",
+      lu: "Ισπανία",
     },
   },
   IT: {
@@ -123,6 +130,7 @@ export const COUNTRY_META: Record<
       pt: "Itália",
       nl: "Italië",
       el: "Ιταλία",
+      lu: "Ιταλία",
     },
   },
   PT: {
@@ -137,6 +145,7 @@ export const COUNTRY_META: Record<
       pt: "Portugal",
       nl: "Portugal",
       el: "Πορτογαλία",
+      lu: "Πορτογαλία",
     },
   },
   NL: {
@@ -151,6 +160,7 @@ export const COUNTRY_META: Record<
       pt: "Países Baixos",
       nl: "Nederland",
       el: "Ολλανδία",
+      lu: "Ολλανδία",
     },
   },
   LU: {
@@ -165,6 +175,7 @@ export const COUNTRY_META: Record<
       pt: "Luxemburgo",
       nl: "Luxemburg",
       el: "Λουξεμβούργο",
+      lu: "Λουξεμβούργο",
     },
   },
   GR: {
@@ -179,6 +190,7 @@ export const COUNTRY_META: Record<
       pt: "Grécia",
       nl: "Griekenland",
       el: "Ελλάδα",
+      lu: "Ελλάδα",
     },
   },
   CH: {
@@ -193,6 +205,7 @@ export const COUNTRY_META: Record<
       pt: "Suíça",
       nl: "Zwitserland",
       el: "Ελβετία",
+      lu: "Ελβετία",
     },
   },
 };

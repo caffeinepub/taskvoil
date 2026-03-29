@@ -40,6 +40,7 @@ export async function loadConfig(): Promise<Config> {
     const response = await fetch(`${baseUrl}env.json`);
     const config = (await response.json()) as JsonConfig;
     if (!backendCanisterId && config.backend_canister_id === "undefined") {
+      console.error("CANISTER_ID_BACKEND is not set");
       throw new Error("CANISTER_ID_BACKEND is not set");
     }
 
@@ -64,6 +65,7 @@ export async function loadConfig(): Promise<Config> {
     return fullConfig;
   } catch {
     if (!backendCanisterId) {
+      console.error("CANISTER_ID_BACKEND is not set");
       throw new Error("CANISTER_ID_BACKEND is not set");
     }
     const fallbackConfig = {
@@ -131,6 +133,10 @@ export async function createActorWithConfig(
   });
   if (config.backend_host?.includes("localhost")) {
     await agent.fetchRootKey().catch((err) => {
+      console.warn(
+        "Unable to fetch root key. Check to ensure that your local replica is running",
+      );
+      console.error(err);
     });
   }
   const actorOptions = {

@@ -20,7 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuthStore } from "@/lib/auth-store";
-import { demoTasks } from "@/lib/demo-data";
+import { useMissionStore } from "@/lib/mission-store";
 
 import {
   type DemoDocument,
@@ -28,7 +28,7 @@ import {
   type DocType,
   useDocumentStore,
 } from "@/lib/document-store";
-import { useTranslation } from "@/lib/i18n";
+import { LOCALE_MAP, useTranslation } from "@/lib/i18n";
 import { useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
@@ -49,11 +49,14 @@ import { toast } from "sonner";
 // ── helpers ───────────────────────────────────────────────────────────────────
 
 function formatDate(iso: string, lang: string): string {
-  return new Date(iso).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  return new Date(iso).toLocaleDateString(
+    LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ?? "en-GB",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    },
+  );
 }
 
 function formatCurrency(amount: number): string {
@@ -642,6 +645,7 @@ export function CreateDocumentModal({
   const { t, lang } = useTranslation();
   const { createDocument, updateDocumentStatus } = useDocumentStore();
   const { currentUser } = useAuthStore();
+  const { missions } = useMissionStore();
 
   const [form, setForm] = useState({
     docType: "devis" as DocType,
@@ -657,7 +661,7 @@ export function CreateDocumentModal({
     if (!form.missionId || !form.amount) return;
 
     setCreating(true);
-    const mission = demoTasks.find((t) => t.id === Number(form.missionId));
+    const mission = missions.find((t) => String(t.id) === form.missionId);
 
     setTimeout(() => {
       const newDoc = createDocument({
@@ -760,11 +764,23 @@ export function CreateDocumentModal({
                 />
               </SelectTrigger>
               <SelectContent>
-                {demoTasks.map((task) => (
-                  <SelectItem key={task.id} value={String(task.id)}>
-                    {task.title}
+                {missions.length === 0 ? (
+                  <SelectItem value="__none__" disabled>
+                    {lang === "fr"
+                      ? "Aucune mission disponible"
+                      : lang === "de"
+                        ? "Keine Aufträge verfügbar"
+                        : lang === "es"
+                          ? "Sin misiones disponibles"
+                          : "No tasks available"}
                   </SelectItem>
-                ))}
+                ) : (
+                  missions.map((task) => (
+                    <SelectItem key={task.id} value={String(task.id)}>
+                      {task.title}
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
           </div>

@@ -148,6 +148,14 @@ const USER_POPOVER_TEXTS: Record<
     clientArea: "Περιοχή πελάτη",
     logout: "Αποσύνδεση",
   },
+  lu: {
+    notRegistered: "Pas nach Client?",
+    login: "Aloggen",
+    register: "Aschreiwen",
+    hello: "Moien",
+    clientArea: "Client Beräich",
+    logout: "Ausloggen",
+  },
 };
 
 export function Navbar() {

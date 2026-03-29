@@ -32,6 +32,7 @@ const DAY_HEADERS: Record<string, string[]> = {
   nl: ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
   el: ["Δε", "Τρ", "Τε", "Πε", "Πα", "Σά", "Κυ"],
   ie: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  lu: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
 };
 
 const MONTH_NAMES: Record<string, string[]> = {
@@ -160,6 +161,20 @@ const MONTH_NAMES: Record<string, string[]> = {
     "October",
     "November",
     "December",
+  ],
+  lu: [
+    "Januar",
+    "Februar",
+    "Mäerz",
+    "Abrëll",
+    "Mee",
+    "Juni",
+    "Juli",
+    "August",
+    "September",
+    "Oktober",
+    "November",
+    "Dezember",
   ],
 };
 
@@ -302,6 +317,7 @@ export function BookingCalendar({
     nl: "Dit tijdslot reserveren",
     el: "Κράτηση αυτής της ώρας",
     ie: "Book this slot",
+    lu: "Dësen Slot reservéieren",
   };
 
   const selectTimeLabel: Record<string, string> = {
@@ -314,6 +330,7 @@ export function BookingCalendar({
     nl: "Tijdslot kiezen",
     el: "Επιλέξτε ώρα",
     ie: "Choose a time slot",
+    lu: "Eng Zäit wielen",
   };
 
   const noScheduleLabel: Record<string, string> = {
@@ -326,6 +343,7 @@ export function BookingCalendar({
     nl: "Deze professional heeft zijn beschikbaarheid nog niet ingesteld.",
     el: "Αυτός ο επαγγελματίας δεν έχει ρυθμίσει ακόμη τη διαθεσιμότητά του.",
     ie: "This professional hasn't set their availability yet.",
+    lu: "Dëse Professionellen huet seng Verfügbarkeet nach net festgeluecht.",
   };
 
   if (!schedule) {
@@ -433,51 +451,54 @@ export function BookingCalendar({
       <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mt-1">
         <span className="flex items-center gap-1">
           <span className="w-3 h-3 rounded bg-green-100 border border-green-200" />
-          {lang === "fr"
-            ? "Disponible"
-            : lang === "de"
-              ? "Verfügbar"
-              : lang === "es"
-                ? "Disponible"
-                : lang === "it"
-                  ? "Disponibile"
-                  : lang === "pt"
-                    ? "Disponível"
-                    : lang === "nl"
-                      ? "Beschikbaar"
-                      : "Available"}
+          {(
+            {
+              fr: "Disponible",
+              en: "Available",
+              ie: "Available",
+              de: "Verfügbar",
+              es: "Disponible",
+              it: "Disponibile",
+              pt: "Disponível",
+              nl: "Beschikbaar",
+              el: "Διαθέσιμο",
+              lu: "Verfügbar",
+            } as Record<string, string>
+          )[lang] ?? "Available"}
         </span>
         <span className="flex items-center gap-1">
           <span className="w-3 h-3 rounded bg-red-100 border border-red-200" />
-          {lang === "fr"
-            ? "Réservé"
-            : lang === "de"
-              ? "Gebucht"
-              : lang === "es"
-                ? "Reservado"
-                : lang === "it"
-                  ? "Prenotato"
-                  : lang === "pt"
-                    ? "Reservado"
-                    : lang === "nl"
-                      ? "Geboekt"
-                      : "Booked"}
+          {(
+            {
+              fr: "Réservé",
+              en: "Booked",
+              ie: "Booked",
+              de: "Gebucht",
+              es: "Reservado",
+              it: "Prenotato",
+              pt: "Reservado",
+              nl: "Geboekt",
+              el: "Κλεισμένο",
+              lu: "Gebucht",
+            } as Record<string, string>
+          )[lang] ?? "Booked"}
         </span>
         <span className="flex items-center gap-1">
           <span className="w-3 h-3 rounded bg-gray-100 border border-gray-200" />
-          {lang === "fr"
-            ? "Fermé"
-            : lang === "de"
-              ? "Geschlossen"
-              : lang === "es"
-                ? "Cerrado"
-                : lang === "it"
-                  ? "Chiuso"
-                  : lang === "pt"
-                    ? "Fechado"
-                    : lang === "nl"
-                      ? "Gesloten"
-                      : "Closed"}
+          {(
+            {
+              fr: "Fermé",
+              en: "Closed",
+              ie: "Closed",
+              de: "Geschlossen",
+              es: "Cerrado",
+              it: "Chiuso",
+              pt: "Fechado",
+              nl: "Gesloten",
+              el: "Κλειστό",
+              lu: "Zou",
+            } as Record<string, string>
+          )[lang] ?? "Closed"}
         </span>
       </div>
 

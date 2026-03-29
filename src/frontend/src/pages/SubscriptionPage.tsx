@@ -40,7 +40,7 @@ const planBadgeColors: Record<SubscriptionPlan, string> = {
 };
 
 export function SubscriptionPage() {
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
   const { currentUser } = useAuthStore();
   const navigate = useNavigate();
   const { getMySubscription, upgradePlan } = useSubscriptionStore();
@@ -111,11 +111,18 @@ export function SubscriptionPage() {
               variant="ghost"
               size="sm"
               className="text-white/70 hover:text-white hover:bg-white/10 mb-4 gap-2"
-              onClick={() => void navigate({ to: "/dashboard/pro" })}
+              onClick={() =>
+                void navigate({
+                  to:
+                    currentUser?.role === "client"
+                      ? "/dashboard/client"
+                      : "/dashboard/pro",
+                })
+              }
               data-ocid="subscription.back.button"
             >
               <ArrowLeft className="h-4 w-4" />
-              {lang === "fr" ? "Retour au dashboard" : "Back to dashboard"}
+              {t.common.back}
             </Button>
             <div className="flex items-center gap-3 mb-3">
               <Sparkles className="h-6 w-6 text-white" />

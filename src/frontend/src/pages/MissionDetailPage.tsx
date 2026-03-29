@@ -22,7 +22,7 @@ import { useAuthStore } from "@/lib/auth-store";
 import { containsContactInfo, useChatStore } from "@/lib/chat-store";
 import { categoryEmojis } from "@/lib/demo-data";
 import { useDocumentStore } from "@/lib/document-store";
-import { useTranslation } from "@/lib/i18n";
+import { LOCALE_MAP, useTranslation } from "@/lib/i18n";
 import { useMissionStore } from "@/lib/mission-store";
 import { type Offer, useOfferStore } from "@/lib/offer-store";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
@@ -116,7 +116,7 @@ export function MissionDetailPage() {
             {lang === "fr" ? "Veuillez vous connecter." : "Please log in."}
           </p>
           <Button onClick={() => void navigate({ to: "/login" })}>
-            {lang === "fr" ? "Se connecter" : "Log in"}
+            {t.login.loginBtn}
           </Button>
         </div>
       </main>
@@ -141,7 +141,7 @@ export function MissionDetailPage() {
             data-ocid="mission.back_button"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {lang === "fr" ? "Retour" : "Back"}
+            {t.common.back}
           </Button>
         </div>
       </main>
@@ -295,7 +295,7 @@ export function MissionDetailPage() {
           data-ocid="mission.back_button"
         >
           <ArrowLeft className="h-4 w-4" />
-          {lang === "fr" ? "Retour" : "Back"}
+          {t.common.back}
         </button>
 
         <div className="grid lg:grid-cols-3 gap-6">
@@ -344,7 +344,7 @@ export function MissionDetailPage() {
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Calendar className="h-4 w-4 shrink-0 text-primary" />
                     {new Date(mission.date).toLocaleDateString(
-                      lang === "fr" ? "fr-FR" : "en-GB",
+                      LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ?? "en-GB",
                     )}
                   </div>
                 )}
@@ -818,7 +818,7 @@ export function MissionDetailPage() {
                   </span>
                   <span className="font-medium">
                     {new Date(mission.createdAt).toLocaleDateString(
-                      lang === "fr" ? "fr-FR" : "en-GB",
+                      LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ?? "en-GB",
                     )}
                   </span>
                 </div>

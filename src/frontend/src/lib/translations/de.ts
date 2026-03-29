@@ -884,4 +884,41 @@ export const de: TranslationKeys = {
       success: "Anfrage gesendet!",
     },
   },
+
+  messages: {
+    title: "Nachrichten",
+    loginRequired: "Anmeldung erforderlich",
+    loginToChat:
+      "Bitte melden Sie sich an, um auf Ihre Nachrichten zuzugreifen.",
+    conversations: "Unterhaltung(en)",
+    noMessages: "Noch keine Nachrichten",
+    noMessagesDesc: "Ihre Gespräche mit Fachleuten werden hier angezeigt.",
+    conversationsLabel: "Unterhaltungen",
+    you: "Sie: ",
+    call: "Anrufen",
+    viewMission: "Auftrag ansehen",
+    startConversation: "Beginnen Sie das Gespräch!",
+    coordsBlocked:
+      "Zu Ihrer Sicherheit werden direkte Kontaktdaten blockiert. Bitte kommunizieren Sie nur über TaskVoilà.",
+    contactInfoBlocked: "Kontaktdaten aus Sicherheitsgründen gesperrt.",
+    messagePlaceholder: "Schreiben Sie Ihre Nachricht...",
+    selectConversation: "Gespräch auswählen",
+    security: "Sicherheit",
+    securityDesc:
+      "Jede Kommunikation außerhalb von TaskVoilà (Telefonnummern, E-Mails, externe Links) wird automatisch zu Ihrem Schutz blockiert.",
+    justNow: "Gerade eben",
+    minutesAgo: "vor {n} Min",
+    hoursAgo: "vor {n}h",
+  },
+  call: {
+    calling: "Verbindet...",
+    connected: "Verbunden",
+    ended: "Anruf beendet",
+    secureNote: "Sicherer Anruf via TaskVoilà • Nummern versteckt",
+    anonymized:
+      "Anrufe werden über das TaskVoilà-Netzwerk anonymisiert. Keine echten Nummern werden geteilt.",
+    professional: "Fachmann",
+    client: "Kunde",
+    hungUp: "{name} hat aufgelegt.",
+  },
 };

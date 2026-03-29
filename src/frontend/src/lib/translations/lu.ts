@@ -1,4 +1,4 @@
-export const fr = {
+export const lu = {
   nav: {
     home: "Accueil",
     marketplace: "Demandes ouvertes",
@@ -890,41 +890,38 @@ export const fr = {
   },
 
   messages: {
-    title: "Messages",
-    loginRequired: "Connexion requise",
-    loginToChat: "Connectez-vous pour accéder à vos messages.",
+    title: "Messagen",
+    loginRequired: "Aloggen erfuerdert",
+    loginToChat: "Loggt iech an fir op är Messagen zouzegräifen.",
     conversations: "conversation(s)",
-    noMessages: "Aucun message",
-    noMessagesDesc:
-      "Vos conversations avec les professionnels apparaîtront ici.",
-    conversationsLabel: "Conversations",
-    you: "Vous : ",
-    call: "Appeler",
-    viewMission: "Voir la mission",
-    startConversation: "Démarrez la conversation !",
+    noMessages: "Keng Messagen nach",
+    noMessagesDesc: "Är Gespréicher mat Professionellen erscheinen hei.",
+    conversationsLabel: "Gespréicher",
+    you: "Dir: ",
+    call: "Uruffen",
+    viewMission: "Aufgab gesinn",
+    startConversation: "Fänkt d'Gespréich un!",
     coordsBlocked:
-      "Pour votre sécurité, les coordonnées directes sont bloquées. Merci de communiquer uniquement via TaskVoilà.",
-    contactInfoBlocked: "Coordonnées bloquées pour votre sécurité.",
-    messagePlaceholder: "Écrivez votre message...",
-    selectConversation: "Sélectionnez une conversation",
-    security: "Sécurité",
+      "Fir Är Sécherheet ginn direkt Kontaktdaten gespaart. Kommunizéiert nëmmen iwwer TaskVoilà.",
+    contactInfoBlocked: "Kontaktinfos gespaart fir Är Sécherheet.",
+    messagePlaceholder: "Schreiwt är Noriicht...",
+    selectConversation: "Wielt e Gespréich aus",
+    security: "Sécherheet",
     securityDesc:
-      "Toute communication hors de TaskVoilà (numéro de téléphone, email, lien externe) est automatiquement bloquée pour votre protection.",
-    justNow: "À l'instant",
-    minutesAgo: "Il y a {n} min",
-    hoursAgo: "Il y a {n}h",
+      "All Kommunikatioun ausserhalb vun TaskVoilà (Telefonsnummeren, E-Mailen, extern Links) gëtt automatesch fir Är Protektioun gespaart.",
+    justNow: "Grad elo",
+    minutesAgo: "Virun {n} Min",
+    hoursAgo: "Virun {n}h",
   },
   call: {
-    calling: "Appel en cours",
-    connected: "En communication",
-    ended: "Appel terminé",
-    secureNote: "Appel sécurisé via TaskVoilà • Numéros masqués",
+    calling: "Uruff am Gaang",
+    connected: "Verbonnen",
+    ended: "Uruff eriwwer",
+    secureNote: "Sécheren Uruff via TaskVoilà • Nummeren verstoppen",
     anonymized:
-      "Les appels sont anonymisés via le réseau TaskVoilà. Aucun numéro réel n'est partagé.",
-    professional: "Professionnel",
+      "Uruffer ginn iwwert d'TaskVoilà Netz anonymiséiert. Keng richteg Nummeren ginn gedeelt.",
+    professional: "Professionell",
     client: "Client",
-    hungUp: "{name} a raccroché.",
+    hungUp: "{name} huet opgehaangen.",
   },
 };
-
-export type TranslationKeys = typeof fr;

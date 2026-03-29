@@ -96,6 +96,13 @@ const LABELS: Record<
     success: "Request sent!",
     placeholder: "Describe your needs in detail...",
   },
+  lu: {
+    title: "Buchungsufro schécken",
+    desc: "Beschreiwung vun der Aufgab",
+    submit: "Ufro schécken",
+    success: "Ufro geschéckt!",
+    placeholder: "Beschreiwt Är Bedierfnisser am Detail...",
+  },
 };
 
 export function BookingRequestModal({
@@ -107,7 +114,7 @@ export function BookingRequestModal({
   selectedTime,
   onClose,
 }: BookingRequestModalProps) {
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
   const { createBooking } = useCalendarStore();
   const l = LABELS[lang] ?? LABELS.en;
   const [description, setDescription] = useState("");
@@ -175,7 +182,7 @@ export function BookingRequestModal({
               onClick={onClose}
               data-ocid="booking.cancel_button"
             >
-              {lang === "fr" ? "Annuler" : "Cancel"}
+              {t.common.cancel}
             </Button>
             <Button
               type="submit"

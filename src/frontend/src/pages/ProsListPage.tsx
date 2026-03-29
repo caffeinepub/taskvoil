@@ -17,6 +17,7 @@ import { useProfileStore } from "@/lib/profile-store";
 import { MapPage } from "@/pages/MapPage";
 import { useNavigate } from "@tanstack/react-router";
 import {
+  ArrowLeft,
   Check,
   Filter,
   Globe,
@@ -28,6 +29,7 @@ import {
 import { useMemo, useState } from "react";
 
 export function ProsListPage() {
+  const navigate = useNavigate();
   const { t, lang } = useTranslation();
   const { selectedCountry } = useCountryStore();
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -84,6 +86,15 @@ export function ProsListPage() {
       {/* Header */}
       <section className="bg-white border-b border-border py-10">
         <div className="container mx-auto px-4">
+          <button
+            type="button"
+            onClick={() => void navigate({ to: "/" })}
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+            data-ocid="pros.back_button"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t.common.back}
+          </button>
           <h1 className="font-display text-3xl font-bold text-foreground">
             {t.prosList.title}
           </h1>

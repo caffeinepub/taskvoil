@@ -881,4 +881,41 @@ export const it: TranslationKeys = {
       success: "Richiesta inviata!",
     },
   },
+
+  messages: {
+    title: "Messaggi",
+    loginRequired: "Accesso richiesto",
+    loginToChat: "Accedi per accedere ai tuoi messaggi.",
+    conversations: "conversazione/i",
+    noMessages: "Nessun messaggio ancora",
+    noMessagesDesc:
+      "Le tue conversazioni con i professionisti appariranno qui.",
+    conversationsLabel: "Conversazioni",
+    you: "Tu: ",
+    call: "Chiama",
+    viewMission: "Vedi missione",
+    startConversation: "Inizia la conversazione!",
+    coordsBlocked:
+      "Per la sua sicurezza, i recapiti diretti sono bloccati. Si prega di comunicare solo tramite TaskVoilà.",
+    contactInfoBlocked: "Recapiti bloccati per la sua sicurezza.",
+    messagePlaceholder: "Scrivi il tuo messaggio...",
+    selectConversation: "Seleziona una conversazione",
+    security: "Sicurezza",
+    securityDesc:
+      "Qualsiasi comunicazione al di fuori di TaskVoilà (numeri di telefono, email, link esterni) viene automaticamente bloccata per la tua protezione.",
+    justNow: "Adesso",
+    minutesAgo: "{n} min fa",
+    hoursAgo: "{n}h fa",
+  },
+  call: {
+    calling: "Chiamata in corso",
+    connected: "Connesso",
+    ended: "Chiamata terminata",
+    secureNote: "Chiamata sicura via TaskVoilà • Numeri nascosti",
+    anonymized:
+      "Le chiamate sono anonimizzate tramite la rete TaskVoilà. Nessun numero reale viene condiviso.",
+    professional: "Professionista",
+    client: "Cliente",
+    hungUp: "{name} ha riagganciato.",
+  },
 };

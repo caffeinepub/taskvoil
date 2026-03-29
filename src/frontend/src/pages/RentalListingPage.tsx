@@ -46,7 +46,7 @@ export function RentalListingPage() {
             className="mt-4"
             onClick={() => void navigate({ to: "/rental" })}
           >
-            <ArrowLeft className="h-4 w-4 mr-2" /> Back
+            <ArrowLeft className="h-4 w-4 mr-2" /> {t.common.back}
           </Button>
         </div>
       </main>

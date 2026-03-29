@@ -78,7 +78,7 @@ function PaymentForm({
   offerAmount,
 }: PaymentFormProps) {
   const navigate = useNavigate();
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
   const { addPayment } = usePaymentStore();
   const { validateCode, incrementUsage } = usePromoStore();
   const { updateMissionStatus } = useMissionStore();
@@ -219,7 +219,7 @@ function PaymentForm({
               data-ocid="payment.back_button"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              {lang === "fr" ? "Retour" : "Back"}
+              {t.common.back}
             </Button>
             <div className="flex-1">
               <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
@@ -813,7 +813,7 @@ export function PaymentPage() {
     missionId?: string;
   };
   const navigate = useNavigate();
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
   const { getMissionById } = useMissionStore();
   const { getAcceptedOffer } = useOfferStore();
 
@@ -833,7 +833,7 @@ export function PaymentPage() {
             onClick={() => void navigate({ to: "/marketplace" })}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {lang === "fr" ? "Retour" : "Back"}
+            {t.common.back}
           </Button>
         </div>
       </main>

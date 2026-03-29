@@ -118,10 +118,7 @@ export function ProDetailPage() {
       label: t.proDetail.missionsCompleted,
     },
     {
-      value:
-        lang === "fr"
-          ? `${pro.yearsExperience} ans`
-          : `${pro.yearsExperience} yrs`,
+      value: `${pro.yearsExperience} ${lang === "fr" || lang === "lu" ? "ans" : lang === "de" ? "J." : "yrs"}`,
       label: t.proDetail.yearsExperience,
     },
     { value: "97%", label: t.proDetail.satisfactionRate },
@@ -208,7 +205,7 @@ export function ProDetailPage() {
                   data-ocid="pro.send_message.button"
                 >
                   <MessageSquare className="h-4 w-4" />
-                  {lang === "fr" ? "Message" : "Message"}
+                  Message
                 </Button>
                 <Button
                   variant="outline"
@@ -449,7 +446,7 @@ export function ProDetailPage() {
                 onClick={() => void navigate({ to: "/login" })}
                 className="bg-primary hover:bg-primary/90 text-primary-foreground"
               >
-                {lang === "fr" ? "Se connecter" : "Log in"}
+                {t.login.loginBtn}
               </Button>
             </div>
           ) : (

@@ -28,6 +28,7 @@ import { type LockType, useSecurityStore } from "@/lib/security-store";
 import { useNavigate } from "@tanstack/react-router";
 import {
   AlertTriangle,
+  ArrowLeft,
   CheckCircle,
   Lock,
   LogOut,
@@ -233,6 +234,16 @@ export function SettingsPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
+          {/* Back button */}
+          <button
+            type="button"
+            onClick={() => void navigate({ to: -1 as unknown as string })}
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+            data-ocid="settings.back_button"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t.common.back}
+          </button>
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">

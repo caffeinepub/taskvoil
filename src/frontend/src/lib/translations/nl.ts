@@ -880,4 +880,40 @@ export const nl: TranslationKeys = {
       success: "Verzoek verzonden!",
     },
   },
+
+  messages: {
+    title: "Berichten",
+    loginRequired: "Inloggen vereist",
+    loginToChat: "Log in om toegang te krijgen tot uw berichten.",
+    conversations: "gesprek(ken)",
+    noMessages: "Nog geen berichten",
+    noMessagesDesc: "Uw gesprekken met professionals verschijnen hier.",
+    conversationsLabel: "Gesprekken",
+    you: "U: ",
+    call: "Bellen",
+    viewMission: "Taak bekijken",
+    startConversation: "Start het gesprek!",
+    coordsBlocked:
+      "Voor uw veiligheid zijn directe contactgegevens geblokkeerd. Communiceer alstublieft alleen via TaskVoilà.",
+    contactInfoBlocked: "Contactgegevens geblokkeerd voor uw veiligheid.",
+    messagePlaceholder: "Schrijf uw bericht...",
+    selectConversation: "Selecteer een gesprek",
+    security: "Beveiliging",
+    securityDesc:
+      "Alle communicatie buiten TaskVoilà (telefoonnummers, e-mails, externe links) wordt automatisch geblokkeerd voor uw bescherming.",
+    justNow: "Zojuist",
+    minutesAgo: "{n} min geleden",
+    hoursAgo: "{n}h geleden",
+  },
+  call: {
+    calling: "Verbinden",
+    connected: "Verbonden",
+    ended: "Oproep beëindigd",
+    secureNote: "Veilig gesprek via TaskVoilà • Nummers verborgen",
+    anonymized:
+      "Gesprekken worden geanonimiseerd via het TaskVoilà-netwerk. Er worden geen echte nummers gedeeld.",
+    professional: "Professional",
+    client: "Klant",
+    hungUp: "{name} heeft opgehangen.",
+  },
 };

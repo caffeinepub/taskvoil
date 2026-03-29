@@ -34,7 +34,7 @@ import type {
   DemoTask as AdminTask,
   DemoUser as DemoUserRecord,
 } from "@/lib/demo-data";
-import { useTranslation } from "@/lib/i18n";
+import { LOCALE_MAP, useTranslation } from "@/lib/i18n";
 import { useKYCStore } from "@/lib/kyc-store";
 import {
   type PromoTarget,
@@ -1434,7 +1434,8 @@ export function AdminDashboard() {
                         </TableCell>
                         <TableCell className="text-xs text-muted-foreground">
                           {new Date(sub.renewsAt).toLocaleDateString(
-                            lang === "fr" ? "fr-FR" : "en-GB",
+                            LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ??
+                              "en-GB",
                           )}
                         </TableCell>
                         <TableCell>
@@ -1556,10 +1557,12 @@ export function AdminDashboard() {
                           <p className="text-[10px] text-muted-foreground mt-1.5">
                             {t.kyc.adminSubmittedAt}{" "}
                             {new Date(req.submittedAt).toLocaleDateString(
-                              lang === "fr" ? "fr-FR" : "en-GB",
+                              LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ??
+                                "en-GB",
                             )}{" "}
                             {new Date(req.submittedAt).toLocaleTimeString(
-                              lang === "fr" ? "fr-FR" : "en-GB",
+                              LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ??
+                                "en-GB",
                               { hour: "2-digit", minute: "2-digit" },
                             )}
                           </p>
@@ -1987,7 +1990,7 @@ export function AdminDashboard() {
                           onClick={() => setPromoDialogOpen(false)}
                           data-ocid="admin.promo.cancel_button"
                         >
-                          {lang === "fr" ? "Annuler" : "Cancel"}
+                          {t.common.cancel}
                         </Button>
                         <Button
                           className="flex-1 bg-primary hover:bg-primary/90 text-white"
@@ -2061,7 +2064,8 @@ export function AdminDashboard() {
                           <TableCell className="text-xs text-muted-foreground">
                             {promo.expiresAt
                               ? new Date(promo.expiresAt).toLocaleDateString(
-                                  lang === "fr" ? "fr-FR" : "en-GB",
+                                  LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ??
+                                    "en-GB",
                                 )
                               : "—"}
                           </TableCell>
@@ -2567,7 +2571,7 @@ function RegistrationsTab({
                 </TableCell>
                 <TableCell className="text-xs text-muted-foreground">
                   {new Date(u.registeredAt).toLocaleDateString(
-                    lang === "fr" ? "fr-FR" : "en-GB",
+                    LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ?? "en-GB",
                   )}
                 </TableCell>
                 <TableCell>
@@ -3301,7 +3305,7 @@ function AdminMgmtTab({
                   <p className="text-[10px] text-muted-foreground mt-0.5">
                     {at("Promu le", "Promoted on")}{" "}
                     {new Date(admin.registeredAt).toLocaleDateString(
-                      lang === "fr" ? "fr-FR" : "en-GB",
+                      LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ?? "en-GB",
                     )}
                     {isSelf && (
                       <span className="ml-2 text-primary font-medium">

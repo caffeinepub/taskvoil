@@ -57,7 +57,7 @@ export function PrivacyPolicyPage() {
             data-ocid="privacy.home.link"
           >
             <ArrowLeft className="h-4 w-4" />
-            {lang === "fr" ? "Retour" : "Back"}
+            {t.common.back}
           </Link>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

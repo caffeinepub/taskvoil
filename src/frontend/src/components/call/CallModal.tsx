@@ -28,7 +28,7 @@ export function CallModal({
   contactName,
   contactRole,
 }: CallModalProps) {
-  const { lang } = useTranslation();
+  const { t } = useTranslation();
   const [callState, setCallState] = useState<CallState>("ringing");
   const [isMuted, setIsMuted] = useState(false);
   const [isCameraOn, setIsCameraOn] = useState(false);
@@ -37,7 +37,6 @@ export function CallModal({
   const ringingRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoHangupRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Reset state on open
   useEffect(() => {
     if (isOpen) {
       setCallState("ringing");
@@ -45,7 +44,6 @@ export function CallModal({
       setIsCameraOn(false);
       setTimer(0);
 
-      // After 3s, answer the call
       ringingRef.current = setTimeout(() => {
         setCallState("connected");
       }, 3000);
@@ -55,21 +53,15 @@ export function CallModal({
     };
   }, [isOpen]);
 
-  // Timer while connected
   useEffect(() => {
     if (callState === "connected") {
       timerRef.current = setInterval(() => {
         setTimer((t) => t + 1);
       }, 1000);
 
-      // Auto-hangup after 30s (the other party hangs up)
       autoHangupRef.current = setTimeout(() => {
         setCallState("ended");
-        toast.info(
-          lang === "fr"
-            ? `${contactName} a raccroché.`
-            : `${contactName} hung up.`,
-        );
+        toast.info(t.call.hungUp.replace("{name}", contactName));
         setTimeout(onClose, 1500);
       }, 30000);
     }
@@ -78,7 +70,7 @@ export function CallModal({
       if (timerRef.current) clearInterval(timerRef.current);
       if (autoHangupRef.current) clearTimeout(autoHangupRef.current);
     };
-  }, [callState, contactName, lang, onClose]);
+  }, [callState, contactName, t, onClose]);
 
   function handleHangUp() {
     setCallState("ended");
@@ -95,14 +87,7 @@ export function CallModal({
     .slice(0, 2)
     .toUpperCase();
 
-  const roleLabel =
-    contactRole === "pro"
-      ? lang === "fr"
-        ? "Professionnel"
-        : "Professional"
-      : lang === "fr"
-        ? "Client"
-        : "Client";
+  const roleLabel = contactRole === "pro" ? t.call.professional : t.call.client;
 
   return (
     <AnimatePresence>
@@ -133,7 +118,6 @@ export function CallModal({
           >
             {/* Top section */}
             <div className="px-6 pt-8 pb-6 text-center relative">
-              {/* Animated rings for ringing state */}
               {callState === "ringing" &&
                 [1, 2, 3].map((i) => (
                   <motion.div
@@ -154,7 +138,6 @@ export function CallModal({
                   />
                 ))}
 
-              {/* Avatar */}
               <motion.div
                 animate={
                   callState === "ringing"
@@ -181,13 +164,11 @@ export function CallModal({
                 {initials}
               </motion.div>
 
-              {/* Name */}
               <h2 className="text-white text-xl font-bold mb-1">
                 {contactName}
               </h2>
               <p className="text-white/50 text-sm mb-2">{roleLabel}</p>
 
-              {/* Status */}
               <div className="text-white/70 text-sm font-medium">
                 {callState === "ringing" && (
                   <motion.span
@@ -197,31 +178,26 @@ export function CallModal({
                       repeat: Number.POSITIVE_INFINITY,
                     }}
                   >
-                    {lang === "fr" ? "Appel en cours" : "Calling"}
+                    {t.call.calling}
                     <DotDotDot />
                   </motion.span>
                 )}
                 {callState === "connected" && (
                   <span className="text-emerald-400 font-semibold">
-                    {lang === "fr" ? "En communication" : "Connected"} ·{" "}
-                    {formatTimer(timer)}
+                    {t.call.connected} · {formatTimer(timer)}
                   </span>
                 )}
                 {callState === "ended" && (
                   <span className="text-white/50">
-                    {lang === "fr" ? "Appel terminé" : "Call ended"} ·{" "}
-                    {formatTimer(timer)}
+                    {t.call.ended} · {formatTimer(timer)}
                   </span>
                 )}
               </div>
 
-              {/* Secure badge */}
               <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10">
                 <span className="text-xs">🔒</span>
                 <span className="text-white/50 text-xs">
-                  {lang === "fr"
-                    ? "Appel sécurisé via TaskVoilà • Numéros masqués"
-                    : "Secure call via TaskVoilà • Numbers hidden"}
+                  {t.call.secureNote}
                 </span>
               </div>
             </div>
@@ -230,7 +206,6 @@ export function CallModal({
             {callState !== "ended" && (
               <div className="px-6 pb-8">
                 <div className="flex items-center justify-center gap-5">
-                  {/* Mute */}
                   <button
                     type="button"
                     onClick={() => setIsMuted((v) => !v)}
@@ -251,7 +226,6 @@ export function CallModal({
                     )}
                   </button>
 
-                  {/* Hang up */}
                   <button
                     type="button"
                     onClick={handleHangUp}
@@ -266,7 +240,6 @@ export function CallModal({
                     <PhoneOff className="h-6 w-6 text-white" />
                   </button>
 
-                  {/* Camera (disabled) */}
                   <button
                     type="button"
                     onClick={() => setIsCameraOn((v) => !v)}
@@ -292,12 +265,9 @@ export function CallModal({
               </div>
             )}
 
-            {/* Legal note */}
             <div className="px-6 pb-6 text-center">
               <p className="text-white/25 text-[10px] leading-relaxed">
-                {lang === "fr"
-                  ? "Les appels sont anonymisés via le réseau TaskVoilà. Aucun numéro réel n'est partagé."
-                  : "Calls are anonymised via the TaskVoilà network. No real numbers are shared."}
+                {t.call.anonymized}
               </p>
             </div>
           </motion.div>

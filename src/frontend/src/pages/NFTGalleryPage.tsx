@@ -9,11 +9,17 @@ import {
 } from "@/components/ui/dialog";
 
 import { useAuthStore } from "@/lib/auth-store";
-import { useTranslation } from "@/lib/i18n";
+import { LOCALE_MAP, useTranslation } from "@/lib/i18n";
 import type { DemoNFT } from "@/lib/nft-store";
 import { useNFTStore } from "@/lib/nft-store";
-import { Link } from "@tanstack/react-router";
-import { Award, ExternalLink, Image, ShieldCheck } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import {
+  ArrowLeft,
+  Award,
+  ExternalLink,
+  Image,
+  ShieldCheck,
+} from "lucide-react";
 import { motion } from "motion/react";
 
 // ─── NFT Certificate Dialog ───────────────────────────────────────────────────
@@ -87,7 +93,7 @@ function NFTCertificateDialog({ nft }: { nft: DemoNFT }) {
                 </p>
                 <p className="font-mono text-xs text-foreground">
                   {new Date(nft.mintedAt).toLocaleDateString(
-                    lang === "fr" ? "fr-FR" : "en-GB",
+                    LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ?? "en-GB",
                     { day: "numeric", month: "short", year: "numeric" },
                   )}
                 </p>
@@ -174,7 +180,7 @@ function NFTCard({ nft, index }: { nft: DemoNFT; index: number }) {
   const { lang } = useTranslation();
 
   const mintedDate = new Date(nft.mintedAt).toLocaleDateString(
-    lang === "fr" ? "fr-FR" : "en-GB",
+    LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ?? "en-GB",
     { day: "numeric", month: "short", year: "numeric" },
   );
 
@@ -266,7 +272,8 @@ function NFTCard({ nft, index }: { nft: DemoNFT; index: number }) {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export function NFTGalleryPage() {
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
+  const navigate = useNavigate();
 
   const { getNFTsByUser } = useNFTStore();
 
@@ -278,6 +285,18 @@ export function NFTGalleryPage() {
 
   return (
     <main className="min-h-screen bg-background">
+      {/* Back button */}
+      <div className="container mx-auto px-4 pt-4">
+        <button
+          type="button"
+          onClick={() => void navigate({ to: "/dashboard/client" })}
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          data-ocid="nft.back_button"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t.common.back}
+        </button>
+      </div>
       {/* Header */}
       <div
         className="py-12"

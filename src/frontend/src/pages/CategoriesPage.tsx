@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { getN2ForN1, n1Categories } from "@/lib/demo-data";
 import { useTranslation } from "@/lib/i18n";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 
 export function CategoriesPage() {
   const { t, lang } = useTranslation();
@@ -19,6 +19,16 @@ export function CategoriesPage() {
       {/* Header */}
       <section className="bg-white border-b border-border py-10">
         <div className="container mx-auto px-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mb-4"
+            onClick={() => void navigate({ to: "/" })}
+            data-ocid="categories.back_button"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            {t.common.back}
+          </Button>
           <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
             {t.categoriesPage.title}
           </h1>

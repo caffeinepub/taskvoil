@@ -337,7 +337,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 export function BookingDetailPage() {
   const { id } = useParams({ strict: false }) as { id?: string };
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
   const { currentUser } = useAuthStore();
   const {
     getBookingById,
@@ -365,7 +365,7 @@ export function BookingDetailPage() {
             onClick={() => void navigate({ to: "/" })}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {lang === "fr" ? "Retour" : "Back"}
+            {t.common.back}
           </Button>
         </div>
       </main>

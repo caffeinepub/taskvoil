@@ -5,14 +5,15 @@ import {
   useContext,
 } from "react";
 import { de } from "./translations/de";
+import { el } from "./translations/el";
 import { en } from "./translations/en";
 import { es } from "./translations/es";
 import { type TranslationKeys, fr } from "./translations/fr";
 import { it } from "./translations/it";
+import { lu } from "./translations/lu";
 import { nl } from "./translations/nl";
 import { pt } from "./translations/pt";
 
-// "el" = Greek (uses English as fallback since no Greek translation file yet)
 // "ie" = Irish English (uses English translations, Irish flag)
 export type Language =
   | "ie"
@@ -23,7 +24,8 @@ export type Language =
   | "it"
   | "pt"
   | "nl"
-  | "el";
+  | "el"
+  | "lu";
 
 export const SUPPORTED_LANGUAGES: Language[] = [
   "ie",
@@ -35,6 +37,7 @@ export const SUPPORTED_LANGUAGES: Language[] = [
   "pt",
   "nl",
   "el",
+  "lu",
 ];
 
 export const LANGUAGE_META: Record<
@@ -54,9 +57,9 @@ export const LANGUAGE_META: Record<
   pt: { flag: "🇵🇹", label: "Portugais", labelNative: "Português" },
   nl: { flag: "🇳🇱", label: "Néerlandais", labelNative: "Nederlands" },
   el: { flag: "🇬🇷", label: "Grec", labelNative: "Ελληνικά" },
+  lu: { flag: "🇱🇺", label: "Luxembourgeois", labelNative: "Lëtzebuergesch" },
 };
 
-// All languages fully translated — Greek and Irish use English as fallback
 const translations: Record<Language, TranslationKeys> = {
   ie: en,
   fr,
@@ -66,7 +69,8 @@ const translations: Record<Language, TranslationKeys> = {
   it,
   pt,
   nl,
-  el: en, // fallback until a Greek translation file is added
+  el,
+  lu,
 };
 
 type I18nContextType = {
@@ -106,3 +110,17 @@ export function useTranslation() {
   }
   return ctx;
 }
+
+// Locale map for date/number formatting
+export const LOCALE_MAP: Record<Language, string> = {
+  fr: "fr-FR",
+  en: "en-GB",
+  ie: "en-IE",
+  de: "de-DE",
+  es: "es-ES",
+  it: "it-IT",
+  pt: "pt-PT",
+  nl: "nl-NL",
+  el: "el-GR",
+  lu: "lb-LU",
+};
