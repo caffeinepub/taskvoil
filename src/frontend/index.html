@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- ─── Viewport: viewport-fit=cover for iPhone notch / safe areas ─── -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- ─── SEO & description ─── -->
+    <meta name="description" content="TaskVoilà - La marketplace de services entre particuliers et professionnels. Trouvez des artisans vérifiés près de chez vous." />
+    <meta name="keywords" content="services locaux, bricolage, ménage, jardinage, artisans, marketplace" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- ─── PWA: Theme & Status bar ─── -->
+    <meta name="theme-color" content="#1e40af" />
+    <meta name="msapplication-TileColor" content="#1e40af" />
+    <meta name="msapplication-config" content="none" />
+
+    <!-- ─── iOS Safari PWA ─── -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="TaskVoilà" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- ─── iOS Touch Icons (multiple sizes for all devices) ─── -->
+    <link rel="apple-touch-icon" href="/assets/generated/icon-pwa-192-maskable.dim_192x192.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/generated/icon-pwa-192-maskable.dim_192x192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/generated/icon-pwa-192-maskable.dim_192x192.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/assets/generated/icon-pwa-192-maskable.dim_192x192.png" />
+
+    <!-- ─── iOS Splash screens (basic) ─── -->
+    <meta name="apple-touch-startup-image" content="/assets/generated/icon-pwa-512-maskable-transparent.dim_512x512.png" />
+
+    <!-- ─── Manifest ─── -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- ─── Favicon ─── -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/generated/icon-pwa-192-maskable.dim_192x192.png" />
+    <link rel="shortcut icon" href="/assets/generated/icon-pwa-192-maskable.dim_192x192.png" />
+
+    <!-- ─── Open Graph ─── -->
+    <meta property="og:title" content="TaskVoilà — Services locaux" />
+    <meta property="og:description" content="Trouvez des professionnels vérifiés près de chez vous pour tous vos services du quotidien." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/assets/generated/icon-pwa-512-maskable-transparent.dim_512x512.png" />
+
+    <!-- ─── Performance: preconnect to essential origins only ─── -->
+    <!-- Note: No Google Fonts — all fonts self-hosted via index.css -->
+    <!-- Stripe.js is loaded on-demand in PaymentPage only, never here -->
+
+    <title>TaskVoilà - Marketplace de services</title>
+
+    <!-- ─── Service Worker registration with update detection ─── -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js').then(function (reg) {
+            // Detect when a new SW has taken over
+            reg.addEventListener('updatefound', function () {
+              var newWorker = reg.installing;
+              if (!newWorker) return;
+              newWorker.addEventListener('statechange', function () {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // Dispatch event so React can show an update toast
+                  window.dispatchEvent(new CustomEvent('sw-update-available'));
+                }
+              });
+            });
+          }).catch(function () {});
+
+          // Listen for SW_UPDATED message from activated SW
+          navigator.serviceWorker.addEventListener('message', function (event) {
+            if (event.data && event.data.type === 'SW_UPDATED') {
+              window.dispatchEvent(new CustomEvent('sw-update-available'));
+            }
+          });
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
