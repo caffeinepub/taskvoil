@@ -48,8 +48,7 @@ export function StripeCheckoutButton({
       } else {
         throw new Error("URL de paiement invalide");
       }
-    } catch (err) {
-      console.error("Stripe checkout error:", err);
+    } catch {
       setError(
         "Une erreur est survenue lors de la création du paiement. Veuillez réessayer.",
       );

@@ -6,7 +6,13 @@ import {
   useContext,
   useState,
 } from "react";
-import type { DemoUserState } from "./demo-store";
+// Local user type for comment authorship
+type CommentAuthor = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  role: "client" | "pro" | "admin";
+};
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -264,12 +270,12 @@ type CommentStoreContextType = {
   getComments: (missionId: string) => Comment[];
   addComment: (
     missionId: string,
-    user: DemoUserState,
+    user: CommentAuthor,
     content: string,
   ) => { valid: boolean; reason?: string };
   addReply: (
     commentId: string,
-    user: DemoUserState,
+    user: CommentAuthor,
     content: string,
   ) => { valid: boolean; reason?: string };
   toggleCommentLike: (commentId: string, userId: number) => void;
@@ -293,7 +299,7 @@ export function CommentStoreProvider({ children }: { children: ReactNode }) {
   );
 
   const addComment = useCallback(
-    (missionId: string, user: DemoUserState, content: string) => {
+    (missionId: string, user: CommentAuthor, content: string) => {
       const mod = moderateContent(content);
       if (!mod.valid) return mod;
       const comment: Comment = {
@@ -315,7 +321,7 @@ export function CommentStoreProvider({ children }: { children: ReactNode }) {
   );
 
   const addReply = useCallback(
-    (commentId: string, user: DemoUserState, content: string) => {
+    (commentId: string, user: CommentAuthor, content: string) => {
       const mod = moderateContent(content);
       if (!mod.valid) return mod;
       const reply: Reply = {

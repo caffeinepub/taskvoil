@@ -111,38 +111,6 @@ export function MessagesPage() {
       return;
     }
     setNewMessage("");
-
-    // Simulate reply from other party after 1.5s
-    setTimeout(() => {
-      const conv = getConversation(selectedConvId);
-      if (!conv) return;
-      const otherParticipant = conv.participants.find((p) => p.id !== userId);
-      if (!otherParticipant) return;
-
-      const autoReplies =
-        lang === "fr"
-          ? [
-              "Bien reçu, je reviens vers vous rapidement !",
-              "Merci pour votre message. Je vous réponds sous peu.",
-              "OK, noté ! On se contacte bientôt.",
-              "Parfait, je confirme de mon côté.",
-            ]
-          : [
-              "Got it! I'll get back to you shortly.",
-              "Thanks for your message, I'll reply soon.",
-              "Noted! Will be in touch.",
-              "Perfect, confirming from my end.",
-            ];
-
-      const reply = autoReplies[Math.floor(Math.random() * autoReplies.length)];
-      sendMessage(
-        selectedConvId,
-        otherParticipant.id,
-        otherParticipant.name,
-        otherParticipant.role,
-        reply,
-      );
-    }, 1500);
   }
 
   function getOtherParticipant(conv: Conversation) {

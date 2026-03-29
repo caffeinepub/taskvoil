@@ -1039,39 +1039,22 @@ export function EditProfilePage() {
   const profileAlreadyComplete = isProfileComplete(currentUser);
   const verificationStatus = currentUser?.verificationStatus;
 
-  function simulateUpload(
+  function handleUpload(
     file: File,
     setter: React.Dispatch<React.SetStateAction<UploadState>>,
     urlField: "idDocumentUrl" | "registrationDocUrl",
   ) {
-    setter((prev) => ({
-      ...prev,
+    setter({ file, url: null, progress: 0, uploading: true, error: null });
+    // Read file locally and store as object URL (backend storage pending)
+    const objectUrl = URL.createObjectURL(file);
+    setter({
       file,
-      uploading: true,
-      progress: 0,
+      url: objectUrl,
+      progress: 100,
+      uploading: false,
       error: null,
-    }));
-
-    // Simulate chunked upload with progress ticks
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.floor(Math.random() * 20) + 10;
-      if (progress >= 100) {
-        clearInterval(interval);
-        const objectUrl = URL.createObjectURL(file);
-        setter({
-          file,
-          url: objectUrl,
-          progress: 100,
-          uploading: false,
-          error: null,
-        });
-        // Persist URL to user store
-        loginUser({ ...(currentUser as CurrentUser), [urlField]: objectUrl });
-      } else {
-        setter((prev) => ({ ...prev, progress }));
-      }
-    }, 200);
+    });
+    loginUser({ ...(currentUser as CurrentUser), [urlField]: objectUrl });
   }
 
   function toggleCategory(cat: string) {
@@ -1729,7 +1712,7 @@ export function EditProfilePage() {
                   uploadingLabel={lbl.uploading}
                   uploadSuccessLabel={lbl.uploadSuccess}
                   onFileChange={(file) =>
-                    simulateUpload(file, setIdDoc, "idDocumentUrl")
+                    handleUpload(file, setIdDoc, "idDocumentUrl")
                   }
                   onClear={() => setIdDoc({ ...INITIAL_UPLOAD })}
                   inputId="idDocInput"
@@ -1750,7 +1733,7 @@ export function EditProfilePage() {
                   uploadingLabel={lbl.uploading}
                   uploadSuccessLabel={lbl.uploadSuccess}
                   onFileChange={(file) =>
-                    simulateUpload(file, setRegDoc, "registrationDocUrl")
+                    handleUpload(file, setRegDoc, "registrationDocUrl")
                   }
                   onClear={() => setRegDoc({ ...INITIAL_UPLOAD })}
                   inputId="regDocInput"

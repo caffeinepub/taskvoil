@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { toast } from "sonner";
+import { useActor } from "../hooks/useActor";
 
 export type RentalCondition = "good" | "very_good" | "new_item";
 export type RentalStatus = "active" | "inactive" | "deleted";
@@ -122,6 +122,14 @@ export const RENTAL_CATEGORIES = [
 
 const LS_KEY = "taskvoila_rentals";
 const LS_REQUESTS_KEY = "taskvoila_rental_requests";
+const LS_META_PREFIX = "taskvoila_rental_meta_";
+
+interface RentalMeta {
+  ownerId: string;
+  ownerCountry: string;
+  photos: string[];
+  availabilityDates: string[];
+}
 
 function loadListings(): RentalListing[] {
   try {
@@ -159,6 +167,67 @@ function saveRequests(requests: RentalRequest[]): void {
   }
 }
 
+function loadRentalMeta(id: number): RentalMeta | undefined {
+  try {
+    const raw = localStorage.getItem(`${LS_META_PREFIX}${id}`);
+    if (!raw) return undefined;
+    return JSON.parse(raw) as RentalMeta;
+  } catch {
+    return undefined;
+  }
+}
+
+function saveRentalMeta(id: number, meta: RentalMeta): void {
+  try {
+    localStorage.setItem(`${LS_META_PREFIX}${id}`, JSON.stringify(meta));
+  } catch {
+    // ignore
+  }
+}
+
+function fromBackendRentalStatus(s: Record<string, null>): RentalStatus {
+  if ("active" in s) return "active";
+  if ("inactive" in s) return "inactive";
+  if ("deleted" in s) return "deleted";
+  return "active";
+}
+
+function fromBackendListing(
+  r: Record<string, unknown>,
+  meta?: RentalMeta,
+): RentalListing {
+  const id = Number(r.id as bigint);
+  return {
+    id,
+    ownerId: meta?.ownerId ?? String(Number(r.ownerId as bigint)),
+    ownerCountry: meta?.ownerCountry ?? (r.country as string),
+    title: r.title as string,
+    description: r.description as string,
+    photos: meta?.photos ?? [],
+    categoryId: r.categoryId as string,
+    subcategoryId: r.subcategoryId as string,
+    pricePerDay: Number(r.pricePerDay as bigint),
+    pricePerHalfDay: Number(r.pricePerHalfDay as bigint),
+    deposit: Number(r.deposit as bigint),
+    availabilityDates: meta?.availabilityDates ?? [],
+    city: r.city as string,
+    condition: r.condition as RentalCondition,
+    deliveryAvailable: r.deliveryAvailable as boolean,
+    deliveryPrice: Number(r.deliveryPrice as bigint),
+    brand:
+      Array.isArray(r.brand) && r.brand.length > 0
+        ? (r.brand[0] as string)
+        : undefined,
+    model:
+      Array.isArray(r.model) && r.model.length > 0
+        ? (r.model[0] as string)
+        : undefined,
+    country: r.country as string,
+    createdAt: Number(r.createdAt as bigint) / 1_000_000,
+    status: fromBackendRentalStatus(r.status as Record<string, null>),
+  };
+}
+
 type RentalStoreContextType = {
   listings: RentalListing[];
   requests: RentalRequest[];
@@ -188,24 +257,33 @@ export function RentalStoreProvider({ children }: { children: ReactNode }) {
   const [requests, setRequests] = useState<RentalRequest[]>(loadRequests);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { actor } = useActor();
 
   const refreshListings = useCallback(async () => {
+    if (!actor) return;
     setIsLoading(true);
     setError(null);
     try {
-      // Backend integration point — when backend.listRentalListings() is available:
-      // const backendListings = await (backend as any).listRentalListings("", "");
-      // const mapped = backendListings.map(fromBackendListing);
-      // setListings(mapped);
-      // saveListings(mapped);
-      await Promise.resolve();
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to load listings";
-      setError(msg);
+      const country = localStorage.getItem("taskvoila_country_v6") ?? "";
+      const backendListings = await (actor as any).listRentalListings(
+        country,
+        "",
+      );
+      const mapped: RentalListing[] = (
+        backendListings as Record<string, unknown>[]
+      ).map((r) => {
+        const id = Number(r.id as bigint);
+        const meta = loadRentalMeta(id);
+        return fromBackendListing(r, meta);
+      });
+      setListings(mapped);
+      saveListings(mapped);
+    } catch {
+      // Silently keep localStorage data
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [actor]);
 
   useEffect(() => {
     void refreshListings();
@@ -215,21 +293,49 @@ export function RentalStoreProvider({ children }: { children: ReactNode }) {
     async (
       data: Omit<RentalListing, "id" | "createdAt" | "status">,
     ): Promise<RentalListing> => {
-      // Backend integration point:
-      // try {
-      //   const id = await (backend as any).createRentalListing(
-      //     data.title, data.description, data.categoryId, data.subcategoryId,
-      //     BigInt(data.pricePerDay), BigInt(data.pricePerHalfDay), BigInt(data.deposit),
-      //     data.city, data.country, data.condition,
-      //     data.deliveryAvailable, BigInt(data.deliveryPrice),
-      //     data.brand ? [data.brand] : [], data.model ? [data.model] : []
-      //   );
-      //   const listing = { ...data, id: Number(id), createdAt: Date.now(), status: "active" as RentalStatus };
-      //   setListings(prev => { const u = [listing, ...prev]; saveListings(u); return u; });
-      //   return listing;
-      // } catch {
-      //   toast.error("Backend not connected yet — saving locally");
-      // }
+      if (actor) {
+        try {
+          const backendId = await (actor as any).createRentalListing(
+            data.title,
+            data.description,
+            data.categoryId,
+            data.subcategoryId,
+            BigInt(data.pricePerDay),
+            BigInt(data.pricePerHalfDay),
+            BigInt(data.deposit),
+            data.city,
+            data.country,
+            data.condition,
+            data.deliveryAvailable,
+            BigInt(data.deliveryPrice),
+            data.brand ? [data.brand] : [],
+            data.model ? [data.model] : [],
+          );
+          const id = Number(backendId as bigint);
+          const meta: RentalMeta = {
+            ownerId: data.ownerId,
+            ownerCountry: data.ownerCountry,
+            photos: data.photos,
+            availabilityDates: data.availabilityDates,
+          };
+          saveRentalMeta(id, meta);
+          const listing: RentalListing = {
+            ...data,
+            id,
+            createdAt: Date.now(),
+            status: "active",
+          };
+          setListings((prev) => {
+            const updated = [listing, ...prev];
+            saveListings(updated);
+            return updated;
+          });
+          return listing;
+        } catch {
+          // Fall through to localStorage fallback
+        }
+      }
+      // localStorage fallback
       const listing: RentalListing = {
         ...data,
         id: Date.now(),
@@ -243,7 +349,7 @@ export function RentalStoreProvider({ children }: { children: ReactNode }) {
       });
       return listing;
     },
-    [],
+    [actor],
   );
 
   const getListings = useCallback(
@@ -268,41 +374,51 @@ export function RentalStoreProvider({ children }: { children: ReactNode }) {
 
   const updateListing = useCallback(
     async (id: number, data: Partial<RentalListing>): Promise<void> => {
-      // Backend integration point:
-      // try {
-      //   await (backend as any).updateRentalListing(
-      //     BigInt(id), data.title ?? "", data.description ?? "",
-      //     BigInt(data.pricePerDay ?? 0), BigInt(data.pricePerHalfDay ?? 0),
-      //     BigInt(data.deposit ?? 0), data.city ?? "",
-      //     data.deliveryAvailable ?? false, BigInt(data.deliveryPrice ?? 0)
-      //   );
-      // } catch {
-      //   toast.error("Backend not connected yet — updating locally");
-      // }
+      if (actor) {
+        try {
+          await (actor as any).updateRentalListing(
+            BigInt(id),
+            data.title ?? "",
+            data.description ?? "",
+            BigInt(data.pricePerDay ?? 0),
+            BigInt(data.pricePerHalfDay ?? 0),
+            BigInt(data.deposit ?? 0),
+            data.city ?? "",
+            data.deliveryAvailable ?? false,
+            BigInt(data.deliveryPrice ?? 0),
+          );
+        } catch {
+          // Fall through to local update
+        }
+      }
       setListings((prev) => {
         const updated = prev.map((l) => (l.id === id ? { ...l, ...data } : l));
         saveListings(updated);
         return updated;
       });
     },
-    [],
+    [actor],
   );
 
-  const deleteListing = useCallback(async (id: number): Promise<void> => {
-    // Backend integration point:
-    // try {
-    //   await (backend as any).deleteRentalListing(BigInt(id));
-    // } catch {
-    //   toast.error("Backend not connected yet — removing locally");
-    // }
-    setListings((prev) => {
-      const updated = prev.map((l) =>
-        l.id === id ? { ...l, status: "deleted" as RentalStatus } : l,
-      );
-      saveListings(updated);
-      return updated;
-    });
-  }, []);
+  const deleteListing = useCallback(
+    async (id: number): Promise<void> => {
+      if (actor) {
+        try {
+          await (actor as any).deleteRentalListing(BigInt(id));
+        } catch {
+          // Fall through to local delete
+        }
+      }
+      setListings((prev) => {
+        const updated = prev.map((l) =>
+          l.id === id ? { ...l, status: "deleted" as RentalStatus } : l,
+        );
+        saveListings(updated);
+        return updated;
+      });
+    },
+    [actor],
+  );
 
   const createRequest = useCallback(
     (
@@ -344,9 +460,6 @@ export function RentalStoreProvider({ children }: { children: ReactNode }) {
     },
     [],
   );
-
-  // Silence unused toast import warning
-  void toast;
 
   return createElement(
     RentalStoreContext.Provider,

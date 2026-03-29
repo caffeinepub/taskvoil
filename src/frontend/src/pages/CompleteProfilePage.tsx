@@ -265,17 +265,17 @@ export function CompleteProfilePage() {
       // Try to register via ICP principal using the actor
       if (actor) {
         try {
-          const result = await (actor as any).registerICPUser(
+          const result = await (actor as any).register(
             role === "pro" ? { pro: null } : { client: null },
-            pseudo.trim(),
-            phone.trim(),
-            city.trim(),
+            "",
+            role === "client" ? firstName.trim() : pseudo.trim(),
+            role === "client" ? lastName.trim() : "",
             country,
             language,
           );
           userId = Number(result?.id ?? 0);
         } catch {
-          // If registerICPUser not available yet, proceed with local session
+          // If register fails, proceed with local session
         }
       }
 
@@ -312,14 +312,7 @@ export function CompleteProfilePage() {
       };
       loginUser(user);
       // Notify admin about new pro registration
-      if (!isClient) {
-        console.log(
-          "Admin notified: new professional registration pending approval —",
-          pseudo.trim(),
-          "from",
-          country,
-        );
-      }
+
       toast.success(t.success);
       const dest = role === "pro" ? "/dashboard/pro" : "/dashboard/client";
       void navigate({ to: dest });

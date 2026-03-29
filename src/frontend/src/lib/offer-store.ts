@@ -6,7 +6,7 @@ import {
   useContext,
   useState,
 } from "react";
-import { toast } from "sonner";
+import { useActor } from "../hooks/useActor";
 
 export type OfferStatus = "pending" | "accepted" | "rejected" | "withdrawn";
 
@@ -21,6 +21,11 @@ export interface Offer {
   timeline: string;
   status: OfferStatus;
   createdAt: string;
+}
+
+interface OfferMeta {
+  proPseudo: string;
+  proCompany?: string;
 }
 
 const LS_KEY = "taskvoila_offers";
@@ -38,6 +43,14 @@ function loadOffers(): Offer[] {
 function saveOffers(offers: Offer[]): void {
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(offers));
+  } catch {
+    // ignore
+  }
+}
+
+function saveOfferMeta(id: string, meta: OfferMeta): void {
+  try {
+    localStorage.setItem(`taskvoila_offer_meta_${id}`, JSON.stringify(meta));
   } catch {
     // ignore
   }
@@ -64,20 +77,40 @@ export function OfferStoreProvider({ children }: { children: ReactNode }) {
   const [offers, setOffers] = useState<Offer[]>(loadOffers);
   const [isLoading] = useState(false);
   const [error] = useState<string | null>(null);
+  const { actor } = useActor();
 
   const submitOffer = useCallback(
     async (data: Omit<Offer, "id" | "createdAt">): Promise<Offer> => {
-      // Backend integration point:
-      // try {
-      //   const id = await (backend as any).submitOffer(
-      //     BigInt(data.missionId), BigInt(data.price), data.description, data.timeline
-      //   );
-      //   const offer = { ...data, id: String(Number(id)), createdAt: new Date().toISOString() };
-      //   setOffers(prev => { const u = [offer, ...prev]; saveOffers(u); return u; });
-      //   return offer;
-      // } catch {
-      //   toast.error("Backend not connected yet — saving locally");
-      // }
+      if (actor) {
+        try {
+          const backendId = await (actor as any).submitOffer(
+            BigInt(data.missionId),
+            BigInt(data.price),
+            data.description,
+            data.timeline,
+          );
+          const id = String(Number(backendId as bigint));
+          const meta: OfferMeta = {
+            proPseudo: data.proPseudo,
+            proCompany: data.proCompany,
+          };
+          saveOfferMeta(id, meta);
+          const offer: Offer = {
+            ...data,
+            id,
+            createdAt: new Date().toISOString(),
+          };
+          setOffers((prev) => {
+            const updated = [offer, ...prev];
+            saveOffers(updated);
+            return updated;
+          });
+          return offer;
+        } catch {
+          // Fall through to localStorage fallback
+        }
+      }
+      // localStorage fallback
       const offer: Offer = {
         ...data,
         id: `offer_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
@@ -90,7 +123,7 @@ export function OfferStoreProvider({ children }: { children: ReactNode }) {
       });
       return offer;
     },
-    [],
+    [actor],
   );
 
   const getOffersForMission = useCallback(
@@ -114,43 +147,51 @@ export function OfferStoreProvider({ children }: { children: ReactNode }) {
     [offers],
   );
 
-  const acceptOffer = useCallback(async (offerId: string): Promise<void> => {
-    // Backend integration point:
-    // try {
-    //   await (backend as any).acceptOffer(BigInt(offerId));
-    // } catch {
-    //   toast.error("Backend not connected yet — updating locally");
-    // }
-    setOffers((prev) => {
-      const targetOffer = prev.find((o) => o.id === offerId);
-      if (!targetOffer) return prev;
-      const updated = prev.map((o) => {
-        if (o.id === offerId)
-          return { ...o, status: "accepted" as OfferStatus };
-        if (o.missionId === targetOffer.missionId && o.status === "pending")
-          return { ...o, status: "rejected" as OfferStatus };
-        return o;
+  const acceptOffer = useCallback(
+    async (offerId: string): Promise<void> => {
+      if (actor) {
+        try {
+          await (actor as any).acceptOffer(BigInt(offerId));
+        } catch {
+          // Fall through to local update
+        }
+      }
+      setOffers((prev) => {
+        const targetOffer = prev.find((o) => o.id === offerId);
+        if (!targetOffer) return prev;
+        const updated = prev.map((o) => {
+          if (o.id === offerId)
+            return { ...o, status: "accepted" as OfferStatus };
+          if (o.missionId === targetOffer.missionId && o.status === "pending")
+            return { ...o, status: "rejected" as OfferStatus };
+          return o;
+        });
+        saveOffers(updated);
+        return updated;
       });
-      saveOffers(updated);
-      return updated;
-    });
-  }, []);
+    },
+    [actor],
+  );
 
-  const rejectOffer = useCallback(async (offerId: string): Promise<void> => {
-    // Backend integration point:
-    // try {
-    //   await (backend as any).rejectOffer(BigInt(offerId));
-    // } catch {
-    //   toast.error("Backend not connected yet — updating locally");
-    // }
-    setOffers((prev) => {
-      const updated = prev.map((o) =>
-        o.id === offerId ? { ...o, status: "rejected" as OfferStatus } : o,
-      );
-      saveOffers(updated);
-      return updated;
-    });
-  }, []);
+  const rejectOffer = useCallback(
+    async (offerId: string): Promise<void> => {
+      if (actor) {
+        try {
+          await (actor as any).rejectOffer(BigInt(offerId));
+        } catch {
+          // Fall through to local update
+        }
+      }
+      setOffers((prev) => {
+        const updated = prev.map((o) =>
+          o.id === offerId ? { ...o, status: "rejected" as OfferStatus } : o,
+        );
+        saveOffers(updated);
+        return updated;
+      });
+    },
+    [actor],
+  );
 
   const getOffersByPro = useCallback(
     (proId: string): Offer[] => {
@@ -175,9 +216,6 @@ export function OfferStoreProvider({ children }: { children: ReactNode }) {
     },
     [offers],
   );
-
-  // Silence unused toast import warning
-  void toast;
 
   return createElement(
     OfferStoreContext.Provider,

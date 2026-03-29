@@ -165,9 +165,8 @@ export function useICPLogin() {
           handlePrincipalLogin(principal);
           return;
         }
-      } catch (err) {
+      } catch {
         const lang = getLang();
-        console.error(err);
         toast.error(AUTH_ERROR_MSGS[lang] ?? AUTH_ERROR_MSGS.en);
         pendingProvider.current = null;
         setLoadingProvider(null);

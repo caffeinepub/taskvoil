@@ -1,8 +1,6 @@
-import { SimulatedICPModal } from "@/components/auth/SimulatedICPModal";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useSimulatedICP } from "@/hooks/useSimulatedICP";
-import { type CurrentUser, useAuthStore } from "@/lib/auth-store";
+import { useICPLogin } from "@/hooks/useICPLogin";
 import { useTranslation } from "@/lib/i18n";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
@@ -211,12 +209,8 @@ const REG_TEXTS: Record<
 export function RegisterPage() {
   const { lang } = useTranslation();
   const reg = REG_TEXTS[lang] ?? REG_TEXTS.en;
-  const { loginUser } = useAuthStore();
+  const { handleAuth: icpHandleAuth, loadingProvider } = useICPLogin();
   const navigate = useNavigate();
-  const { simulateICP, modalState } = useSimulatedICP();
-  const [loadingProvider, setLoadingProvider] = useState<
-    "ii" | "nfid" | "plug" | null
-  >(null);
   const [gdprAccepted, setGdprAccepted] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [showGdprError, setShowGdprError] = useState(false);
@@ -227,48 +221,15 @@ export function RegisterPage() {
       return;
     }
     setShowGdprError(false);
-    // Save marketing consent
     localStorage.setItem(
       "tv_marketing_consent",
       marketingConsent ? "true" : "false",
     );
-
-    setLoadingProvider(provider);
-    try {
-      const principal = await simulateICP(provider);
-
-      // Check if this principal already has a saved profile
-      const savedRaw = localStorage.getItem(`taskvoila_profile_${principal}`);
-      if (savedRaw) {
-        try {
-          const saved = JSON.parse(savedRaw) as CurrentUser;
-          loginUser(saved);
-          const dest =
-            saved.role === "admin"
-              ? "/dashboard/admin"
-              : saved.role === "pro"
-                ? "/dashboard/pro"
-                : "/dashboard/client";
-          void navigate({ to: dest });
-          return;
-        } catch {
-          // Fall through
-        }
-      }
-
-      // New principal — redirect to complete profile
-      localStorage.setItem("taskvoila_pending_principal", principal);
-      void navigate({ to: "/complete-profile" });
-    } catch {
-      toast.error(reg.cancelledError);
-    } finally {
-      setLoadingProvider(null);
-    }
+    await icpHandleAuth(provider);
   }
 
   return (
     <>
-      <SimulatedICPModal state={modalState} />
       <main className="min-h-screen auth-bg flex items-center justify-center px-4 py-12 relative overflow-hidden">
         <div
           className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-20 blur-3xl pointer-events-none bg-amber-400"
