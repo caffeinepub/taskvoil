@@ -30,12 +30,6 @@ export type DemoNFT = {
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
-function daysAgo(n: number): string {
-  const d = new Date();
-  d.setDate(d.getDate() - n);
-  return d.toISOString();
-}
-
 function generateBlockHash(tokenId: string, missionId: number): string {
   const chars = "abcdef0123456789";
   let h = "0x";
@@ -51,72 +45,6 @@ let _nextId = 100;
 function nextNFTId() {
   return _nextId++;
 }
-
-// ── Seed data ────────────────────────────────────────────────────────────────
-
-const SEED_NFTS: DemoNFT[] = [
-  {
-    id: 1,
-    tokenId: "ICRC7-TV-001",
-    missionId: 1,
-    missionTitle: "Réparation fuite robinet cuisine",
-    milestoneIndex: 0,
-    milestoneLabel: "Démarrage des travaux",
-    imageUrl: "/assets/generated/plumbing-work.dim_800x600.jpg",
-    ownerUserId: "pro_1",
-    ownerName: "Marc Dubois",
-    mintedAt: daysAgo(10),
-    blockHash: generateBlockHash("ICRC7-TV-001", 1),
-    contractId: "bd3sg-byaaa-aaaah-qc4za-cai",
-    description:
-      "Photo de démarrage — état initial de la fuite sous évier cuisine.",
-  },
-  {
-    id: 2,
-    tokenId: "ICRC7-TV-002",
-    missionId: 1,
-    missionTitle: "Réparation fuite robinet cuisine",
-    milestoneIndex: 1,
-    milestoneLabel: "Travaux terminés",
-    imageUrl: "/assets/generated/kitchen-after.dim_800x600.jpg",
-    ownerUserId: "pro_1",
-    ownerName: "Marc Dubois",
-    mintedAt: daysAgo(7),
-    blockHash: generateBlockHash("ICRC7-TV-002", 1),
-    contractId: "bd3sg-byaaa-aaaah-qc4za-cai",
-    description: "Photo de fin — siphon remplacé, test d'étanchéité validé.",
-  },
-  {
-    id: 3,
-    tokenId: "ICRC7-TV-003",
-    missionId: 2,
-    missionTitle: "Installation prise électrique salon",
-    milestoneIndex: 0,
-    milestoneLabel: "Installation complète",
-    imageUrl: "/assets/generated/handyman-work.dim_800x600.jpg",
-    ownerUserId: "pro_1",
-    ownerName: "Marc Dubois",
-    mintedAt: daysAgo(5),
-    blockHash: generateBlockHash("ICRC7-TV-003", 2),
-    contractId: "bd3sg-byaaa-aaaah-qc4za-cai",
-    description: "3 prises doubles installées, conforme NFC 15-100.",
-  },
-  {
-    id: 4,
-    tokenId: "ICRC7-TV-004",
-    missionId: 3,
-    missionTitle: "Taille haie et tonte de pelouse",
-    milestoneIndex: 0,
-    milestoneLabel: "Avant intervention",
-    imageUrl: "/assets/generated/garden-work.dim_800x600.jpg",
-    ownerUserId: "client_1",
-    ownerName: "Jean Dupont",
-    mintedAt: daysAgo(3),
-    blockHash: generateBlockHash("ICRC7-TV-004", 3),
-    contractId: "bd3sg-byaaa-aaaah-qc4za-cai",
-    description: "Photo client — état initial du jardin avant intervention.",
-  },
-];
 
 // ── Context ──────────────────────────────────────────────────────────────────
 
@@ -140,7 +68,7 @@ type NFTStoreCtx = {
 const NFTStoreContext = createContext<NFTStoreCtx | undefined>(undefined);
 
 export function NFTStoreProvider({ children }: { children: ReactNode }) {
-  const [nfts, setNfts] = useState<DemoNFT[]>(SEED_NFTS);
+  const [nfts, setNfts] = useState<DemoNFT[]>([]);
 
   function getNFTsByMission(missionId: number): DemoNFT[] {
     return nfts.filter((n) => n.missionId === missionId);

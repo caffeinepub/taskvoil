@@ -27,67 +27,6 @@ export type PromoCode = {
   descriptionEN: string;
 };
 
-// Seed data
-const SEED_PROMOS: PromoCode[] = [
-  {
-    id: 1,
-    code: "BIENVENUE20",
-    type: "percent",
-    value: 20,
-    usageLimit: 500,
-    usageCount: 143,
-    expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-    targetRole: "new_user",
-    active: true,
-    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-    descriptionFR: "20% de réduction pour les nouveaux utilisateurs",
-    descriptionEN: "20% off for new users",
-  },
-  {
-    id: 2,
-    code: "PRO10",
-    type: "percent",
-    value: 10,
-    usageLimit: 0,
-    usageCount: 67,
-    expiresAt: null,
-    targetRole: "pro",
-    active: true,
-    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
-    descriptionFR:
-      "10% de réduction pour les professionnels sur leur 1ère mission",
-    descriptionEN: "10% off for pros on their first mission",
-  },
-  {
-    id: 3,
-    code: "FIDELITE25",
-    type: "fixed",
-    value: 25,
-    usageLimit: 200,
-    usageCount: 38,
-    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-    targetRole: "client",
-    active: true,
-    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    descriptionFR: "25€ de réduction pour les clients fidèles",
-    descriptionEN: "25€ off for loyal clients",
-  },
-  {
-    id: 4,
-    code: "SUMMER50",
-    type: "percent",
-    value: 50,
-    usageLimit: 100,
-    usageCount: 100,
-    expiresAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    targetRole: "all",
-    active: false,
-    createdAt: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
-    descriptionFR: "50% de réduction été — expiré",
-    descriptionEN: "50% summer discount — expired",
-  },
-];
-
 type PromoStoreCtx = {
   promoCodes: PromoCode[];
   validateCode: (
@@ -106,7 +45,7 @@ type PromoStoreCtx = {
 const PromoStoreContext = createContext<PromoStoreCtx | undefined>(undefined);
 
 export function PromoStoreProvider({ children }: { children: ReactNode }) {
-  const [promoCodes, setPromoCodes] = useState<PromoCode[]>(SEED_PROMOS);
+  const [promoCodes, setPromoCodes] = useState<PromoCode[]>([]);
 
   function validateCode(
     code: string,

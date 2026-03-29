@@ -81,40 +81,6 @@ export const PLAN_DETAILS: Record<
   },
 };
 
-// Demo subscriptions
-const SEED_SUBSCRIPTIONS: Subscription[] = [
-  {
-    userId: "pro_1",
-    plan: "team",
-    status: "active",
-    startedAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-    renewsAt: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
-    price: 29,
-    aiAssistantEnabled: true,
-    carouselEnabled: true,
-  },
-  {
-    userId: "pro_2",
-    plan: "enterprise",
-    status: "active",
-    startedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-    renewsAt: new Date(Date.now() + 0 * 24 * 60 * 60 * 1000).toISOString(),
-    price: 199,
-    aiAssistantEnabled: true,
-    carouselEnabled: true,
-  },
-  {
-    userId: "pro_3",
-    plan: "team",
-    status: "trial",
-    startedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    renewsAt: new Date(Date.now() + 9 * 24 * 60 * 60 * 1000).toISOString(),
-    price: 29,
-    aiAssistantEnabled: false,
-    carouselEnabled: true,
-  },
-];
-
 type SubscriptionStoreCtx = {
   subscriptions: Subscription[];
   getMySubscription: (userId: string) => Subscription | null;
@@ -131,8 +97,7 @@ const SubscriptionStoreContext = createContext<
 export function SubscriptionStoreProvider({
   children,
 }: { children: ReactNode }) {
-  const [subscriptions, setSubscriptions] =
-    useState<Subscription[]>(SEED_SUBSCRIPTIONS);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
 
   function getMySubscription(userId: string): Subscription | null {
     return subscriptions.find((s) => s.userId === userId) ?? null;

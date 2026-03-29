@@ -114,22 +114,14 @@ export function PostTaskPage() {
 
     // Validate: must be a video
     if (!file.type.startsWith("video/")) {
-      toast.error(
-        lang === "fr"
-          ? "Format non supporté. Seules les vidéos sont acceptées."
-          : "Unsupported format. Only video files are accepted.",
-      );
+      toast.error(t.ui.uiVideoFormat);
       if (videoInputRef.current) videoInputRef.current.value = "";
       return;
     }
 
     // Validate: max 50 MB
     if (file.size > MAX_VIDEO_SIZE_BYTES) {
-      toast.error(
-        lang === "fr"
-          ? "La vidéo dépasse la limite de 50 Mo."
-          : "Video exceeds the 50 MB limit.",
-      );
+      toast.error(t.ui.uiVideoLimit);
       if (videoInputRef.current) videoInputRef.current.value = "";
       return;
     }
@@ -231,7 +223,7 @@ export function PostTaskPage() {
 
   const steps = [
     { num: 1, label: lang === "fr" ? "Cat\u00e9gorie" : "Category" },
-    { num: 2, label: lang === "fr" ? "Type" : "Type" },
+    { num: 2, label: t.ui.uiType },
     { num: 3, label: lang === "fr" ? "D\u00e9tails" : "Details" },
   ];
 

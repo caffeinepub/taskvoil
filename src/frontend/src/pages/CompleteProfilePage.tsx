@@ -493,7 +493,7 @@ export function CompleteProfilePage() {
                     id="firstName"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    placeholder={lang === "fr" ? "Jean" : "John"}
+                    placeholder=""
                     className="h-11"
                     autoComplete="given-name"
                   />
@@ -519,7 +519,7 @@ export function CompleteProfilePage() {
                     id="lastName"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    placeholder={lang === "fr" ? "Dupont" : "Doe"}
+                    placeholder=""
                     className="h-11"
                     autoComplete="family-name"
                   />

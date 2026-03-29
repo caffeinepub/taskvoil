@@ -67,7 +67,7 @@ export function MissionDetailPage() {
   const userName =
     currentUser?.pseudo ??
     (`${currentUser?.firstName ?? ""} ${currentUser?.lastName ?? ""}`.trim() ||
-      (lang === "fr" ? "Vous" : "You"));
+      t.ui.uiYou);
 
   const isAuthor = mission ? mission.authorId === userId : false;
   const isPro = currentUser?.role === "pro";
@@ -112,9 +112,7 @@ export function MissionDetailPage() {
     return (
       <main className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-muted-foreground mb-4">
-            {lang === "fr" ? "Veuillez vous connecter." : "Please log in."}
-          </p>
+          <p className="text-muted-foreground mb-4">{t.ui.uiPleaseLogin}</p>
           <Button onClick={() => void navigate({ to: "/login" })}>
             {t.login.loginBtn}
           </Button>
@@ -129,13 +127,9 @@ export function MissionDetailPage() {
         <div className="text-center">
           <p className="text-6xl mb-4">🔍</p>
           <h1 className="text-2xl font-bold text-foreground mb-2">
-            {lang === "fr" ? "Mission introuvable" : "Mission not found"}
+            {t.ui.uiMissionNotFound}
           </h1>
-          <p className="text-muted-foreground mb-6">
-            {lang === "fr"
-              ? "Cette mission n'existe pas ou a été supprimée."
-              : "This mission does not exist or has been deleted."}
-          </p>
+          <p className="text-muted-foreground mb-6">{t.ui.uiMissionDeleted}</p>
           <Button
             onClick={() => void navigate({ to: "/marketplace" })}
             data-ocid="mission.back_button"
@@ -152,24 +146,14 @@ export function MissionDetailPage() {
     (categoryEmojis as Record<string, string>)[mission.category] ?? "📋";
   const statusLabel =
     mission.status === "open"
-      ? lang === "fr"
-        ? "Ouverte"
-        : "Open"
+      ? t.ui.uiOpen
       : mission.status === "in_progress"
-        ? lang === "fr"
-          ? "En cours"
-          : "In progress"
+        ? t.ui.uiInProgress
         : mission.status === "accepted"
-          ? lang === "fr"
-            ? "Acceptée"
-            : "Accepted"
+          ? t.ui.uiAccepted
           : mission.status === "paid"
-            ? lang === "fr"
-              ? "Payée"
-              : "Paid"
-            : lang === "fr"
-              ? "Terminée"
-              : "Completed";
+            ? t.ui.uiPaid
+            : t.ui.uiCompleted;
 
   const statusColor =
     mission.status === "open"
@@ -195,11 +179,7 @@ export function MissionDetailPage() {
     const role = isPro ? "pro" : "client";
     const sent = sendMessage(convId, userId, userName, role, trimmed);
     if (!sent) {
-      toast.error(
-        lang === "fr"
-          ? "Message bloqué pour votre sécurité."
-          : "Message blocked for safety.",
-      );
+      toast.error(t.ui.uiMsgBlocked);
       return;
     }
     setNewMessage("");
@@ -251,9 +231,7 @@ export function MissionDetailPage() {
       return;
     }
     if (!offerForm.price || !offerForm.description || !offerForm.timeline) {
-      toast.error(
-        lang === "fr" ? "Remplissez tous les champs." : "Fill in all fields.",
-      );
+      toast.error(t.ui.uiFillAllFields);
       return;
     }
     setSubmittingOffer(true);
@@ -269,11 +247,7 @@ export function MissionDetailPage() {
     });
     setSubmittingOffer(false);
     setOfferForm({ price: "", description: "", timeline: "" });
-    toast.success(
-      lang === "fr"
-        ? "Votre offre a été soumise avec succès !"
-        : "Your offer has been submitted!",
-    );
+    toast.success(t.ui.uiOfferSubmittedDesc);
   }
 
   const timelineOptions = [
@@ -313,7 +287,7 @@ export function MissionDetailPage() {
                       {mission.title}
                     </h1>
                     <p className="text-sm text-muted-foreground mt-0.5">
-                      {lang === "fr" ? "Publié par" : "Posted by"}{" "}
+                      {t.ui.uiPostedBy}{" "}
                       <span className="font-medium text-foreground">
                         {mission.authorPseudo}
                       </span>
@@ -355,7 +329,7 @@ export function MissionDetailPage() {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Users className="h-4 w-4 shrink-0 text-primary" />
-                  {offers.length} {lang === "fr" ? "offre(s)" : "offer(s)"}
+                  {offers.length} {t.ui.uiOfferCount}
                 </div>
               </div>
             </div>
@@ -365,8 +339,7 @@ export function MissionDetailPage() {
               <div className="bg-white rounded-xl card-shadow border border-border/50 overflow-hidden">
                 <div className="p-5 border-b border-border">
                   <h2 className="font-display font-bold text-foreground">
-                    {lang === "fr" ? "Offres reçues" : "Received offers"} (
-                    {offers.length})
+                    {t.ui.uiOffersReceived} ({offers.length})
                   </h2>
                 </div>
 
@@ -377,9 +350,7 @@ export function MissionDetailPage() {
                   >
                     <p className="text-4xl mb-3">⏳</p>
                     <p className="text-muted-foreground text-sm">
-                      {lang === "fr"
-                        ? "Aucune offre pour l'instant. Les professionnels vont vous contacter."
-                        : "No offers yet. Professionals will contact you."}
+                      {t.ui.uiNoOffersYet}
                     </p>
                   </div>
                 ) : (
@@ -393,16 +364,10 @@ export function MissionDetailPage() {
                             : "bg-muted text-muted-foreground border-border";
                       const offerStatusLabel =
                         offer.status === "pending"
-                          ? lang === "fr"
-                            ? "En attente"
-                            : "Pending"
+                          ? t.ui.uiPending
                           : offer.status === "accepted"
-                            ? lang === "fr"
-                              ? "Acceptée"
-                              : "Accepted"
-                            : lang === "fr"
-                              ? "Refusée"
-                              : "Rejected";
+                            ? t.ui.uiAccepted
+                            : t.ui.uiRejected;
 
                       return (
                         <div
@@ -455,9 +420,7 @@ export function MissionDetailPage() {
                                   data-ocid={`mission.offers.accept_button.${i + 1}`}
                                 >
                                   <CheckCircle className="h-3.5 w-3.5" />
-                                  {lang === "fr"
-                                    ? "Accepter cette offre"
-                                    : "Accept this offer"}
+                                  {t.ui.uiAcceptOffer}
                                 </Button>
                               </div>
                             )}
@@ -474,9 +437,7 @@ export function MissionDetailPage() {
                               data-ocid={`mission.offers.pay_button.${i + 1}`}
                             >
                               <CreditCard className="h-3.5 w-3.5" />
-                              {lang === "fr"
-                                ? "Procéder au paiement"
-                                : "Proceed to payment"}
+                              {t.ui.uiProceedPayment}
                             </Button>
                           )}
                         </div>
@@ -495,9 +456,7 @@ export function MissionDetailPage() {
               >
                 <div className="text-3xl mb-3">🔒</div>
                 <p className="font-semibold text-gray-800 text-lg">
-                  {lang === "fr"
-                    ? t.marketplace.tooLate
-                    : t.marketplace.tooLate}
+                  {t.marketplace.tooLate}
                 </p>
                 <p className="text-sm text-gray-600 mt-2 mb-4">
                   {t.marketplace.workInProgress}
@@ -517,27 +476,23 @@ export function MissionDetailPage() {
             {isPro && !isAuthor && mission.status === "open" && (
               <div className="bg-white rounded-xl card-shadow border border-border/50 p-6">
                 <h2 className="font-display font-bold text-foreground mb-4">
-                  {lang === "fr" ? "Faire une offre" : "Submit an offer"}
+                  {t.ui.uiSubmitOffer}
                 </h2>
 
                 {proAlreadyOffered ? (
                   <div className="p-4 bg-secondary/10 rounded-xl border border-secondary/30 text-center">
                     <CheckCircle className="h-8 w-8 text-secondary mx-auto mb-2" />
                     <p className="font-semibold text-foreground">
-                      {lang === "fr" ? "Offre soumise !" : "Offer submitted!"}
+                      {t.ui.uiOfferSubmitted}
                     </p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      {lang === "fr"
-                        ? "Le client examinera votre offre et vous contactera."
-                        : "The client will review your offer and contact you."}
+                      {t.ui.uiOfferReviewDesc}
                     </p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmitOffer} className="space-y-4">
                     <div className="space-y-1.5">
-                      <Label>
-                        {lang === "fr" ? "Prix total (€)" : "Total price (€)"}
-                      </Label>
+                      <Label>{t.ui.uiTotalPrice}</Label>
                       <Input
                         type="number"
                         min="1"
@@ -552,11 +507,7 @@ export function MissionDetailPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label>
-                        {lang === "fr"
-                          ? "Description de votre offre"
-                          : "Description of your offer"}
-                      </Label>
+                      <Label>{t.ui.uiOfferDesc}</Label>
                       <Textarea
                         required
                         rows={3}
@@ -568,19 +519,13 @@ export function MissionDetailPage() {
                             description: e.target.value,
                           }))
                         }
-                        placeholder={
-                          lang === "fr"
-                            ? "Décrivez votre approche, votre expérience..."
-                            : "Describe your approach, experience..."
-                        }
+                        placeholder={t.ui.uiOfferDescPlaceholder}
                         data-ocid="mission.offer.description_textarea"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <Label>
-                        {lang === "fr" ? "Délai d'intervention" : "Timeline"}
-                      </Label>
+                      <Label>{t.ui.uiTimeline}</Label>
                       <Select
                         value={offerForm.timeline}
                         onValueChange={(v) =>
@@ -588,9 +533,7 @@ export function MissionDetailPage() {
                         }
                       >
                         <SelectTrigger data-ocid="mission.offer.timeline_select">
-                          <SelectValue
-                            placeholder={lang === "fr" ? "Choisir" : "Select"}
-                          />
+                          <SelectValue placeholder={t.ui.uiSelect} />
                         </SelectTrigger>
                         <SelectContent>
                           {timelineOptions.map((opt) => (
@@ -608,13 +551,7 @@ export function MissionDetailPage() {
                       className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                       data-ocid="mission.offer.submit_button"
                     >
-                      {submittingOffer
-                        ? lang === "fr"
-                          ? "Envoi..."
-                          : "Sending..."
-                        : lang === "fr"
-                          ? "Envoyer mon offre"
-                          : "Send my offer"}
+                      {submittingOffer ? t.ui.uiSending : t.ui.uiSendOffer}
                     </Button>
                   </form>
                 )}
@@ -630,7 +567,7 @@ export function MissionDetailPage() {
                   </div>
                   <div>
                     <h2 className="font-display font-bold text-foreground">
-                      {lang === "fr" ? "Paiement requis" : "Payment required"}
+                      {t.ui.uiPaymentRequired}
                     </h2>
                     <p className="text-sm text-muted-foreground">
                       {lang === "fr"
@@ -647,9 +584,7 @@ export function MissionDetailPage() {
                   data-ocid="mission.payment.button"
                 >
                   <CreditCard className="h-4 w-4" />
-                  {lang === "fr"
-                    ? "Procéder au paiement"
-                    : "Proceed to payment"}
+                  {t.ui.uiProceedPayment}
                 </Button>
               </div>
             )}
@@ -660,7 +595,7 @@ export function MissionDetailPage() {
                 <div className="flex items-center gap-2">
                   <MessageSquare className="h-4 w-4 text-primary" />
                   <h2 className="font-display font-bold text-foreground">
-                    {lang === "fr" ? "Messagerie" : "Messages"}
+                    {t.ui.uiMessaging}
                   </h2>
                 </div>
                 <Button
@@ -671,7 +606,7 @@ export function MissionDetailPage() {
                   data-ocid="mission.call_button"
                 >
                   <Phone className="h-4 w-4" />
-                  {lang === "fr" ? "Appel" : "Call"}
+                  {t.ui.uiCall}
                 </Button>
               </div>
 
@@ -680,9 +615,7 @@ export function MissionDetailPage() {
                 {!conversation || conversation.messages.length === 0 ? (
                   <div className="h-full flex items-center justify-center">
                     <p className="text-muted-foreground text-sm text-center">
-                      {lang === "fr"
-                        ? "Démarrez la conversation pour discuter des détails de la mission."
-                        : "Start a conversation to discuss the mission details."}
+                      {t.ui.uiStartConvo}
                     </p>
                   </div>
                 ) : (
@@ -721,9 +654,7 @@ export function MissionDetailPage() {
                 <div className="mx-4 mb-3 p-3 bg-destructive/10 rounded-lg border border-destructive/20 flex items-center gap-2">
                   <ShieldAlert className="h-4 w-4 text-destructive shrink-0" />
                   <p className="text-xs text-destructive">
-                    {lang === "fr"
-                      ? "Coordonnées personnelles détectées et bloquées pour votre sécurité."
-                      : "Personal contact info detected and blocked for your safety."}
+                    {t.ui.uiContactBlocked}
                   </p>
                 </div>
               )}
@@ -735,10 +666,7 @@ export function MissionDetailPage() {
                     className="text-center py-2 text-sm text-amber-700 bg-amber-50 rounded-lg border border-amber-200"
                     data-ocid="mission.chat.closed_state"
                   >
-                    🔒{" "}
-                    {lang === "fr"
-                      ? "Cette demande n'accepte plus de messages de nouveaux prestataires."
-                      : "This request no longer accepts messages from new providers."}
+                    🔒 {t.ui.uiRequestClosed}
                   </div>
                 ) : (
                   <div className="flex gap-2">
@@ -749,9 +677,7 @@ export function MissionDetailPage() {
                       onKeyDown={(e) =>
                         e.key === "Enter" && !e.shiftKey && handleSendMessage()
                       }
-                      placeholder={
-                        lang === "fr" ? "Votre message..." : "Your message..."
-                      }
+                      placeholder={t.ui.uiMessagePlaceholder}
                       className="flex-1 h-10 px-3 text-sm rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30"
                       data-ocid="mission.chat.input"
                     />
@@ -775,20 +701,18 @@ export function MissionDetailPage() {
             {/* Mission summary */}
             <div className="bg-white rounded-xl card-shadow border border-border/50 p-5">
               <h3 className="font-display font-bold text-foreground mb-3">
-                {lang === "fr" ? "Résumé" : "Summary"}
+                {t.ui.uiSummaryAlt}
               </h3>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">
-                    {lang === "fr" ? "Budget" : "Budget"}
-                  </span>
+                  <span className="text-muted-foreground">{t.ui.uiBudget}</span>
                   <span className="font-medium">
                     {mission.budgetMin}€ – {mission.budgetMax}€
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">
-                    {lang === "fr" ? "Catégorie" : "Category"}
+                    {t.ui.uiCategory}
                   </span>
                   <span className="font-medium">
                     {emoji} {mission.category}
@@ -796,16 +720,12 @@ export function MissionDetailPage() {
                 </div>
                 {mission.city && (
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      {lang === "fr" ? "Ville" : "City"}
-                    </span>
+                    <span className="text-muted-foreground">{t.ui.uiCity}</span>
                     <span className="font-medium">{mission.city}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">
-                    {lang === "fr" ? "Statut" : "Status"}
-                  </span>
+                  <span className="text-muted-foreground">{t.ui.uiStatus}</span>
                   <span
                     className={`text-xs px-2 py-0.5 rounded-full border font-medium ${statusColor}`}
                   >
@@ -813,9 +733,7 @@ export function MissionDetailPage() {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">
-                    {lang === "fr" ? "Publié" : "Posted"}
-                  </span>
+                  <span className="text-muted-foreground">{t.ui.uiPosted}</span>
                   <span className="font-medium">
                     {new Date(mission.createdAt).toLocaleDateString(
                       LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ?? "en-GB",
@@ -830,7 +748,7 @@ export function MissionDetailPage() {
               <div className="flex items-center gap-2 mb-3">
                 <FileText className="h-4 w-4 text-primary" />
                 <h3 className="font-display font-bold text-foreground">
-                  {lang === "fr" ? "Documents" : "Documents"}
+                  {t.ui.uiDocuments}
                 </h3>
               </div>
               <Button
@@ -842,7 +760,7 @@ export function MissionDetailPage() {
               >
                 <Link to="/documents">
                   <FileText className="h-4 w-4" />
-                  {lang === "fr" ? "Voir les documents" : "View documents"}
+                  {t.ui.uiViewDocs}
                 </Link>
               </Button>
             </div>
@@ -857,9 +775,7 @@ export function MissionDetailPage() {
                   onClick={() => void navigate({ to: "/marketplace" })}
                   data-ocid="mission.marketplace_link"
                 >
-                  {lang === "fr"
-                    ? "Voir toutes les missions"
-                    : "See all missions"}
+                  {t.ui.uiSeeAllMissions}
                 </Button>
               </div>
             )}

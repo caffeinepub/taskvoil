@@ -274,10 +274,10 @@ function KYCTab() {
             >
               <Upload className="h-3.5 w-3.5" />
               {docName
-                ? lang === "fr"
+                ? lang === "fr" || lang === "lu"
                   ? "Changer"
                   : "Change file"
-                : lang === "fr"
+                : lang === "fr" || lang === "lu"
                   ? "Choisir un fichier"
                   : "Choose file"}
             </Button>
@@ -342,8 +342,8 @@ function getAIResponse(input: string, lang: string): string {
     if (lower.includes(key)) return response;
   }
   return lang === "fr"
-    ? "🤖 Je suis là pour vous aider ! Posez-moi vos questions sur la gestion de vos missions, la rédaction de devis, ou l'optimisation de votre profil."
-    : "🤖 I'm here to help! Ask me about managing your missions, writing quotes, or optimizing your profile to attract more clients.";
+    ? "Comment puis-je vous aider aujourd'hui ? Posez-moi vos questions sur vos missions, devis ou profil."
+    : "How can I help you today? Ask me about your missions, quotes, or profile.";
 }
 
 // Inline i18n for strings not yet in translation files
@@ -362,6 +362,83 @@ const DASH_PRO_L: Record<
     tabProfile: string;
     explore: string;
     invalidFormat: string;
+    inactive: string;
+    tabBookings: string;
+    noMissions: string;
+    exploreRequests: string;
+    offerSent: string;
+    makeOffer: string;
+    noOffers: string;
+    you: string;
+    docsTitle: string;
+    signed: string;
+    invoiced: string;
+    createDoc: string;
+    nftTitle: string;
+    fullGallery: string;
+    noNFTs: string;
+    viewTasks: string;
+    aiTitle: string;
+    aiEnabled: string;
+    aiDisabled: string;
+    aiUpgradeTitle: string;
+    aiUpgradeDesc: string;
+    aiUpgradeBtn: string;
+    aiThinking: string;
+    aiPlaceholder: string;
+    mySubscription: string;
+    subPlanNote: string;
+    changePlan: string;
+    planSolo: string;
+    planTeam: string;
+    planEnterprise: string;
+    subActive: string;
+    subTrial: string;
+    subCancelled: string;
+    startedOn: string;
+    renewsOn: string;
+    aiIncludedIn: string;
+    aiActivated: string;
+    aiDeactivated: string;
+    noSubscription: string;
+    viewPlans: string;
+    noBookings: string;
+    offerStatusPending: string;
+    offerStatusAccepted: string;
+    offerStatusRejected: string;
+    bookingStatusPending: string;
+    bookingStatusAccepted: string;
+    bookingStatusDeclined: string;
+    bookingStatusCounterProposed: string;
+    bookingStatusConfirmed: string;
+    bookingStatusCancelled: string;
+    awaitingClientConfirm: string;
+    acceptedBookingToast: string;
+    acceptBooking: string;
+    detailsBtn: string;
+    monthlyRevenue: string;
+    noRevenue: string;
+    recentMessages: string;
+    noMessages: string;
+    missionLabel: string;
+    warningTitle: string;
+    warningDesc: string;
+    coverImageTitle: string;
+    coverImageHint: string;
+    noImage: string;
+    changePhoto: string;
+    removePhoto: string;
+    profilePhotoTitle: string;
+    profilePhotoHint: string;
+    photoVisibility: string;
+    photoTrust: string;
+    descTitle: string;
+    descHint: string;
+    descPlaceholder: string;
+    descSavedMsg: string;
+    saveBtn: string;
+    fileTooLarge: string;
+    fileFormat: string;
   }
 > = {
   fr: {
@@ -377,6 +454,91 @@ const DASH_PRO_L: Record<
     tabProfile: "Mon Profil",
     explore: "Explorer",
     invalidFormat: "Format invalide pour",
+    inactive: "Inactif",
+    tabBookings: "Réservations",
+    noMissions: "Aucune mission disponible pour l'instant.",
+    exploreRequests: "Explorer les demandes ouvertes",
+    offerSent: "Offre envoyée",
+    makeOffer: "Faire une offre",
+    noOffers: "Aucune offre soumise.",
+    you: "Vous : ",
+    docsTitle: "Documents & Factures",
+    signed: "Signés",
+    invoiced: "Facturé",
+    createDoc: "Créer un document",
+    nftTitle: "NFT & Preuves de travaux",
+    fullGallery: "Galerie complète",
+    noNFTs:
+      "Aucun NFT de preuve pour l'instant. Mintez des photos depuis les jalons de vos missions.",
+    viewTasks: "Voir les missions",
+    aiTitle: "Assistant IA TaskVoilà",
+    aiEnabled: "Assistant IA activé",
+    aiDisabled: "Assistant IA désactivé",
+    aiUpgradeTitle: "Assistant IA disponible avec Pro Équipe",
+    aiUpgradeDesc:
+      "Réponses automatiques, gestion de RDV, suggestions d'offres et transcription d'appels inclus.",
+    aiUpgradeBtn: "Passer à Pro Équipe",
+    aiThinking: "En train de réfléchir...",
+    aiPlaceholder: "Posez une question à votre assistant...",
+    mySubscription: "Mon abonnement",
+    subPlanNote: "Plan actuel et renouvellement",
+    changePlan: "Changer de plan",
+    planSolo: "Indépendant",
+    planTeam: "Pro Équipe",
+    planEnterprise: "Grand Groupe",
+    subActive: "Actif",
+    subTrial: "Essai",
+    subCancelled: "Annulé",
+    startedOn: "Démarré le",
+    renewsOn: "Renouvellement le",
+    aiIncludedIn: "Inclus dans Pro Équipe",
+    aiActivated: "Activé",
+    aiDeactivated: "Désactivé",
+    noSubscription: "Vous n'avez pas d'abonnement actif.",
+    viewPlans: "Voir les plans",
+    noBookings: "Aucune réservation pour l'instant.",
+    offerStatusPending: "En attente",
+    offerStatusAccepted: "Acceptée",
+    offerStatusRejected: "Refusée",
+    bookingStatusPending: "En attente",
+    bookingStatusAccepted: "Acceptée",
+    bookingStatusDeclined: "Refusée",
+    bookingStatusCounterProposed: "Contre-proposition",
+    bookingStatusConfirmed: "Confirmée",
+    bookingStatusCancelled: "Annulée",
+    awaitingClientConfirm: "En attente de confirmation du client",
+    acceptedBookingToast: "Acceptée !",
+    acceptBooking: "Accepter",
+    detailsBtn: "Détails",
+    monthlyRevenue: "Revenus mensuels",
+    noRevenue: "Aucune donnée pour le moment",
+    recentMessages: "Messages récents",
+    noMessages: "Aucun message",
+    missionLabel: "Mission",
+    warningTitle: "⚠️ Ne partagez jamais vos coordonnées sur votre profil",
+    warningDesc:
+      "Numéros de téléphone, adresses email et liens externes sont interdits sur les profils. Toute communication doit passer par la messagerie TaskVoilà. Les profils contenant ces informations seront automatiquement signalés et suspendus.",
+    coverImageTitle: "Image de couverture",
+    coverImageHint:
+      "Représente votre enseigne ou vos réalisations. Format JPG/PNG, recommandé 1200×300px.",
+    noImage: "Aucune image",
+    changePhoto: "Changer la photo",
+    removePhoto: "Supprimer",
+    profilePhotoTitle: "Photo de profil",
+    profilePhotoHint:
+      "Votre photo s'affiche en avant sur votre profil. Format JPG/PNG, recommandé 400×400px.",
+    photoVisibility: "Cette photo sera visible par tous les utilisateurs.",
+    photoTrust:
+      "Utilisez une vraie photo professionnelle pour plus de confiance.",
+    descTitle: "Description & bio",
+    descHint:
+      "Décrivez vos services. ⚠️ Aucun numéro, email ou lien externe autorisé.",
+    descPlaceholder:
+      "Ex: Expert en plomberie depuis 15 ans, je réalise tous types de travaux de dépannage et rénovation...",
+    descSavedMsg: "Description sauvegardée !",
+    saveBtn: "Sauvegarder",
+    fileTooLarge: "Le fichier dépasse 10 Mo.",
+    fileFormat: "Format non autorisé. Utilisez JPG, PNG ou WebP.",
   },
   en: {
     active: "Active",
@@ -391,6 +553,89 @@ const DASH_PRO_L: Record<
     tabProfile: "My Profile",
     explore: "Browse",
     invalidFormat: "Invalid format for",
+    inactive: "Inactive",
+    tabBookings: "Bookings",
+    noMissions: "No available tasks yet.",
+    exploreRequests: "Browse open requests",
+    offerSent: "Offer sent",
+    makeOffer: "Make offer",
+    noOffers: "No offers submitted yet.",
+    you: "You: ",
+    docsTitle: "Documents & Invoices",
+    signed: "Signed",
+    invoiced: "Invoiced",
+    createDoc: "Create document",
+    nftTitle: "NFT Proof Collection",
+    fullGallery: "Full gallery",
+    noNFTs: "No proof NFTs yet. Mint photos from your task milestones.",
+    viewTasks: "View tasks",
+    aiTitle: "TaskVoilà AI Assistant",
+    aiEnabled: "AI Assistant enabled",
+    aiDisabled: "AI Assistant disabled",
+    aiUpgradeTitle: "AI Assistant available with Pro Team",
+    aiUpgradeDesc:
+      "Automatic replies, appointment management, offer suggestions and call transcription included.",
+    aiUpgradeBtn: "Upgrade to Pro Team",
+    aiThinking: "Thinking...",
+    aiPlaceholder: "Ask your assistant a question...",
+    mySubscription: "My subscription",
+    subPlanNote: "Current plan and renewal",
+    changePlan: "Change plan",
+    planSolo: "Solo",
+    planTeam: "Pro Team",
+    planEnterprise: "Enterprise",
+    subActive: "Active",
+    subTrial: "Trial",
+    subCancelled: "Cancelled",
+    startedOn: "Started",
+    renewsOn: "Renews on",
+    aiIncludedIn: "Included in Pro Team",
+    aiActivated: "Enabled",
+    aiDeactivated: "Disabled",
+    noSubscription: "You don't have an active subscription.",
+    viewPlans: "View plans",
+    noBookings: "No bookings yet.",
+    offerStatusPending: "Pending",
+    offerStatusAccepted: "Accepted",
+    offerStatusRejected: "Rejected",
+    bookingStatusPending: "Pending",
+    bookingStatusAccepted: "Accepted",
+    bookingStatusDeclined: "Declined",
+    bookingStatusCounterProposed: "Counter-proposal",
+    bookingStatusConfirmed: "Confirmed",
+    bookingStatusCancelled: "Cancelled",
+    awaitingClientConfirm: "Awaiting client confirmation",
+    acceptedBookingToast: "Accepted!",
+    acceptBooking: "Accept",
+    detailsBtn: "Details",
+    monthlyRevenue: "Monthly revenue",
+    noRevenue: "No data yet",
+    recentMessages: "Recent messages",
+    noMessages: "No messages yet",
+    missionLabel: "Task",
+    warningTitle: "⚠️ Never share your contact details on your profile",
+    warningDesc:
+      "Phone numbers, email addresses and external links are not allowed on profiles. All communication must go through TaskVoilà messaging. Profiles containing this information will be automatically flagged and suspended.",
+    coverImageTitle: "Cover image",
+    coverImageHint:
+      "Represents your brand or achievements. JPG/PNG format, recommended 1200×300px.",
+    noImage: "No image",
+    changePhoto: "Change photo",
+    removePhoto: "Remove",
+    profilePhotoTitle: "Profile photo",
+    profilePhotoHint:
+      "Your photo appears in front on your profile. JPG/PNG format, recommended 400×400px.",
+    photoVisibility: "This photo will be visible to all users.",
+    photoTrust: "Use a real professional photo for more trust.",
+    descTitle: "Description & bio",
+    descHint:
+      "Describe your services. ⚠️ No phone numbers, emails or external links allowed.",
+    descPlaceholder:
+      "Ex: Expert in plumbing for 15 years, I carry out all types of emergency repairs and renovations...",
+    descSavedMsg: "Description saved!",
+    saveBtn: "Save",
+    fileTooLarge: "File exceeds 10 MB.",
+    fileFormat: "Format not allowed. Use JPG, PNG or WebP.",
   },
   de: {
     active: "Aktive",
@@ -405,6 +650,90 @@ const DASH_PRO_L: Record<
     tabProfile: "Mein Profil",
     explore: "Durchsuchen",
     invalidFormat: "Ungültiges Format für",
+    inactive: "Inaktiv",
+    tabBookings: "Buchungen",
+    noMissions: "Noch keine verfügbaren Aufgaben.",
+    exploreRequests: "Offene Anfragen durchsuchen",
+    offerSent: "Angebot gesendet",
+    makeOffer: "Angebot machen",
+    noOffers: "Noch keine Angebote eingereicht.",
+    you: "Sie: ",
+    docsTitle: "Dokumente & Rechnungen",
+    signed: "Unterzeichnet",
+    invoiced: "Fakturiert",
+    createDoc: "Dokument erstellen",
+    nftTitle: "NFT & Arbeitsnachweise",
+    fullGallery: "Vollständige Galerie",
+    noNFTs:
+      "Noch keine Nachweis-NFTs. Prägen Sie Fotos aus Ihren Auftragsmaßnahmen.",
+    viewTasks: "Aufgaben ansehen",
+    aiTitle: "TaskVoilà KI-Assistent",
+    aiEnabled: "KI-Assistent aktiviert",
+    aiDisabled: "KI-Assistent deaktiviert",
+    aiUpgradeTitle: "KI-Assistent im Pro Team-Plan",
+    aiUpgradeDesc:
+      "Automatische Antworten, Terminverwaltung, Angebotsvorschläge und Anruftranskription inklusive.",
+    aiUpgradeBtn: "Auf Pro Team upgraden",
+    aiThinking: "Denke nach...",
+    aiPlaceholder: "Stellen Sie Ihrem Assistenten eine Frage...",
+    mySubscription: "Mein Abonnement",
+    subPlanNote: "Aktueller Plan und Verlängerung",
+    changePlan: "Plan ändern",
+    planSolo: "Solo",
+    planTeam: "Pro Team",
+    planEnterprise: "Enterprise",
+    subActive: "Aktiv",
+    subTrial: "Test",
+    subCancelled: "Storniert",
+    startedOn: "Gestartet am",
+    renewsOn: "Erneuerung am",
+    aiIncludedIn: "Im Pro Team enthalten",
+    aiActivated: "Aktiviert",
+    aiDeactivated: "Deaktiviert",
+    noSubscription: "Sie haben kein aktives Abonnement.",
+    viewPlans: "Pläne ansehen",
+    noBookings: "Noch keine Buchungen.",
+    offerStatusPending: "Ausstehend",
+    offerStatusAccepted: "Angenommen",
+    offerStatusRejected: "Abgelehnt",
+    bookingStatusPending: "Ausstehend",
+    bookingStatusAccepted: "Angenommen",
+    bookingStatusDeclined: "Abgelehnt",
+    bookingStatusCounterProposed: "Gegenvorschlag",
+    bookingStatusConfirmed: "Bestätigt",
+    bookingStatusCancelled: "Storniert",
+    awaitingClientConfirm: "Wartet auf Kundenbestätigung",
+    acceptedBookingToast: "Angenommen!",
+    acceptBooking: "Annehmen",
+    detailsBtn: "Details",
+    monthlyRevenue: "Monatliche Einnahmen",
+    noRevenue: "Noch keine Daten",
+    recentMessages: "Aktuelle Nachrichten",
+    noMessages: "Noch keine Nachrichten",
+    missionLabel: "Auftrag",
+    warningTitle: "⚠️ Teilen Sie niemals Ihre Kontaktdaten in Ihrem Profil",
+    warningDesc:
+      "Telefonnummern, E-Mail-Adressen und externe Links sind in Profilen nicht erlaubt.",
+    coverImageTitle: "Titelbild",
+    coverImageHint:
+      "Repräsentiert Ihr Unternehmen oder Ihre Arbeit. JPG/PNG, empfohlen 1200×300px.",
+    noImage: "Kein Bild",
+    changePhoto: "Foto ändern",
+    removePhoto: "Entfernen",
+    profilePhotoTitle: "Profilfoto",
+    profilePhotoHint:
+      "Ihr Foto wird in Ihrem Profil angezeigt. JPG/PNG, empfohlen 400×400px.",
+    photoVisibility: "Dieses Foto wird für alle Nutzer sichtbar sein.",
+    photoTrust:
+      "Verwenden Sie ein echtes professionelles Foto für mehr Vertrauen.",
+    descTitle: "Beschreibung & Bio",
+    descHint:
+      "Beschreiben Sie Ihre Dienstleistungen. ⚠️ Keine Telefonnummern, E-Mails oder externen Links.",
+    descPlaceholder: "Beispiel: Klempnerexperte seit 15 Jahren...",
+    descSavedMsg: "Beschreibung gespeichert!",
+    saveBtn: "Speichern",
+    fileTooLarge: "Datei zu groß (max. 10 MB).",
+    fileFormat: "Format nicht erlaubt. Verwenden Sie JPG, PNG oder WebP.",
   },
   es: {
     active: "Activas",
@@ -419,6 +748,88 @@ const DASH_PRO_L: Record<
     tabProfile: "Mi Perfil",
     explore: "Explorar",
     invalidFormat: "Formato no válido para",
+    inactive: "Inactivo",
+    tabBookings: "Reservas",
+    noMissions: "No hay tareas disponibles.",
+    exploreRequests: "Ver solicitudes abiertas",
+    offerSent: "Oferta enviada",
+    makeOffer: "Hacer una oferta",
+    noOffers: "Ninguna oferta enviada.",
+    you: "Tú: ",
+    docsTitle: "Documentos y Facturas",
+    signed: "Firmados",
+    invoiced: "Facturado",
+    createDoc: "Crear documento",
+    nftTitle: "NFT & Pruebas de trabajo",
+    fullGallery: "Galería completa",
+    noNFTs: "No hay NFTs de prueba. Acuña fotos desde los hitos de tus tareas.",
+    viewTasks: "Ver tareas",
+    aiTitle: "Asistente IA TaskVoilà",
+    aiEnabled: "Asistente IA activado",
+    aiDisabled: "Asistente IA desactivado",
+    aiUpgradeTitle: "Asistente IA disponible con Pro Team",
+    aiUpgradeDesc:
+      "Respuestas automáticas, gestión de citas, sugerencias de ofertas y transcripción incluidas.",
+    aiUpgradeBtn: "Cambiar a Pro Team",
+    aiThinking: "Pensando...",
+    aiPlaceholder: "Haz una pregunta a tu asistente...",
+    mySubscription: "Mi suscripción",
+    subPlanNote: "Plan actual y renovación",
+    changePlan: "Cambiar de plan",
+    planSolo: "Solo",
+    planTeam: "Pro Team",
+    planEnterprise: "Enterprise",
+    subActive: "Activo",
+    subTrial: "Prueba",
+    subCancelled: "Cancelado",
+    startedOn: "Iniciado el",
+    renewsOn: "Renovación el",
+    aiIncludedIn: "Incluido en Pro Team",
+    aiActivated: "Activado",
+    aiDeactivated: "Desactivado",
+    noSubscription: "No tienes una suscripción activa.",
+    viewPlans: "Ver planes",
+    noBookings: "Sin reservas aún.",
+    offerStatusPending: "Pendiente",
+    offerStatusAccepted: "Aceptada",
+    offerStatusRejected: "Rechazada",
+    bookingStatusPending: "Pendiente",
+    bookingStatusAccepted: "Aceptada",
+    bookingStatusDeclined: "Rechazada",
+    bookingStatusCounterProposed: "Contrapropuesta",
+    bookingStatusConfirmed: "Confirmada",
+    bookingStatusCancelled: "Cancelada",
+    awaitingClientConfirm: "Esperando confirmación del cliente",
+    acceptedBookingToast: "¡Aceptada!",
+    acceptBooking: "Aceptar",
+    detailsBtn: "Detalles",
+    monthlyRevenue: "Ingresos mensuales",
+    noRevenue: "Sin datos todavía",
+    recentMessages: "Mensajes recientes",
+    noMessages: "Sin mensajes",
+    missionLabel: "Tarea",
+    warningTitle: "⚠️ Nunca compartas tus datos de contacto en tu perfil",
+    warningDesc:
+      "Los números de teléfono, correos electrónicos y enlaces externos no están permitidos en los perfiles.",
+    coverImageTitle: "Imagen de portada",
+    coverImageHint:
+      "Representa tu marca o logros. JPG/PNG, recomendado 1200×300px.",
+    noImage: "Sin imagen",
+    changePhoto: "Cambiar foto",
+    removePhoto: "Eliminar",
+    profilePhotoTitle: "Foto de perfil",
+    profilePhotoHint:
+      "Tu foto aparece en tu perfil. JPG/PNG, recomendado 400×400px.",
+    photoVisibility: "Esta foto será visible para todos los usuarios.",
+    photoTrust: "Usa una foto profesional real para generar más confianza.",
+    descTitle: "Descripción & bio",
+    descHint:
+      "Describe tus servicios. ⚠️ Sin números de teléfono, emails ni enlaces externos.",
+    descPlaceholder: "Ej: Experto en fontanería desde hace 15 años...",
+    descSavedMsg: "¡Descripción guardada!",
+    saveBtn: "Guardar",
+    fileTooLarge: "El archivo supera 10 MB.",
+    fileFormat: "Formato no permitido. Usa JPG, PNG o WebP.",
   },
   it: {
     active: "Attive",
@@ -433,6 +844,88 @@ const DASH_PRO_L: Record<
     tabProfile: "Il mio Profilo",
     explore: "Esplora",
     invalidFormat: "Formato non valido per",
+    inactive: "Inattivo",
+    tabBookings: "Prenotazioni",
+    noMissions: "Nessun incarico disponibile.",
+    exploreRequests: "Esplora richieste aperte",
+    offerSent: "Offerta inviata",
+    makeOffer: "Fai un'offerta",
+    noOffers: "Nessuna offerta inviata.",
+    you: "Tu: ",
+    docsTitle: "Documenti & Fatture",
+    signed: "Firmati",
+    invoiced: "Fatturato",
+    createDoc: "Crea documento",
+    nftTitle: "NFT & Prove di lavoro",
+    fullGallery: "Galleria completa",
+    noNFTs: "Nessun NFT prova. Crea NFT dalle foto dei tuoi incarichi.",
+    viewTasks: "Vedi incarichi",
+    aiTitle: "Assistente IA TaskVoilà",
+    aiEnabled: "Assistente IA attivato",
+    aiDisabled: "Assistente IA disattivato",
+    aiUpgradeTitle: "Assistente IA disponibile con Pro Team",
+    aiUpgradeDesc:
+      "Risposte automatiche, gestione appuntamenti, suggerimenti offerte e trascrizione inclusi.",
+    aiUpgradeBtn: "Passa a Pro Team",
+    aiThinking: "Sto pensando...",
+    aiPlaceholder: "Fai una domanda al tuo assistente...",
+    mySubscription: "Il mio abbonamento",
+    subPlanNote: "Piano attuale e rinnovo",
+    changePlan: "Cambia piano",
+    planSolo: "Solo",
+    planTeam: "Pro Team",
+    planEnterprise: "Enterprise",
+    subActive: "Attivo",
+    subTrial: "Prova",
+    subCancelled: "Annullato",
+    startedOn: "Iniziato il",
+    renewsOn: "Rinnovo il",
+    aiIncludedIn: "Incluso in Pro Team",
+    aiActivated: "Attivato",
+    aiDeactivated: "Disattivato",
+    noSubscription: "Non hai un abbonamento attivo.",
+    viewPlans: "Vedi piani",
+    noBookings: "Nessuna prenotazione.",
+    offerStatusPending: "In attesa",
+    offerStatusAccepted: "Accettata",
+    offerStatusRejected: "Rifiutata",
+    bookingStatusPending: "In attesa",
+    bookingStatusAccepted: "Accettata",
+    bookingStatusDeclined: "Rifiutata",
+    bookingStatusCounterProposed: "Controproposta",
+    bookingStatusConfirmed: "Confermata",
+    bookingStatusCancelled: "Annullata",
+    awaitingClientConfirm: "In attesa conferma cliente",
+    acceptedBookingToast: "Accettata!",
+    acceptBooking: "Accetta",
+    detailsBtn: "Dettagli",
+    monthlyRevenue: "Entrate mensili",
+    noRevenue: "Nessun dato disponibile",
+    recentMessages: "Messaggi recenti",
+    noMessages: "Nessun messaggio",
+    missionLabel: "Missione",
+    warningTitle: "⚠️ Non condividere mai i tuoi dati di contatto nel profilo",
+    warningDesc:
+      "Numeri di telefono, email e link esterni non sono consentiti nei profili.",
+    coverImageTitle: "Immagine di copertina",
+    coverImageHint:
+      "Rappresenta il tuo brand o le tue realizzazioni. JPG/PNG, consigliato 1200×300px.",
+    noImage: "Nessuna immagine",
+    changePhoto: "Cambia foto",
+    removePhoto: "Rimuovi",
+    profilePhotoTitle: "Foto profilo",
+    profilePhotoHint:
+      "La tua foto appare nel profilo. JPG/PNG, consigliato 400×400px.",
+    photoVisibility: "Questa foto sarà visibile a tutti gli utenti.",
+    photoTrust: "Usa una foto professionale reale per più fiducia.",
+    descTitle: "Descrizione & bio",
+    descHint:
+      "Descrivi i tuoi servizi. ⚠️ Nessun numero, email o link esterno consentiti.",
+    descPlaceholder: "Es: Esperto di idraulica da 15 anni...",
+    descSavedMsg: "Descrizione salvata!",
+    saveBtn: "Salva",
+    fileTooLarge: "Il file supera 10 MB.",
+    fileFormat: "Formato non consentito. Usa JPG, PNG o WebP.",
   },
   pt: {
     active: "Ativas",
@@ -447,6 +940,88 @@ const DASH_PRO_L: Record<
     tabProfile: "O meu Perfil",
     explore: "Explorar",
     invalidFormat: "Formato inválido para",
+    inactive: "Inativo",
+    tabBookings: "Reservas",
+    noMissions: "Sem tarefas disponíveis.",
+    exploreRequests: "Ver pedidos abertos",
+    offerSent: "Oferta enviada",
+    makeOffer: "Fazer oferta",
+    noOffers: "Sem ofertas submetidas.",
+    you: "Tu: ",
+    docsTitle: "Documentos e Faturas",
+    signed: "Assinados",
+    invoiced: "Faturado",
+    createDoc: "Criar documento",
+    nftTitle: "NFT & Provas de trabalho",
+    fullGallery: "Galeria completa",
+    noNFTs: "Sem NFTs de prova. Cunhe fotos dos marcos das suas tarefas.",
+    viewTasks: "Ver tarefas",
+    aiTitle: "Assistente IA TaskVoilà",
+    aiEnabled: "Assistente IA ativado",
+    aiDisabled: "Assistente IA desativado",
+    aiUpgradeTitle: "Assistente IA disponível com Pro Team",
+    aiUpgradeDesc:
+      "Respostas automáticas, gestão de compromissos, sugestões de ofertas e transcrição incluídas.",
+    aiUpgradeBtn: "Atualizar para Pro Team",
+    aiThinking: "A pensar...",
+    aiPlaceholder: "Coloca uma pergunta ao teu assistente...",
+    mySubscription: "A minha subscrição",
+    subPlanNote: "Plano atual e renovação",
+    changePlan: "Mudar de plano",
+    planSolo: "Solo",
+    planTeam: "Pro Team",
+    planEnterprise: "Enterprise",
+    subActive: "Ativo",
+    subTrial: "Experiência",
+    subCancelled: "Cancelado",
+    startedOn: "Iniciado em",
+    renewsOn: "Renovação em",
+    aiIncludedIn: "Incluído no Pro Team",
+    aiActivated: "Ativado",
+    aiDeactivated: "Desativado",
+    noSubscription: "Não tens uma subscrição ativa.",
+    viewPlans: "Ver planos",
+    noBookings: "Sem reservas ainda.",
+    offerStatusPending: "Pendente",
+    offerStatusAccepted: "Aceite",
+    offerStatusRejected: "Recusada",
+    bookingStatusPending: "Pendente",
+    bookingStatusAccepted: "Aceite",
+    bookingStatusDeclined: "Recusada",
+    bookingStatusCounterProposed: "Contraproposta",
+    bookingStatusConfirmed: "Confirmada",
+    bookingStatusCancelled: "Cancelada",
+    awaitingClientConfirm: "Aguardando confirmação do cliente",
+    acceptedBookingToast: "Aceite!",
+    acceptBooking: "Aceitar",
+    detailsBtn: "Detalhes",
+    monthlyRevenue: "Receitas mensais",
+    noRevenue: "Sem dados ainda",
+    recentMessages: "Mensagens recentes",
+    noMessages: "Sem mensagens",
+    missionLabel: "Tarefa",
+    warningTitle: "⚠️ Nunca partilhes os teus dados de contacto no perfil",
+    warningDesc:
+      "Números de telefone, emails e links externos não são permitidos nos perfis.",
+    coverImageTitle: "Imagem de capa",
+    coverImageHint:
+      "Representa a tua marca ou realizações. JPG/PNG, recomendado 1200×300px.",
+    noImage: "Sem imagem",
+    changePhoto: "Alterar foto",
+    removePhoto: "Remover",
+    profilePhotoTitle: "Foto de perfil",
+    profilePhotoHint:
+      "A tua foto aparece no perfil. JPG/PNG, recomendado 400×400px.",
+    photoVisibility: "Esta foto será visível para todos os utilizadores.",
+    photoTrust: "Usa uma foto profissional real para mais confiança.",
+    descTitle: "Descrição & bio",
+    descHint:
+      "Descreve os teus serviços. ⚠️ Sem números, emails ou links externos.",
+    descPlaceholder: "Ex: Especialista em canalizações há 15 anos...",
+    descSavedMsg: "Descrição guardada!",
+    saveBtn: "Guardar",
+    fileTooLarge: "O ficheiro excede 10 MB.",
+    fileFormat: "Formato não permitido. Usa JPG, PNG ou WebP.",
   },
   nl: {
     active: "Actieve",
@@ -461,6 +1036,88 @@ const DASH_PRO_L: Record<
     tabProfile: "Mijn Profiel",
     explore: "Verkennen",
     invalidFormat: "Ongeldig formaat voor",
+    inactive: "Inactief",
+    tabBookings: "Boekingen",
+    noMissions: "Nog geen beschikbare taken.",
+    exploreRequests: "Open aanvragen bekijken",
+    offerSent: "Aanbieding verzonden",
+    makeOffer: "Aanbieding doen",
+    noOffers: "Nog geen offertes ingediend.",
+    you: "Jij: ",
+    docsTitle: "Documenten & Facturen",
+    signed: "Ondertekend",
+    invoiced: "Gefactureerd",
+    createDoc: "Document aanmaken",
+    nftTitle: "NFT & Werkbewijzen",
+    fullGallery: "Volledige galerij",
+    noNFTs: "Nog geen bewijs-NFTs. Mint foto's van je taakmijlpalen.",
+    viewTasks: "Taken bekijken",
+    aiTitle: "TaskVoilà AI-Assistent",
+    aiEnabled: "AI-assistent ingeschakeld",
+    aiDisabled: "AI-assistent uitgeschakeld",
+    aiUpgradeTitle: "AI-assistent beschikbaar in Pro Team",
+    aiUpgradeDesc:
+      "Automatische antwoorden, agendabeheer, aanbiedingssuggesties en gespreksoverzichten inbegrepen.",
+    aiUpgradeBtn: "Upgraden naar Pro Team",
+    aiThinking: "Aan het nadenken...",
+    aiPlaceholder: "Stel uw assistent een vraag...",
+    mySubscription: "Mijn abonnement",
+    subPlanNote: "Huidig plan en verlenging",
+    changePlan: "Plan wijzigen",
+    planSolo: "Solo",
+    planTeam: "Pro Team",
+    planEnterprise: "Enterprise",
+    subActive: "Actief",
+    subTrial: "Proef",
+    subCancelled: "Geannuleerd",
+    startedOn: "Gestart op",
+    renewsOn: "Verlengt op",
+    aiIncludedIn: "Inbegrepen in Pro Team",
+    aiActivated: "Ingeschakeld",
+    aiDeactivated: "Uitgeschakeld",
+    noSubscription: "U heeft geen actief abonnement.",
+    viewPlans: "Plannen bekijken",
+    noBookings: "Nog geen boekingen.",
+    offerStatusPending: "In behandeling",
+    offerStatusAccepted: "Geaccepteerd",
+    offerStatusRejected: "Afgewezen",
+    bookingStatusPending: "In afwachting",
+    bookingStatusAccepted: "Geaccepteerd",
+    bookingStatusDeclined: "Geweigerd",
+    bookingStatusCounterProposed: "Tegenvoorstel",
+    bookingStatusConfirmed: "Bevestigd",
+    bookingStatusCancelled: "Geannuleerd",
+    awaitingClientConfirm: "Wacht op bevestiging klant",
+    acceptedBookingToast: "Geaccepteerd!",
+    acceptBooking: "Accepteren",
+    detailsBtn: "Details",
+    monthlyRevenue: "Maandelijkse inkomsten",
+    noRevenue: "Nog geen gegevens",
+    recentMessages: "Recente berichten",
+    noMessages: "Nog geen berichten",
+    missionLabel: "Taak",
+    warningTitle: "⚠️ Deel nooit uw contactgegevens in uw profiel",
+    warningDesc:
+      "Telefoonnummers, e-mailadressen en externe links zijn niet toegestaan in profielen.",
+    coverImageTitle: "Omslagafbeelding",
+    coverImageHint:
+      "Vertegenwoordigt uw merk of prestaties. JPG/PNG, aanbevolen 1200×300px.",
+    noImage: "Geen afbeelding",
+    changePhoto: "Foto wijzigen",
+    removePhoto: "Verwijderen",
+    profilePhotoTitle: "Profielfoto",
+    profilePhotoHint:
+      "Uw foto verschijnt in uw profiel. JPG/PNG, aanbevolen 400×400px.",
+    photoVisibility: "Deze foto is zichtbaar voor alle gebruikers.",
+    photoTrust: "Gebruik een echte professionele foto voor meer vertrouwen.",
+    descTitle: "Beschrijving & bio",
+    descHint:
+      "Beschrijf uw diensten. ⚠️ Geen telefoonnummers, e-mails of externe links.",
+    descPlaceholder: "Bijv: Loodgieterexpert al 15 jaar...",
+    descSavedMsg: "Beschrijving opgeslagen!",
+    saveBtn: "Opslaan",
+    fileTooLarge: "Bestand te groot (max. 10 MB).",
+    fileFormat: "Formaat niet toegestaan. Gebruik JPG, PNG of WebP.",
   },
   el: {
     active: "Ενεργές",
@@ -475,6 +1132,188 @@ const DASH_PRO_L: Record<
     tabProfile: "Το Προφίλ μου",
     explore: "Εξερεύνηση",
     invalidFormat: "Μη έγκυρη μορφή για",
+    inactive: "Ανενεργό",
+    tabBookings: "Κρατήσεις",
+    noMissions: "Δεν υπάρχουν διαθέσιμες αποστολές.",
+    exploreRequests: "Εξερεύνηση ανοιχτών αιτημάτων",
+    offerSent: "Προσφορά εστάλη",
+    makeOffer: "Κάνε προσφορά",
+    noOffers: "Δεν έχουν υποβληθεί προσφορές.",
+    you: "Εσείς: ",
+    docsTitle: "Έγγραφα & Τιμολόγια",
+    signed: "Υπογεγραμμένα",
+    invoiced: "Τιμολογημένο",
+    createDoc: "Δημιουργία εγγράφου",
+    nftTitle: "NFT & Αποδείξεις εργασίας",
+    fullGallery: "Πλήρης γκαλερί",
+    noNFTs:
+      "Δεν υπάρχουν NFTs απόδειξης. Δημιουργήστε NFTs από τα ορόσημα των αποστολών σας.",
+    viewTasks: "Δείτε τις αποστολές",
+    aiTitle: "TaskVoilà AI Βοηθός",
+    aiEnabled: "Ο AI Βοηθός ενεργοποιήθηκε",
+    aiDisabled: "Ο AI Βοηθός απενεργοποιήθηκε",
+    aiUpgradeTitle: "AI Βοηθός διαθέσιμος με Pro Team",
+    aiUpgradeDesc:
+      "Αυτόματες απαντήσεις, διαχείριση ραντεβού, προτάσεις προσφορών και μεταγραφή κλήσεων.",
+    aiUpgradeBtn: "Αναβάθμιση σε Pro Team",
+    aiThinking: "Σκέφτομαι...",
+    aiPlaceholder: "Κάντε μια ερώτηση στον βοηθό σας...",
+    mySubscription: "Η συνδρομή μου",
+    subPlanNote: "Τρέχον πλάνο και ανανέωση",
+    changePlan: "Αλλαγή πλάνου",
+    planSolo: "Solo",
+    planTeam: "Pro Team",
+    planEnterprise: "Enterprise",
+    subActive: "Ενεργό",
+    subTrial: "Δοκιμή",
+    subCancelled: "Ακυρωμένο",
+    startedOn: "Ξεκίνησε",
+    renewsOn: "Ανανεώνεται",
+    aiIncludedIn: "Συμπεριλαμβάνεται στο Pro Team",
+    aiActivated: "Ενεργοποιημένο",
+    aiDeactivated: "Απενεργοποιημένο",
+    noSubscription: "Δεν έχετε ενεργή συνδρομή.",
+    viewPlans: "Δείτε τα πλάνα",
+    noBookings: "Δεν υπάρχουν κρατήσεις.",
+    offerStatusPending: "Σε αναμονή",
+    offerStatusAccepted: "Αποδεκτή",
+    offerStatusRejected: "Απορρίφθηκε",
+    bookingStatusPending: "Σε αναμονή",
+    bookingStatusAccepted: "Αποδεκτή",
+    bookingStatusDeclined: "Απορρίφθηκε",
+    bookingStatusCounterProposed: "Αντιπρόταση",
+    bookingStatusConfirmed: "Επιβεβαιωμένη",
+    bookingStatusCancelled: "Ακυρωμένη",
+    awaitingClientConfirm: "Αναμονή επιβεβαίωσης πελάτη",
+    acceptedBookingToast: "Αποδεκτή!",
+    acceptBooking: "Αποδοχή",
+    detailsBtn: "Λεπτομέρειες",
+    monthlyRevenue: "Μηνιαία έσοδα",
+    noRevenue: "Δεν υπάρχουν δεδομένα",
+    recentMessages: "Πρόσφατα μηνύματα",
+    noMessages: "Δεν υπάρχουν μηνύματα",
+    missionLabel: "Αποστολή",
+    warningTitle:
+      "⚠️ Μην μοιράζεστε ποτέ τα στοιχεία επικοινωνίας σας στο προφίλ",
+    warningDesc:
+      "Αριθμοί τηλεφώνου, email και εξωτερικοί σύνδεσμοι δεν επιτρέπονται στα προφίλ.",
+    coverImageTitle: "Εικόνα εξωφύλλου",
+    coverImageHint:
+      "Εκπροσωπεί την επιχείρησή σας. JPG/PNG, συνιστάται 1200×300px.",
+    noImage: "Καμία εικόνα",
+    changePhoto: "Αλλαγή φωτογραφίας",
+    removePhoto: "Αφαίρεση",
+    profilePhotoTitle: "Φωτογραφία προφίλ",
+    profilePhotoHint:
+      "Η φωτογραφία σας εμφανίζεται στο προφίλ. JPG/PNG, συνιστάται 400×400px.",
+    photoVisibility: "Αυτή η φωτογραφία θα είναι ορατή σε όλους τους χρήστες.",
+    photoTrust: "Χρησιμοποιήστε μια πραγματική επαγγελματική φωτογραφία.",
+    descTitle: "Περιγραφή & bio",
+    descHint:
+      "Περιγράψτε τις υπηρεσίες σας. ⚠️ Χωρίς αριθμούς, email ή εξωτερικούς συνδέσμους.",
+    descPlaceholder: "Π.χ. Ειδικός στην υδραυλική εδώ και 15 χρόνια...",
+    descSavedMsg: "Η περιγραφή αποθηκεύτηκε!",
+    saveBtn: "Αποθήκευση",
+    fileTooLarge: "Το αρχείο υπερβαίνει τα 10 MB.",
+    fileFormat: "Μη επιτρεπόμενη μορφή. Χρησιμοποιήστε JPG, PNG ή WebP.",
+  },
+  lu: {
+    active: "Actives",
+    completed: "Terminées",
+    revenue: "Revenus",
+    rating: "Note",
+    tabMissions: "Missions",
+    tabMessages: "Messages",
+    tabDocuments: "Documents",
+    tabAI: "Assistant IA",
+    tabSubscription: "Abonnement",
+    tabProfile: "Mon Profil",
+    explore: "Explorer",
+    invalidFormat: "Format invalide pour",
+    inactive: "Inactif",
+    tabBookings: "Réservations",
+    noMissions: "Aucune mission disponible pour l'instant.",
+    exploreRequests: "Explorer les demandes ouvertes",
+    offerSent: "Offre envoyée",
+    makeOffer: "Faire une offre",
+    noOffers: "Aucune offre soumise.",
+    you: "Vous : ",
+    docsTitle: "Documents & Factures",
+    signed: "Signés",
+    invoiced: "Facturé",
+    createDoc: "Créer un document",
+    nftTitle: "NFT & Preuves de travaux",
+    fullGallery: "Galerie complète",
+    noNFTs:
+      "Aucun NFT de preuve pour l'instant. Mintez des photos depuis les jalons de vos missions.",
+    viewTasks: "Voir les missions",
+    aiTitle: "Assistant IA TaskVoilà",
+    aiEnabled: "Assistant IA activé",
+    aiDisabled: "Assistant IA désactivé",
+    aiUpgradeTitle: "Assistant IA disponible avec Pro Équipe",
+    aiUpgradeDesc:
+      "Réponses automatiques, gestion de RDV, suggestions d'offres et transcription d'appels inclus.",
+    aiUpgradeBtn: "Passer à Pro Équipe",
+    aiThinking: "En train de réfléchir...",
+    aiPlaceholder: "Posez une question à votre assistant...",
+    mySubscription: "Mon abonnement",
+    subPlanNote: "Plan actuel et renouvellement",
+    changePlan: "Changer de plan",
+    planSolo: "Indépendant",
+    planTeam: "Pro Équipe",
+    planEnterprise: "Grand Groupe",
+    subActive: "Actif",
+    subTrial: "Essai",
+    subCancelled: "Annulé",
+    startedOn: "Démarré le",
+    renewsOn: "Renouvellement le",
+    aiIncludedIn: "Inclus dans Pro Équipe",
+    aiActivated: "Activé",
+    aiDeactivated: "Désactivé",
+    noSubscription: "Vous n'avez pas d'abonnement actif.",
+    viewPlans: "Voir les plans",
+    noBookings: "Aucune réservation pour l'instant.",
+    offerStatusPending: "En attente",
+    offerStatusAccepted: "Acceptée",
+    offerStatusRejected: "Refusée",
+    bookingStatusPending: "En attente",
+    bookingStatusAccepted: "Acceptée",
+    bookingStatusDeclined: "Refusée",
+    bookingStatusCounterProposed: "Contre-proposition",
+    bookingStatusConfirmed: "Confirmée",
+    bookingStatusCancelled: "Annulée",
+    awaitingClientConfirm: "En attente de confirmation du client",
+    acceptedBookingToast: "Acceptée !",
+    acceptBooking: "Accepter",
+    detailsBtn: "Détails",
+    monthlyRevenue: "Revenus mensuels",
+    noRevenue: "Aucune donnée pour le moment",
+    recentMessages: "Messages récents",
+    noMessages: "Aucun message",
+    missionLabel: "Mission",
+    warningTitle: "⚠️ Ne partagez jamais vos coordonnées sur votre profil",
+    warningDesc:
+      "Numéros de téléphone, adresses email et liens externes sont interdits sur les profils. Toute communication doit passer par la messagerie TaskVoilà.",
+    coverImageTitle: "Image de couverture",
+    coverImageHint:
+      "Représente votre enseigne ou vos réalisations. Format JPG/PNG, recommandé 1200×300px.",
+    noImage: "Aucune image",
+    changePhoto: "Changer la photo",
+    removePhoto: "Supprimer",
+    profilePhotoTitle: "Photo de profil",
+    profilePhotoHint:
+      "Votre photo s'affiche en avant sur votre profil. Format JPG/PNG, recommandé 400×400px.",
+    photoVisibility: "Cette photo sera visible par tous les utilisateurs.",
+    photoTrust:
+      "Utilisez une vraie photo professionnelle pour plus de confiance.",
+    descTitle: "Description & bio",
+    descHint:
+      "Décrivez vos services. ⚠️ Aucun numéro, email ou lien externe autorisé.",
+    descPlaceholder: "Ex: Expert en plomberie depuis 15 ans...",
+    descSavedMsg: "Description sauvegardée !",
+    saveBtn: "Sauvegarder",
+    fileTooLarge: "Le fichier dépasse 10 Mo.",
+    fileFormat: "Format non autorisé. Utilisez JPG, PNG ou WebP.",
   },
 };
 
@@ -489,6 +1328,7 @@ const NUM_LOCALE: Record<string, string> = {
   nl: "nl-NL",
   el: "el-GR",
   ie: "en-IE",
+  lu: "fr-LU",
 };
 
 export function ProDashboard() {
@@ -543,10 +1383,7 @@ export function ProDashboard() {
     {
       id: 2,
       role: "ai",
-      text:
-        lang === "fr"
-          ? "Comment puis-je vous aider aujourd'hui ? Posez-moi vos questions sur vos missions, devis ou profil."
-          : "How can I help you today? Ask me about your missions, quotes, or profile.",
+      text: t.ui.uiAIGreeting,
     },
   ]);
   const [aiInput, setAiInput] = useState("");
@@ -747,19 +1584,7 @@ export function ProDashboard() {
                 data-ocid="pro.bookings.tab"
               >
                 <Calendar className="h-3.5 w-3.5" />
-                {lang === "fr"
-                  ? "Réservations"
-                  : lang === "de"
-                    ? "Buchungen"
-                    : lang === "es"
-                      ? "Reservas"
-                      : lang === "it"
-                        ? "Prenotazioni"
-                        : lang === "pt"
-                          ? "Reservas"
-                          : lang === "nl"
-                            ? "Boekingen"
-                            : "Bookings"}
+                {dl.tabBookings}
                 {pendingBookingsCount > 0 && (
                   <span className="ml-1 w-4 h-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
                     {pendingBookingsCount}
@@ -797,18 +1622,14 @@ export function ProDashboard() {
                   >
                     <p className="text-3xl mb-3">🔍</p>
                     <p className="text-sm text-muted-foreground mb-3">
-                      {lang === "fr"
-                        ? "Aucune mission disponible pour l'instant."
-                        : "No available tasks yet."}
+                      {dl.noMissions}
                     </p>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => void navigate({ to: "/marketplace" })}
                     >
-                      {lang === "fr"
-                        ? "Explorer les demandes ouvertes"
-                        : "Browse open requests"}
+                      {dl.exploreRequests}
                     </Button>
                   </div>
                 ) : (
@@ -839,9 +1660,7 @@ export function ProDashboard() {
                             <div className="flex gap-2 shrink-0">
                               {alreadyOffered ? (
                                 <span className="text-xs px-2 py-1 rounded-full bg-secondary/20 text-secondary border border-secondary/30">
-                                  {lang === "fr"
-                                    ? "Offre envoyée"
-                                    : "Offer sent"}
+                                  {dl.offerSent}
                                 </span>
                               ) : (
                                 <Button
@@ -854,9 +1673,7 @@ export function ProDashboard() {
                                   }
                                   data-ocid={`pro.available_missions.offer_button.${i + 1}`}
                                 >
-                                  {lang === "fr"
-                                    ? "Faire une offre"
-                                    : "Make offer"}
+                                  {dl.makeOffer}
                                 </Button>
                               )}
                             </div>
@@ -882,9 +1699,7 @@ export function ProDashboard() {
                   >
                     <p className="text-3xl mb-3">💼</p>
                     <p className="text-sm text-muted-foreground mb-3">
-                      {lang === "fr"
-                        ? "Aucune offre soumise."
-                        : "No offers submitted yet."}
+                      {dl.noOffers}
                     </p>
                     <Button
                       size="sm"
@@ -905,16 +1720,10 @@ export function ProDashboard() {
                             : "bg-muted text-muted-foreground border-border";
                       const statusLabel =
                         offer.status === "pending"
-                          ? lang === "fr"
-                            ? "En attente"
-                            : "Pending"
+                          ? dl.offerStatusPending
                           : offer.status === "accepted"
-                            ? lang === "fr"
-                              ? "Acceptée"
-                              : "Accepted"
-                            : lang === "fr"
-                              ? "Refusée"
-                              : "Rejected";
+                            ? dl.offerStatusAccepted
+                            : dl.offerStatusRejected;
                       return (
                         <div
                           key={offer.id}
@@ -924,8 +1733,7 @@ export function ProDashboard() {
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-semibold text-foreground truncate">
-                                {lang === "fr" ? "Mission" : "Task"} #
-                                {offer.missionId.slice(-6)}
+                                {dl.missionLabel} #{offer.missionId.slice(-6)}
                               </p>
                               <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
                                 {offer.description}
@@ -956,18 +1764,14 @@ export function ProDashboard() {
               data-ocid="pro.revenue.panel"
             >
               <h2 className="font-display font-bold text-base text-foreground mb-4">
-                📊 {lang === "fr" ? "Revenus mensuels" : "Monthly revenue"}
+                📊 {dl.monthlyRevenue}
               </h2>
               <div
                 className="flex flex-col items-center justify-center py-8 text-center"
                 data-ocid="pro.revenue.empty_state"
               >
                 <p className="text-3xl mb-3">📊</p>
-                <p className="text-sm text-muted-foreground">
-                  {lang === "fr"
-                    ? "Aucune donnée pour le moment"
-                    : "No data yet"}
-                </p>
+                <p className="text-sm text-muted-foreground">{dl.noRevenue}</p>
               </div>
             </div>
           </TabsContent>
@@ -979,7 +1783,7 @@ export function ProDashboard() {
                 <div className="flex items-center gap-2">
                   <MessageSquare className="h-4 w-4 text-primary" />
                   <h2 className="font-display font-bold text-base text-foreground">
-                    {lang === "fr" ? "Messages récents" : "Recent messages"}
+                    {dl.recentMessages}
                   </h2>
                 </div>
                 <Button
@@ -995,7 +1799,7 @@ export function ProDashboard() {
                 <div className="p-8 text-center">
                   <p className="text-3xl mb-3">💬</p>
                   <p className="text-sm text-muted-foreground">
-                    {lang === "fr" ? "Aucun message" : "No messages yet"}
+                    {dl.noMessages}
                   </p>
                 </div>
               ) : (
@@ -1027,11 +1831,7 @@ export function ProDashboard() {
                             </p>
                             {lastMsg && (
                               <p className="text-xs text-muted-foreground truncate mt-0.5">
-                                {lastMsg.senderId === proUserId
-                                  ? lang === "fr"
-                                    ? "Vous : "
-                                    : "You: "
-                                  : ""}
+                                {lastMsg.senderId === proUserId ? dl.you : ""}
                                 {lastMsg.text}
                               </p>
                             )}
@@ -1056,9 +1856,7 @@ export function ProDashboard() {
                 <div className="flex items-center gap-2">
                   <FileText className="h-4 w-4 text-primary" />
                   <h2 className="font-display font-bold text-base text-foreground">
-                    {lang === "fr"
-                      ? "Documents & Factures"
-                      : "Documents & Invoices"}
+                    {dl.docsTitle}
                   </h2>
                 </div>
                 <Button
@@ -1068,7 +1866,7 @@ export function ProDashboard() {
                   onClick={() => void navigate({ to: "/documents" })}
                   data-ocid="pro.documents.see_all_button"
                 >
-                  {lang === "fr" ? "Voir tout" : "See all"}
+                  {t.common.seeAll}
                 </Button>
               </div>
               <div className="grid grid-cols-3 divide-x divide-border border-b border-border">
@@ -1084,9 +1882,7 @@ export function ProDashboard() {
                   <p className="text-xl font-bold text-secondary">
                     {myDocs.filter((d) => d.status === "signed").length}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {lang === "fr" ? "Signés" : "Signed"}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{dl.signed}</p>
                 </div>
                 <div className="p-4 text-center">
                   <p className="text-sm font-bold text-primary">
@@ -1095,9 +1891,7 @@ export function ProDashboard() {
                       currency: "EUR",
                     }).format(totalInvoiced)}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {lang === "fr" ? "Facturé" : "Invoiced"}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{dl.invoiced}</p>
                 </div>
               </div>
               {myDocs.length === 0 ? (
@@ -1113,7 +1907,7 @@ export function ProDashboard() {
                     data-ocid="pro.documents.create_button"
                   >
                     <FileText className="h-3.5 w-3.5" />
-                    {lang === "fr" ? "Créer un document" : "Create document"}
+                    {dl.createDoc}
                   </Button>
                 </div>
               ) : (
@@ -1172,9 +1966,7 @@ export function ProDashboard() {
                 <div className="flex items-center gap-2">
                   <Award className="h-4 w-4 text-secondary" />
                   <h2 className="font-display font-bold text-base text-foreground">
-                    {lang === "fr"
-                      ? "NFT & Preuves de travaux"
-                      : "NFT Proof Collection"}
+                    {dl.nftTitle}
                   </h2>
                   <Badge className="bg-secondary/15 text-secondary border-secondary/30 text-xs">
                     ICRC7
@@ -1189,7 +1981,7 @@ export function ProDashboard() {
                 >
                   <Link to="/nfts">
                     <ExternalLink className="h-3 w-3" />
-                    {lang === "fr" ? "Galerie complète" : "Full gallery"}
+                    {dl.fullGallery}
                   </Link>
                 </Button>
               </div>
@@ -1201,16 +1993,14 @@ export function ProDashboard() {
                 >
                   <p className="text-3xl mb-3">🖼️</p>
                   <p className="text-sm text-muted-foreground mb-3">
-                    {lang === "fr"
-                      ? "Aucun NFT de preuve pour l'instant. Mintez des photos depuis les jalons de vos missions."
-                      : "No proof NFTs yet. Mint photos from your task milestones."}
+                    {dl.noNFTs}
                   </p>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => void navigate({ to: "/marketplace" })}
                   >
-                    {lang === "fr" ? "Voir les missions" : "View tasks"}
+                    {dl.viewTasks}
                   </Button>
                 </div>
               ) : (
@@ -1264,45 +2054,29 @@ export function ProDashboard() {
                 <div className="flex items-center gap-2">
                   <Bot className="h-4 w-4 text-primary" />
                   <h2 className="font-display font-bold text-base text-foreground">
-                    {lang === "fr"
-                      ? "Assistant IA TaskVoilà"
-                      : "TaskVoilà AI Assistant"}
+                    {dl.aiTitle}
                   </h2>
                   {mySub?.aiAssistantEnabled ? (
                     <Badge className="bg-secondary/15 text-secondary border-secondary/30 text-xs gap-1">
                       <Sparkles className="h-2.5 w-2.5" />
-                      {lang === "fr" ? "Actif" : "Active"}
+                      {dl.subActive}
                     </Badge>
                   ) : (
                     <Badge className="bg-muted text-muted-foreground border-border text-xs">
-                      {lang === "fr" ? "Inactif" : "Inactive"}
+                      {dl.inactive}
                     </Badge>
                   )}
                 </div>
                 {mySub?.aiAssistantEnabled !== undefined && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground">
-                      {mySub.aiAssistantEnabled
-                        ? lang === "fr"
-                          ? "ON"
-                          : "ON"
-                        : lang === "fr"
-                          ? "OFF"
-                          : "OFF"}
+                      {mySub.aiAssistantEnabled ? "ON" : "OFF"}
                     </span>
                     <Switch
                       checked={mySub.aiAssistantEnabled}
                       onCheckedChange={(val) => {
                         toggleAiAssistant(proUserId, val);
-                        toast.success(
-                          val
-                            ? lang === "fr"
-                              ? "Assistant IA activé"
-                              : "AI Assistant enabled"
-                            : lang === "fr"
-                              ? "Assistant IA désactivé"
-                              : "AI Assistant disabled",
-                        );
+                        toast.success(val ? dl.aiEnabled : dl.aiDisabled);
                       }}
                       data-ocid="pro.ai.toggle"
                     />
@@ -1319,14 +2093,10 @@ export function ProDashboard() {
                     <Bot className="h-7 w-7 text-primary" />
                   </div>
                   <h3 className="font-display font-bold text-foreground mb-2">
-                    {lang === "fr"
-                      ? "Assistant IA disponible avec Pro Équipe"
-                      : "AI Assistant available with Pro Team"}
+                    {dl.aiUpgradeTitle}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4 max-w-sm mx-auto">
-                    {lang === "fr"
-                      ? "Réponses automatiques, gestion de RDV, suggestions d'offres et transcription d'appels inclus."
-                      : "Automatic replies, appointment management, offer suggestions and call transcription included."}
+                    {dl.aiUpgradeDesc}
                   </p>
                   <Button
                     className="bg-primary hover:bg-primary/90 text-white gap-2"
@@ -1335,9 +2105,7 @@ export function ProDashboard() {
                   >
                     <Link to="/subscription">
                       <Sparkles className="h-4 w-4" />
-                      {lang === "fr"
-                        ? "Passer à Pro Équipe"
-                        : "Upgrade to Pro Team"}
+                      {dl.aiUpgradeBtn}
                     </Link>
                   </Button>
                 </div>
@@ -1377,9 +2145,7 @@ export function ProDashboard() {
                         </div>
                         <div className="bg-muted/60 border border-border px-3 py-2 rounded-2xl rounded-tl-sm">
                           <span className="text-muted-foreground text-sm animate-pulse">
-                            {lang === "fr"
-                              ? "En train de réfléchir..."
-                              : "Thinking..."}
+                            {dl.aiThinking}
                           </span>
                         </div>
                       </div>
@@ -1398,11 +2164,7 @@ export function ProDashboard() {
                           handleSendAI();
                         }
                       }}
-                      placeholder={
-                        lang === "fr"
-                          ? "Posez une question à votre assistant..."
-                          : "Ask your assistant a question..."
-                      }
+                      placeholder={dl.aiPlaceholder}
                       className="h-9 text-sm"
                       data-ocid="pro.ai.input"
                     />
@@ -1431,12 +2193,10 @@ export function ProDashboard() {
                   </div>
                   <div>
                     <h2 className="font-display font-bold text-lg text-foreground">
-                      {lang === "fr" ? "Mon abonnement" : "My subscription"}
+                      {dl.mySubscription}
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                      {lang === "fr"
-                        ? "Plan actuel et renouvellement"
-                        : "Current plan and renewal"}
+                      {dl.subPlanNote}
                     </p>
                   </div>
                 </div>
@@ -1447,9 +2207,7 @@ export function ProDashboard() {
                   asChild
                   data-ocid="pro.subscription.change.button"
                 >
-                  <Link to="/subscription">
-                    {lang === "fr" ? "Changer de plan" : "Change plan"}
-                  </Link>
+                  <Link to="/subscription">{dl.changePlan}</Link>
                 </Button>
               </div>
 
@@ -1460,31 +2218,19 @@ export function ProDashboard() {
                       <div className="flex items-center gap-2 mb-1">
                         <Badge className="bg-blue-100 text-blue-700 border-blue-200 font-semibold">
                           {mySub.plan === "team"
-                            ? lang === "fr"
-                              ? "Pro Équipe"
-                              : "Pro Team"
+                            ? dl.planTeam
                             : mySub.plan === "enterprise"
-                              ? lang === "fr"
-                                ? "Grand Groupe"
-                                : "Enterprise"
-                              : lang === "fr"
-                                ? "Indépendant"
-                                : "Solo"}
+                              ? dl.planEnterprise
+                              : dl.planSolo}
                         </Badge>
                         <Badge
                           className={`text-xs ${mySub.status === "active" ? "bg-secondary/15 text-secondary border-secondary/30" : "bg-amber-100 text-amber-700 border-amber-200"}`}
                         >
                           {mySub.status === "active"
-                            ? lang === "fr"
-                              ? "Actif"
-                              : "Active"
+                            ? dl.subActive
                             : mySub.status === "trial"
-                              ? lang === "fr"
-                                ? "Essai"
-                                : "Trial"
-                              : lang === "fr"
-                                ? "Annulé"
-                                : "Cancelled"}
+                              ? dl.subTrial
+                              : dl.subCancelled}
                         </Badge>
                       </div>
                       <p className="text-sm text-foreground font-bold">
@@ -1496,7 +2242,7 @@ export function ProDashboard() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="p-4 rounded-xl bg-muted/30 border border-border">
                       <p className="text-xs text-muted-foreground mb-1">
-                        {lang === "fr" ? "Démarré le" : "Started"}
+                        {dl.startedOn}
                       </p>
                       <p className="font-semibold text-sm text-foreground">
                         {new Date(mySub.startedAt).toLocaleDateString(
@@ -1506,7 +2252,7 @@ export function ProDashboard() {
                     </div>
                     <div className="p-4 rounded-xl bg-muted/30 border border-border">
                       <p className="text-xs text-muted-foreground mb-1">
-                        {lang === "fr" ? "Renouvellement le" : "Renews on"}
+                        {dl.renewsOn}
                       </p>
                       <p className="font-semibold text-sm text-foreground">
                         {new Date(mySub.renewsAt).toLocaleDateString(numLocale)}
@@ -1520,38 +2266,28 @@ export function ProDashboard() {
                         {dl.tabAI}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {lang === "fr"
-                          ? "Inclus dans Pro Équipe"
-                          : "Included in Pro Team"}
+                        {dl.aiIncludedIn}
                       </p>
                     </div>
                     <Badge
                       className={`${mySub.aiAssistantEnabled ? "bg-secondary/15 text-secondary border-secondary/30" : "bg-muted text-muted-foreground border-border"}`}
                     >
                       {mySub.aiAssistantEnabled
-                        ? lang === "fr"
-                          ? "Activé"
-                          : "Enabled"
-                        : lang === "fr"
-                          ? "Désactivé"
-                          : "Disabled"}
+                        ? dl.aiActivated
+                        : dl.aiDeactivated}
                     </Badge>
                   </div>
                 </div>
               ) : (
                 <div className="text-center py-8">
                   <p className="text-muted-foreground text-sm mb-4">
-                    {lang === "fr"
-                      ? "Vous n'avez pas d'abonnement actif."
-                      : "You don't have an active subscription."}
+                    {dl.noSubscription}
                   </p>
                   <Button
                     className="bg-primary hover:bg-primary/90 text-white gap-2"
                     asChild
                   >
-                    <Link to="/subscription">
-                      {lang === "fr" ? "Voir les plans" : "View plans"}
-                    </Link>
+                    <Link to="/subscription">{dl.viewPlans}</Link>
                   </Button>
                 </div>
               )}
@@ -1574,19 +2310,7 @@ export function ProDashboard() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h2 className="font-display font-bold text-lg text-foreground">
-                  {lang === "fr"
-                    ? "Mes ru00e9servations"
-                    : lang === "de"
-                      ? "Meine Buchungen"
-                      : lang === "es"
-                        ? "Mis reservas"
-                        : lang === "it"
-                          ? "Le mie prenotazioni"
-                          : lang === "pt"
-                            ? "As minhas reservas"
-                            : lang === "nl"
-                              ? "Mijn boekingen"
-                              : "My Bookings"}
+                  {dl.tabBookings}
                 </h2>
                 <Button
                   size="sm"
@@ -1596,8 +2320,8 @@ export function ProDashboard() {
                   data-ocid="pro.schedule.secondary_button"
                 >
                   <Calendar className="h-3.5 w-3.5" />
-                  {lang === "fr"
-                    ? "Gu00e9rer mon agenda"
+                  {lang === "fr" || lang === "lu"
+                    ? "Gérer mon agenda"
                     : lang === "de"
                       ? "Terminplan verwalten"
                       : lang === "es"
@@ -1605,7 +2329,7 @@ export function ProDashboard() {
                         : lang === "it"
                           ? "Gestisci calendario"
                           : lang === "pt"
-                            ? "Gerir calendu00e1rio"
+                            ? "Gerir calendário"
                             : lang === "nl"
                               ? "Agenda beheren"
                               : "Manage schedule"}
@@ -1618,9 +2342,7 @@ export function ProDashboard() {
                 >
                   <p className="text-3xl mb-3">ud83dudcc5</p>
                   <p className="text-sm text-muted-foreground">
-                    {lang === "fr"
-                      ? "Aucune ru00e9servation pour l'instant."
-                      : "No bookings yet."}
+                    {dl.noBookings}
                   </p>
                 </div>
               ) : (
@@ -1637,15 +2359,12 @@ export function ProDashboard() {
                       cancelled: "bg-gray-100 text-gray-500 border-gray-200",
                     };
                     const statusLabels: Record<string, string> = {
-                      pending: lang === "fr" ? "En attente" : "Pending",
-                      accepted: lang === "fr" ? "Acceptu00e9e" : "Accepted",
-                      declined: lang === "fr" ? "Refusu00e9e" : "Declined",
-                      counter_proposed:
-                        lang === "fr"
-                          ? "Contre-proposition"
-                          : "Counter-proposal",
-                      confirmed: lang === "fr" ? "Confirmu00e9e" : "Confirmed",
-                      cancelled: lang === "fr" ? "Annulu00e9e" : "Cancelled",
+                      pending: dl.bookingStatusPending,
+                      accepted: dl.bookingStatusAccepted,
+                      declined: dl.bookingStatusDeclined,
+                      counter_proposed: dl.bookingStatusCounterProposed,
+                      confirmed: dl.bookingStatusConfirmed,
+                      cancelled: dl.bookingStatusCancelled,
                     };
                     return (
                       <div
@@ -1679,13 +2398,11 @@ export function ProDashboard() {
                               className="h-7 text-xs bg-green-600 hover:bg-green-700 text-white"
                               onClick={() => {
                                 respondToProBooking(booking.id, "accepted");
-                                toast.success(
-                                  lang === "fr" ? "Acceptée !" : "Accepted!",
-                                );
+                                toast.success(dl.acceptedBookingToast);
                               }}
                               data-ocid={`pro.bookings.accept.confirm_button.${i + 1}`}
                             >
-                              {lang === "fr" ? "Accepter" : "Accept"}
+                              {dl.acceptBooking}
                             </Button>
                             <Button
                               size="sm"
@@ -1699,15 +2416,13 @@ export function ProDashboard() {
                               }
                               data-ocid={`pro.bookings.detail.button.${i + 1}`}
                             >
-                              {lang === "fr" ? "Du00e9tails" : "Details"}
+                              {dl.detailsBtn}
                             </Button>
                           </div>
                         )}
                         {booking.status === "counter_proposed" && (
                           <p className="text-xs text-muted-foreground mt-2 italic">
-                            {lang === "fr"
-                              ? "En attente de confirmation du client"
-                              : "Awaiting client confirmation"}
+                            {dl.awaitingClientConfirm}
                           </p>
                         )}
                       </div>
@@ -1826,7 +2541,7 @@ function ProCountrySection({ lang }: { lang: string }) {
             </div>
           ) : (
             <p className="text-sm text-muted-foreground">
-              {lang === "fr"
+              {lang === "fr" || lang === "lu"
                 ? "Aucun pays sélectionné."
                 : "No country selected."}
             </p>
@@ -1847,6 +2562,7 @@ function ProCountrySection({ lang }: { lang: string }) {
 // ─── Profile Edit Tab ─────────────────────────────────────────────────────────
 
 function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
+  const dl = DASH_PRO_L[lang] ?? DASH_PRO_L.en;
   const { getProfile, setAvatar, setCover, removeAvatar, removeCover } =
     useProfileStore();
   const images = getProfile(userId);
@@ -1890,12 +2606,8 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
     const file = e.target.files?.[0];
     if (!file) return;
     const uploadResult = validateUpload(file, {
-      errorSize:
-        lang === "fr" ? "Le fichier dépasse 10 Mo." : "File exceeds 10 MB.",
-      errorType:
-        lang === "fr"
-          ? "Format non autorisé. Utilisez JPG, PNG ou WebP."
-          : "Format not allowed. Use JPG, PNG or WebP.",
+      errorSize: dl.fileTooLarge,
+      errorType: dl.fileFormat,
     });
     if (!uploadResult.valid) {
       toast.error(uploadResult.error);
@@ -1919,15 +2631,9 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
         <ShieldAlert className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" />
         <div>
           <p className="text-sm font-semibold text-amber-800 mb-1">
-            {lang === "fr"
-              ? "⚠️ Ne partagez jamais vos coordonnées sur votre profil"
-              : "⚠️ Never share your contact details on your profile"}
+            {dl.warningTitle}
           </p>
-          <p className="text-xs text-amber-700">
-            {lang === "fr"
-              ? "Numéros de téléphone, adresses email et liens externes sont interdits sur les profils. Toute communication doit passer par la messagerie TaskVoilà. Les profils contenant ces informations seront automatiquement signalés et suspendus."
-              : "Phone numbers, email addresses and external links are not allowed on profiles. All communication must go through TaskVoilà messaging. Profiles containing this information will be automatically flagged and suspended."}
-          </p>
+          <p className="text-xs text-amber-700">{dl.warningDesc}</p>
         </div>
       </div>
 
@@ -1936,12 +2642,10 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
         <div className="p-5 border-b border-border">
           <h3 className="font-display font-bold text-base text-foreground flex items-center gap-2">
             <Image className="h-4 w-4 text-primary" />
-            {lang === "fr" ? "Image de couverture" : "Cover image"}
+            {dl.coverImageTitle}
           </h3>
           <p className="text-xs text-muted-foreground mt-1">
-            {lang === "fr"
-              ? "Représente votre enseigne ou vos réalisations. Format JPG/PNG, recommandé 1200×300px."
-              : "Represents your brand or achievements. JPG/PNG format, recommended 1200×300px."}
+            {dl.coverImageHint}
           </p>
         </div>
         <div className="p-5">
@@ -1955,9 +2659,7 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-white/70 text-sm">
-                  {lang === "fr" ? "Aucune image" : "No image"}
-                </p>
+                <p className="text-white/70 text-sm">{dl.noImage}</p>
               </div>
             )}
           </div>
@@ -1972,7 +2674,7 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
               />
               <span className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors cursor-pointer">
                 <Camera className="h-4 w-4" />
-                {lang === "fr" ? "Changer la photo" : "Change photo"}
+                {dl.changePhoto}
               </span>
             </label>
             {images.coverDataUrl && (
@@ -1984,7 +2686,7 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
                 data-ocid="pro.cover.delete_button"
               >
                 <Trash2 className="h-3.5 w-3.5" />
-                {lang === "fr" ? "Supprimer" : "Remove"}
+                {dl.removePhoto}
               </Button>
             )}
           </div>
@@ -1996,12 +2698,10 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
         <div className="p-5 border-b border-border">
           <h3 className="font-display font-bold text-base text-foreground flex items-center gap-2">
             <User className="h-4 w-4 text-primary" />
-            {lang === "fr" ? "Photo de profil" : "Profile photo"}
+            {dl.profilePhotoTitle}
           </h3>
           <p className="text-xs text-muted-foreground mt-1">
-            {lang === "fr"
-              ? "Votre photo s'affiche en avant sur votre profil. Format JPG/PNG, recommandé 400×400px."
-              : "Your photo appears in front on your profile. JPG/PNG format, recommended 400×400px."}
+            {dl.profilePhotoHint}
           </p>
         </div>
         <div className="p-5">
@@ -2022,15 +2722,9 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
             </div>
             <div>
               <p className="text-sm font-medium text-foreground mb-1">
-                {lang === "fr"
-                  ? "Cette photo sera visible par tous les utilisateurs."
-                  : "This photo will be visible to all users."}
+                {dl.photoVisibility}
               </p>
-              <p className="text-xs text-muted-foreground">
-                {lang === "fr"
-                  ? "Utilisez une vraie photo professionnelle pour plus de confiance."
-                  : "Use a real professional photo for more trust."}
-              </p>
+              <p className="text-xs text-muted-foreground">{dl.photoTrust}</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -2044,7 +2738,7 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
               />
               <span className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors cursor-pointer">
                 <Camera className="h-4 w-4" />
-                {lang === "fr" ? "Changer la photo" : "Change photo"}
+                {dl.changePhoto}
               </span>
             </label>
             {images.avatarDataUrl && (
@@ -2056,7 +2750,7 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
                 data-ocid="pro.avatar.delete_button"
               >
                 <Trash2 className="h-3.5 w-3.5" />
-                {lang === "fr" ? "Supprimer" : "Remove"}
+                {dl.removePhoto}
               </Button>
             )}
           </div>
@@ -2068,13 +2762,9 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
         <div className="p-5 border-b border-border">
           <h3 className="font-display font-bold text-base text-foreground flex items-center gap-2">
             <PenLine className="h-4 w-4 text-primary" />
-            {lang === "fr" ? "Description & bio" : "Description & bio"}
+            {dl.descTitle}
           </h3>
-          <p className="text-xs text-muted-foreground mt-1">
-            {lang === "fr"
-              ? "Décrivez vos services. ⚠️ Aucun numéro, email ou lien externe autorisé."
-              : "Describe your services. ⚠️ No phone numbers, emails or external links allowed."}
-          </p>
+          <p className="text-xs text-muted-foreground mt-1">{dl.descHint}</p>
         </div>
         <div className="p-5">
           <textarea
@@ -2083,11 +2773,7 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
                 ? "border-destructive/50 focus:ring-destructive/30 bg-destructive/5"
                 : "border-border focus:ring-primary/30"
             }`}
-            placeholder={
-              lang === "fr"
-                ? "Ex: Expert en plomberie depuis 15 ans, je réalise tous types de travaux de dépannage et rénovation..."
-                : "Ex: Expert in plumbing for 15 years, I carry out all types of emergency repairs and renovations..."
-            }
+            placeholder={dl.descPlaceholder}
             value={descValue}
             onChange={(e) => handleDescChange(e.target.value)}
             data-ocid="pro.description.textarea"
@@ -2108,9 +2794,7 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
           {descSaved && !descError && (
             <div className="mt-2 flex items-center gap-2 text-xs text-secondary bg-secondary/10 rounded-lg px-3 py-2">
               <CheckCircle className="h-3.5 w-3.5" />
-              {lang === "fr"
-                ? "Description sauvegardée !"
-                : "Description saved!"}
+              {dl.descSavedMsg}
             </div>
           )}
           <Button
@@ -2120,7 +2804,7 @@ function ProfileEditTab({ lang, userId }: { lang: string; userId: string }) {
             onClick={handleDescSave}
             data-ocid="pro.description.save_button"
           >
-            {lang === "fr" ? "Sauvegarder" : "Save"}
+            {dl.saveBtn}
           </Button>
         </div>
       </div>

@@ -61,6 +61,13 @@ export function StripeCancelPage() {
       retry: "Opnieuw proberen",
       back: "Terug naar dashboard",
     },
+    lu: {
+      title: "Paiement annulé",
+      subtitle:
+        "Votre paiement a été annulé. Vous pouvez réessayer à tout moment.",
+      retry: "Réessayer le paiement",
+      back: "Retour au tableau de bord",
+    },
     el: {
       title: "Payment cancelled",
       subtitle: "Your payment was cancelled.",

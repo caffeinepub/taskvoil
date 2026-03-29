@@ -29,6 +29,7 @@ import {
   useDocumentStore,
 } from "@/lib/document-store";
 import { LOCALE_MAP, useTranslation } from "@/lib/i18n";
+import type { TranslationKeys } from "@/lib/translations/fr";
 import { useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
@@ -113,34 +114,28 @@ function docTypeIcon(docType: DocType) {
 
 // ── PDF generation (browser-native print-to-PDF) ─────────────────────────────
 
-function generatePDF(doc: DemoDocument, lang: string) {
+function generatePDF(doc: DemoDocument, lang: string, t: TranslationKeys) {
   const tva = calcTVA(doc.amount, doc.vatRate);
   const ttc = calcTTC(doc.amount, doc.vatRate);
 
   const docTypeLabel =
     doc.docType === "devis"
-      ? lang === "fr"
-        ? "DEVIS"
-        : "QUOTE"
+      ? t.ui.uiQuoteUpper
       : doc.docType === "bonPourAccord"
-        ? lang === "fr"
-          ? "BON POUR ACCORD"
-          : "AGREEMENT"
-        : lang === "fr"
-          ? "FACTURE"
-          : "INVOICE";
+        ? t.ui.uiAgreementUpper
+        : t.ui.uiInvoiceUpper;
 
   const signatureBlock =
     doc.status === "signed" && doc.signedAt
       ? `<div style="background:#f0fff8;border:1.5px solid #38a169;border-radius:6px;padding:14px 18px;margin:18px 0;">
           <div style="color:#147846;font-weight:700;font-size:13px;margin-bottom:6px;">
-            ✓ ${lang === "fr" ? "Document signé électroniquement" : "Electronically signed document"}
+            ✓ ${t.ui.uiElecSigned}
           </div>
           <div style="color:#2d6a4f;font-size:11px;line-height:1.7;">
-            ${lang === "fr" ? "Signé par" : "Signed by"}: <strong>${doc.signerName}</strong><br/>
-            ${lang === "fr" ? "Date" : "Date"}: ${new Date(doc.signedAt).toLocaleDateString()}<br/>
+            ${t.ui.uiSignedBy}: <strong>${doc.signerName}</strong><br/>
+            ${t.ui.uiDate}: ${new Date(doc.signedAt).toLocaleDateString()}<br/>
             Hash: <code style="font-size:9px;word-break:break-all;">${doc.signatureHash ?? ""}</code><br/>
-            <em>${lang === "fr" ? "Signature enregistrée on-chain sur Internet Computer" : "Signature recorded on-chain on Internet Computer"}</em>
+            <em>${t.ui.uiSigOnChain}</em>
           </div>
         </div>`
       : "";
@@ -179,27 +174,27 @@ function generatePDF(doc: DemoDocument, lang: string) {
   <div class="header">
     <div class="header-left">
       <div class="brand">TaskVoilà</div>
-      <div class="tagline">${lang === "fr" ? "Plateforme de services locaux" : "Local services platform"}</div>
+      <div class="tagline">${t.ui.uiLocalServices}</div>
     </div>
     <div class="header-right">
       <div class="doc-type">${docTypeLabel}</div>
       <div class="doc-meta">
         ${doc.docNumber}<br/>
-        ${lang === "fr" ? "Date" : "Date"}: ${new Date(doc.createdAt).toLocaleDateString()}
+        ${t.ui.uiDate}: ${new Date(doc.createdAt).toLocaleDateString()}
       </div>
     </div>
   </div>
   <div class="body">
     <div class="parties">
       <div class="party">
-        <div class="party-label">${lang === "fr" ? "Client" : "Client"}</div>
+        <div class="party-label">${t.ui.uiClient}</div>
         <div class="party-detail">
           ${doc.clientName}<br/>
           ${doc.clientEmail}
         </div>
       </div>
       <div class="party">
-        <div class="party-label">${lang === "fr" ? "Prestataire" : "Service Provider"}</div>
+        <div class="party-label">${t.ui.uiServiceProvider}</div>
         <div class="party-detail">
           ${doc.proCompany}<br/>
           ${doc.proName}<br/>
@@ -208,21 +203,21 @@ function generatePDF(doc: DemoDocument, lang: string) {
       </div>
     </div>
     <hr/>
-    <div class="section-title">${lang === "fr" ? "Mission" : "Task"}</div>
+    <div class="section-title">${t.ui.uiMission}</div>
     <div class="section-body">${doc.missionTitle}</div>
-    <div class="section-title">${lang === "fr" ? "Description" : "Description"}</div>
+    <div class="section-title">${t.ui.uiDescription}</div>
     <div class="section-body">${doc.description}</div>
     <hr/>
-    <div class="section-title">${lang === "fr" ? "Détail du montant" : "Amount breakdown"}</div>
+    <div class="section-title">${t.ui.uiAmountBreakdown}</div>
     <table class="amount-table">
-      <tr><td>${lang === "fr" ? "Montant HT" : "Amount excl. VAT"}</td><td>${formatCurrency(doc.amount)}</td></tr>
-      <tr><td>${lang === "fr" ? "TVA" : "VAT"} (${doc.vatRate}%)</td><td>${formatCurrency(tva)}</td></tr>
-      <tr><td>${lang === "fr" ? "Total TTC" : "Total incl. VAT"}</td><td>${formatCurrency(ttc)}</td></tr>
+      <tr><td>${t.ui.uiAmountExclVAT}</td><td>${formatCurrency(doc.amount)}</td></tr>
+      <tr><td>${t.ui.uiVAT} (${doc.vatRate}%)</td><td>${formatCurrency(tva)}</td></tr>
+      <tr><td>${t.ui.uiTotalInclVAT}</td><td>${formatCurrency(ttc)}</td></tr>
     </table>
     ${signatureBlock}
     <div class="footer">
-      TaskVoilà — ${lang === "fr" ? "Plateforme de services locaux" : "Local services platform"} — taskvoila.com<br/>
-      ${lang === "fr" ? "Document généré automatiquement via TaskVoilà" : "Automatically generated via TaskVoilà"}
+      TaskVoilà — ${t.ui.uiLocalServices} — taskvoila.com<br/>
+      ${t.ui.uiDocGenerated}
     </div>
   </div>
 </body>
@@ -278,9 +273,7 @@ function DocumentViewerModal({
                   TaskVoilà
                 </p>
                 <p className="text-white/70 text-xs mt-0.5">
-                  {lang === "fr"
-                    ? "Plateforme de services locaux"
-                    : "Local services platform"}
+                  {t.ui.uiLocalServices}
                 </p>
               </div>
               <div className="text-right">
@@ -305,7 +298,7 @@ function DocumentViewerModal({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-                  {lang === "fr" ? "Client" : "Client"}
+                  {t.ui.uiClient}
                 </p>
                 <p className="font-semibold text-foreground">
                   {doc.clientName}
@@ -316,7 +309,7 @@ function DocumentViewerModal({
               </div>
               <div>
                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-                  {lang === "fr" ? "Prestataire" : "Service Provider"}
+                  {t.ui.uiServiceProvider}
                 </p>
                 <p className="font-semibold text-foreground">
                   {doc.proCompany}
@@ -331,7 +324,7 @@ function DocumentViewerModal({
             {/* Mission */}
             <div>
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
-                {lang === "fr" ? "Mission" : "Task"}
+                {t.ui.uiMission}
               </p>
               <p className="font-semibold text-foreground">
                 {doc.missionTitle}
@@ -341,7 +334,7 @@ function DocumentViewerModal({
             {/* Description */}
             <div>
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
-                {lang === "fr" ? "Description" : "Description"}
+                {t.ui.uiDescription}
               </p>
               <p className="text-sm text-foreground leading-relaxed">
                 {doc.description}
@@ -353,7 +346,7 @@ function DocumentViewerModal({
             {/* Amount table */}
             <div>
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">
-                {lang === "fr" ? "Détail du montant" : "Amount breakdown"}
+                {t.ui.uiAmountBreakdown}
               </p>
               <div className="rounded-lg border border-border overflow-hidden">
                 <div className="flex justify-between p-3 border-b border-border bg-muted/30">
@@ -439,7 +432,7 @@ function DocumentViewerModal({
           </Button>
           <Button
             className="flex-1 bg-primary hover:bg-primary/90 text-white gap-2"
-            onClick={() => generatePDF(doc, lang)}
+            onClick={() => generatePDF(doc, lang, t)}
             data-ocid="documents.viewer.download"
           >
             <Download className="h-4 w-4" />
@@ -474,7 +467,7 @@ function SignatureModal({ doc, open, onClose, onSigned }: SignatureModalProps) {
   const ttc = calcTTC(doc.amount, doc.vatRate);
   const signerName = currentUser
     ? `${currentUser!.firstName} ${currentUser!.lastName}`
-    : "Jean Dupont";
+    : "";
 
   function handleSign() {
     if (!confirmed || !doc) return;
@@ -612,7 +605,7 @@ function SignatureModal({ doc, open, onClose, onSigned }: SignatureModalProps) {
                 {signing ? (
                   <span className="flex items-center gap-2">
                     <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                    {lang === "fr" ? "Signature..." : "Signing..."}
+                    {t.ui.uiSigning}
                   </span>
                 ) : (
                   <>
@@ -643,7 +636,7 @@ export function CreateDocumentModal({
   defaultMissionId,
 }: CreateDocumentModalProps) {
   const { t, lang } = useTranslation();
-  const { createDocument, updateDocumentStatus } = useDocumentStore();
+  const { createDocument } = useDocumentStore();
   const { currentUser } = useAuthStore();
   const { missions } = useMissionStore();
 
@@ -668,37 +661,24 @@ export function CreateDocumentModal({
         docType: form.docType,
         missionId: Number(form.missionId),
         missionTitle: mission?.title ?? "",
-        clientId: "client_1",
-        clientName: "Jean Dupont",
-        clientEmail: "jean.dupont@example.com",
-        proId: currentUser ? `pro_${currentUser.id}` : "pro_1",
+        clientId: currentUser ? String(currentUser.id) : "",
+        clientName: currentUser?.pseudo ?? currentUser?.firstName ?? "",
+        clientEmail: currentUser?.email ?? "",
+        proId: currentUser ? String(currentUser.id) : "",
         proName: currentUser
           ? `${currentUser!.firstName} ${currentUser!.lastName}`
-          : "Marc Dubois",
-        proCompany: "Plomberie Dubois",
-        proEmail: "marc.dubois@plomberie-dubois.fr",
+          : "",
+        proCompany: currentUser?.companyName ?? "",
+        proEmail: currentUser?.email ?? "",
         amount: Number(form.amount),
         vatRate: Number(form.vatRate),
         description: form.description,
       });
 
-      // Auto-send for demo
-      if (form.docType !== "devis") {
-        updateDocumentStatus(newDoc.id, "sent");
-      }
-
       setCreating(false);
-      toast.success(
-        lang === "fr"
-          ? "Document créé avec succès !"
-          : "Document created successfully!",
-        {
-          description:
-            lang === "fr"
-              ? `${t.documents.docType[form.docType]} #${newDoc.docNumber}`
-              : `${t.documents.docType[form.docType]} #${newDoc.docNumber}`,
-        },
-      );
+      toast.success(t.ui.uiDocCreated, {
+        description: `${t.documents.docType[form.docType]} #${newDoc.docNumber}`,
+      });
       setForm({
         docType: "devis",
         missionId: "",
@@ -757,11 +737,7 @@ export function CreateDocumentModal({
               }
             >
               <SelectTrigger data-ocid="documents.create.mission_select">
-                <SelectValue
-                  placeholder={
-                    lang === "fr" ? "Choisir une mission" : "Choose a task"
-                  }
-                />
+                <SelectValue placeholder={t.ui.uiChooseTask} />
               </SelectTrigger>
               <SelectContent>
                 {missions.length === 0 ? (
@@ -827,11 +803,7 @@ export function CreateDocumentModal({
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, description: e.target.value }))
               }
-              placeholder={
-                lang === "fr"
-                  ? "Détaillez les prestations incluses..."
-                  : "Detail the services included..."
-              }
+              placeholder={t.ui.uiServicesPlaceholder}
               data-ocid="documents.create.description_textarea"
             />
           </div>
@@ -1030,7 +1002,7 @@ export function DocumentsPage() {
   const [createOpen, setCreateOpen] = useState(false);
 
   const userRole = currentUser?.role ?? "client";
-  const userId = userRole === "pro" ? "pro_1" : "client_1";
+  const userId = currentUser ? String(currentUser.id) : "";
   const roleForQuery: "client" | "pro" = userRole === "pro" ? "pro" : "client";
 
   const myDocs =
@@ -1133,10 +1105,7 @@ export function DocumentsPage() {
             </div>
             <div className="flex-1">
               <p className="font-semibold text-foreground text-sm">
-                {awaitingSignature.length}{" "}
-                {lang === "fr"
-                  ? "document(s) en attente de votre signature"
-                  : "document(s) awaiting your signature"}
+                {awaitingSignature.length} {t.ui.uiDocsAwaitingYourSig}
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
                 {t.documents.awaitingSignature}
@@ -1161,13 +1130,13 @@ export function DocumentsPage() {
               {myDocs.length}
             </p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              {lang === "fr" ? "Documents total" : "Total documents"}
+              {t.ui.uiDocsTotal}
             </p>
           </div>
           <div className="rounded-xl bg-white border border-border/50 card-shadow p-4">
             <p className="text-2xl font-bold text-secondary">{signedCount}</p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              {lang === "fr" ? "Signés" : "Signed"}
+              {t.ui.uiSignedPlural}
             </p>
           </div>
           <div className="rounded-xl bg-white border border-border/50 card-shadow p-4">
@@ -1175,7 +1144,7 @@ export function DocumentsPage() {
               {awaitingSignature.length}
             </p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              {lang === "fr" ? "En attente" : "Pending"}
+              {t.ui.uiPending}
             </p>
           </div>
           <div className="rounded-xl bg-white border border-border/50 card-shadow p-4">
@@ -1183,7 +1152,7 @@ export function DocumentsPage() {
               {formatCurrency(totalInvoiced)}
             </p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              {lang === "fr" ? "Facturé TTC" : "Invoiced incl. VAT"}
+              {t.ui.uiInvoicedVAT}
             </p>
           </div>
         </div>
@@ -1237,7 +1206,7 @@ export function DocumentsPage() {
                       userRole={roleForQuery}
                       onView={setViewerDoc}
                       onSign={setSignDoc}
-                      onDownload={(d) => generatePDF(d, lang)}
+                      onDownload={(d) => generatePDF(d, lang, t)}
                       index={i + 1}
                       lang={lang}
                     />
@@ -1263,11 +1232,7 @@ export function DocumentsPage() {
         onClose={() => setSignDoc(null)}
         onSigned={() => {
           setSignDoc(null);
-          toast.success(
-            lang === "fr"
-              ? "Document signé et enregistré on-chain !"
-              : "Document signed and recorded on-chain!",
-          );
+          toast.success(t.ui.uiDocSigned);
         }}
       />
 

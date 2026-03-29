@@ -156,19 +156,13 @@ function PaymentForm({
       });
       updateMissionStatus(String(taskId), "paid");
       setCardState("done");
-      toast.success(
-        lang === "fr" ? "Paiement confirmé !" : "Payment confirmed!",
-      );
+      toast.success(t.ui.uiPaymentConfirmed);
       setTimeout(() => {
         void navigate({ to: "/dashboard/client" });
       }, 2000);
     } catch (_err) {
       setCardState("error");
-      toast.error(
-        lang === "fr"
-          ? "Paiement échoué. Veuillez réessayer."
-          : "Payment failed. Please try again.",
-      );
+      toast.error(t.ui.uiPaymentFailed);
       setTimeout(() => setCardState("idle"), 2000);
     }
   }
@@ -192,11 +186,7 @@ function PaymentForm({
         promoCode: appliedPromo?.code,
       });
       updateMissionStatus(String(taskId), "paid");
-      toast.success(
-        lang === "fr"
-          ? "Paiement crypto confirmé !"
-          : "Crypto payment confirmed!",
-      );
+      toast.success(t.ui.uiCryptoPaymentConfirmed);
     }, 1500);
   }
 
@@ -224,12 +214,12 @@ function PaymentForm({
             <div className="flex-1">
               <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
                 <Lock className="h-5 w-5 text-primary" />
-                {lang === "fr" ? "Paiement sécurisé" : "Secure Payment"}
+                {t.ui.uiSecurePayment}
               </h1>
             </div>
             <Badge className="bg-primary/10 text-primary border-primary/20 gap-1.5">
               <Shield className="h-3.5 w-3.5" />
-              {lang === "fr" ? "🔒 Escrow TaskVoilà" : "🔒 TaskVoilà Escrow"}
+              {t.ui.uiEscrowLabel}
             </Badge>
           </div>
 
@@ -250,12 +240,10 @@ function PaymentForm({
                   <CheckCircle className="h-14 w-14 text-secondary mx-auto mb-3" />
                 </motion.div>
                 <h2 className="font-display text-xl font-bold text-foreground mb-2">
-                  {lang === "fr" ? "Paiement confirmé !" : "Payment confirmed!"}
+                  {t.ui.uiPaymentConfirmed}
                 </h2>
                 <p className="text-muted-foreground text-sm mb-4 max-w-sm mx-auto">
-                  {lang === "fr"
-                    ? "Les fonds sont maintenant bloqués en escrow et seront libérés à la validation de chaque jalon."
-                    : "Funds are now held in escrow and will be released upon validation of each milestone."}
+                  {t.ui.uiFundsEscrowDesc}
                 </p>
                 <Button
                   className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
@@ -267,7 +255,7 @@ function PaymentForm({
                   }
                   data-ocid="payment.view_mission_button"
                 >
-                  {lang === "fr" ? "Voir ma mission" : "View my task"}
+                  {t.ui.uiViewMyTask}
                 </Button>
               </motion.div>
             )}
@@ -284,7 +272,7 @@ function PaymentForm({
                       className="flex-1 data-[state=active]:bg-white"
                       data-ocid="payment.card_tab"
                     >
-                      💳 {lang === "fr" ? "Carte bancaire" : "Credit card"}
+                      💳 {t.ui.uiCreditCard}
                     </TabsTrigger>
                     <TabsTrigger
                       value="crypto"
@@ -314,14 +302,14 @@ function PaymentForm({
                           Pay
                         </span>
                         <span className="ml-auto text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                          {lang === "fr" ? "Sécurisé" : "Secured"} • SSL
+                          {t.ui.uiSecured} • SSL
                         </span>
                       </div>
 
                       {/* Card number */}
                       <div className="space-y-1.5">
                         <Label htmlFor="cardNumber" className="text-sm">
-                          {lang === "fr" ? "Numéro de carte" : "Card number"}
+                          {t.ui.uiCardNumber}
                         </Label>
                         <Input
                           id="cardNumber"
@@ -343,15 +331,11 @@ function PaymentForm({
                       {/* Cardholder */}
                       <div className="space-y-1.5">
                         <Label htmlFor="cardHolder" className="text-sm">
-                          {lang === "fr"
-                            ? "Nom du titulaire"
-                            : "Cardholder name"}
+                          {t.ui.uiCardholderName}
                         </Label>
                         <Input
                           id="cardHolder"
-                          placeholder={
-                            lang === "fr" ? "Jean Dupont" : "John Smith"
-                          }
+                          placeholder={""}
                           value={cardHolder}
                           onChange={(e) =>
                             setCardHolder(e.target.value.toUpperCase())
@@ -365,7 +349,7 @@ function PaymentForm({
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1.5">
                           <Label htmlFor="expiry" className="text-sm">
-                            {lang === "fr" ? "Expiration" : "Expiry"} (MM/AA)
+                            {t.ui.uiExpiry} (MM/AA)
                           </Label>
                           <Input
                             id="expiry"
@@ -417,9 +401,7 @@ function PaymentForm({
                           htmlFor="saveCard"
                           className="text-sm text-muted-foreground cursor-pointer"
                         >
-                          {lang === "fr"
-                            ? "Sauvegarder cette carte"
-                            : "Save this card"}
+                          {t.ui.uiSaveCard}
                         </label>
                       </div>
 
@@ -433,21 +415,14 @@ function PaymentForm({
                         {cardState === "loading" ? (
                           <>
                             <Loader2 className="h-4 w-4 animate-spin" />
-                            {lang === "fr"
-                              ? "Traitement en cours..."
-                              : "Processing..."}
+                            {t.ui.uiProcessing}
                           </>
                         ) : cardState === "error" ? (
-                          <>
-                            ❌{" "}
-                            {lang === "fr"
-                              ? "Échec, réessayer"
-                              : "Failed, retry"}
-                          </>
+                          <>❌ {t.ui.uiRetry}</>
                         ) : (
                           <>
                             <Lock className="h-4 w-4" />
-                            {lang === "fr" ? "Payer" : "Pay"} {total}€
+                            {t.ui.uiPay} {total}€
                           </>
                         )}
                       </Button>
@@ -472,9 +447,7 @@ function PaymentForm({
 
                       {/* Token selector */}
                       <div className="space-y-2">
-                        <Label className="text-sm">
-                          {lang === "fr" ? "Choisir le token" : "Select token"}
-                        </Label>
+                        <Label className="text-sm">{t.ui.uiSelectToken}</Label>
                         <div className="grid grid-cols-3 gap-2">
                           {(["icp", "btc", "usdc"] as CryptoToken[]).map(
                             (token) => (
@@ -499,9 +472,7 @@ function PaymentForm({
                       {/* Amount to send */}
                       <div className="bg-muted/40 rounded-xl p-4 space-y-1.5">
                         <p className="text-xs text-muted-foreground">
-                          {lang === "fr"
-                            ? "Montant exact à envoyer"
-                            : "Exact amount to send"}
+                          {t.ui.uiExactAmount}
                         </p>
                         <p className="text-2xl font-bold text-primary font-mono">
                           {formatCryptoAmount(total, selectedToken)}
@@ -514,9 +485,7 @@ function PaymentForm({
                       {/* Address + QR */}
                       <div className="space-y-3">
                         <Label className="text-sm">
-                          {lang === "fr"
-                            ? "Adresse de portefeuille"
-                            : "Wallet address"}
+                          {t.ui.uiWalletAddress}
                         </Label>
                         <div className="flex gap-2">
                           <Input
@@ -533,11 +502,7 @@ function PaymentForm({
                               void navigator.clipboard.writeText(
                                 CRYPTO_ADDRESSES[selectedToken],
                               );
-                              toast.success(
-                                lang === "fr"
-                                  ? "Adresse copiée !"
-                                  : "Address copied!",
-                              );
+                              toast.success(t.ui.uiAddressCopied);
                             }}
                             data-ocid="payment.copy_address_button"
                           >
@@ -570,16 +535,12 @@ function PaymentForm({
                         {cryptoState === "processing" ? (
                           <>
                             <Loader2 className="h-4 w-4 animate-spin" />
-                            {lang === "fr"
-                              ? "Vérification en cours..."
-                              : "Verifying..."}
+                            {t.ui.uiVerifying}
                           </>
                         ) : (
                           <>
                             <CheckCircle className="h-4 w-4" />
-                            {lang === "fr"
-                              ? "J'ai effectué le paiement"
-                              : "I have made the payment"}
+                            {t.ui.uiPaymentMade}
                           </>
                         )}
                       </Button>
@@ -601,9 +562,7 @@ function PaymentForm({
                         </span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        {lang === "fr"
-                          ? "Vous serez redirigé vers la page de paiement sécurisée Stripe pour finaliser votre transaction par carte bancaire."
-                          : "You will be redirected to the secure Stripe payment page to complete your card payment."}
+                        {t.ui.uiStripeRedirect}
                       </p>
                       <StripeCheckoutButton
                         missionId={
@@ -633,13 +592,13 @@ function PaymentForm({
               <div className="lg:col-span-2 space-y-4">
                 <div className="bg-white rounded-2xl border border-border/50 p-5 card-shadow">
                   <h2 className="font-display font-bold text-base text-foreground mb-4">
-                    {lang === "fr" ? "Récapitulatif" : "Summary"}
+                    {t.ui.uiSummary}
                   </h2>
 
                   {/* Mission */}
                   <div className="mb-4 p-3 bg-muted/40 rounded-xl">
                     <p className="text-xs text-muted-foreground mb-1">
-                      {lang === "fr" ? "Mission" : "Task"}
+                      {t.ui.uiMission}
                     </p>
                     <p className="font-semibold text-sm text-foreground leading-snug">
                       {taskTitle}
@@ -650,22 +609,20 @@ function PaymentForm({
                   <div className="space-y-2 text-sm mb-4">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">
-                        {lang === "fr" ? "Montant mission" : "Task amount"}
+                        {t.ui.uiTaskAmount}
                       </span>
                       <span className="font-medium">{amount}€</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground flex items-center gap-1">
-                        {lang === "fr" ? "Commission" : "Commission"} (8%)
+                        {t.ui.uiCommission} (8%)
                         <Tooltip>
                           <TooltipTrigger>
                             <HelpCircle className="h-3.5 w-3.5 text-muted-foreground/60" />
                           </TooltipTrigger>
                           <TooltipContent>
                             <p className="max-w-40 text-xs">
-                              {lang === "fr"
-                                ? "Commission TaskVoilà pour la mise en relation et la sécurisation des paiements"
-                                : "TaskVoilà commission for matchmaking and payment security"}
+                              {t.ui.uiCommissionDesc}
                             </p>
                           </TooltipContent>
                         </Tooltip>
@@ -677,14 +634,10 @@ function PaymentForm({
                     <div className="flex justify-between items-center py-2 border-y border-border/40">
                       <div>
                         <p className="font-medium text-foreground">
-                          {lang === "fr"
-                            ? "Assurance projet +3%"
-                            : "Project insurance +3%"}
+                          {t.ui.uiProjectInsurance}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          {lang === "fr"
-                            ? "Couvre litiges et dommages"
-                            : "Covers disputes and damages"}
+                          {t.ui.uiInsuranceCover}
                         </p>
                       </div>
                       <Switch
@@ -697,7 +650,7 @@ function PaymentForm({
                     {insuranceEnabled && (
                       <div className="flex justify-between text-secondary">
                         <span className="flex items-center gap-1">
-                          🛡️ {lang === "fr" ? "Assurance" : "Insurance"}
+                          🛡️ {t.ui.uiInsurance}
                         </span>
                         <span className="font-medium">+{insurance}€</span>
                       </div>
@@ -707,9 +660,7 @@ function PaymentForm({
                     <div className="pt-1">
                       <div className="flex gap-2">
                         <Input
-                          placeholder={
-                            lang === "fr" ? "Code promo" : "Promo code"
-                          }
+                          placeholder={t.ui.uiPromoCode}
                           value={promoInput}
                           onChange={(e) => {
                             setPromoInput(e.target.value.toUpperCase());
@@ -726,7 +677,7 @@ function PaymentForm({
                           data-ocid="payment.promo_apply_button"
                         >
                           <Tag className="h-3.5 w-3.5" />
-                          {lang === "fr" ? "Appliquer" : "Apply"}
+                          {t.ui.uiApply}
                         </Button>
                       </div>
                       {promoError && (
@@ -771,22 +722,15 @@ function PaymentForm({
                   {[
                     {
                       icon: "🔒",
-                      text:
-                        lang === "fr" ? "Paiement sécurisé" : "Secure payment",
+                      text: t.ui.uiSecurePaymentLc,
                     },
                     {
                       icon: "✅",
-                      text:
-                        lang === "fr"
-                          ? "Fonds bloqués en escrow"
-                          : "Funds held in escrow",
+                      text: t.ui.uiFundsEscrow,
                     },
                     {
                       icon: "🛡️",
-                      text:
-                        lang === "fr"
-                          ? "Remboursement garanti"
-                          : "Guaranteed refund",
+                      text: t.ui.uiGuaranteedRefund,
                     },
                   ].map((badge) => (
                     <div
@@ -813,7 +757,7 @@ export function PaymentPage() {
     missionId?: string;
   };
   const navigate = useNavigate();
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
   const { getMissionById } = useMissionStore();
   const { getAcceptedOffer } = useOfferStore();
 
@@ -826,7 +770,7 @@ export function PaymentPage() {
         <div className="text-center">
           <p className="text-4xl mb-4">🔍</p>
           <h2 className="font-display text-xl font-bold text-foreground mb-2">
-            {lang === "fr" ? "Mission introuvable" : "Task not found"}
+            {t.ui.uiTaskNotFound}
           </h2>
           <Button
             variant="outline"

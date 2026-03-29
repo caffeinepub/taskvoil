@@ -41,101 +41,13 @@ function maskIBAN(iban: string): string {
 
 export { maskIBAN };
 
-const SEED_USERS: AdminUser[] = [
-  {
-    id: "seed_1",
-    pseudo: "marie_b",
-    firstName: "Marie",
-    lastName: "Beaumont",
-    email: "marie.beaumont@email.fr",
-    role: "pro",
-    country: "FR",
-    registeredAt: Date.now() - 86400000 * 3,
-    approvalStatus: "pending_approval",
-    verificationStatus: "pending",
-    companyName: "Beaumont Rénovation",
-    taxId: "FR83 493 482 100",
-    iban: "FR76 3000 6000 0112 3456 7890 189",
-    taxResidenceCountry: "FR",
-    proStatus: "auto_entrepreneur",
-    dac7Accepted: true,
-    dac7Complete: true,
-    kycStatus: "pending",
-  },
-  {
-    id: "seed_2",
-    pseudo: "thomas_v",
-    firstName: "Thomas",
-    lastName: "Van der Berg",
-    email: "thomas.vdb@gmail.com",
-    role: "client",
-    country: "NL",
-    registeredAt: Date.now() - 86400000 * 10,
-    approvalStatus: "approved",
-  },
-  {
-    id: "seed_3",
-    pseudo: "luigi_c",
-    firstName: "Luigi",
-    lastName: "Caruso",
-    email: "luigi.caruso@posta.it",
-    role: "pro",
-    country: "IT",
-    registeredAt: Date.now() - 86400000 * 7,
-    approvalStatus: "pending_approval",
-    verificationStatus: "pending",
-    companyName: "Caruso Impianti",
-    taxId: "CRSLGU85M12A944T",
-    iban: "IT60 X054 2811 1010 0000 0123 456",
-    taxResidenceCountry: "IT",
-    proStatus: "sole_trader",
-    dac7Accepted: true,
-    dac7Complete: true,
-    kycStatus: "pending",
-  },
-  {
-    id: "seed_4",
-    pseudo: "sophie_m",
-    firstName: "Sophie",
-    lastName: "Müller",
-    email: "sophie.mueller@web.de",
-    role: "client",
-    country: "DE",
-    registeredAt: Date.now() - 86400000 * 2,
-    approvalStatus: "approved",
-  },
-  {
-    id: "seed_5",
-    pseudo: "carlos_h",
-    firstName: "Carlos",
-    lastName: "Hernández",
-    email: "carlos.hernandez@correo.es",
-    role: "pro",
-    country: "ES",
-    registeredAt: Date.now() - 86400000 * 5,
-    approvalStatus: "approved",
-    verificationStatus: "verified",
-    companyName: "Hernández Obras",
-    taxId: "12345678A",
-    iban: "ES91 2100 0418 4502 0005 1332",
-    taxResidenceCountry: "ES",
-    proStatus: "self_employed",
-    dac7Accepted: true,
-    dac7Complete: true,
-    kycStatus: "verified",
-  },
-];
-
 function loadAdminUsers(): AdminUser[] {
   try {
     const raw = localStorage.getItem(ADMIN_USERS_KEY);
-    if (!raw) {
-      localStorage.setItem(ADMIN_USERS_KEY, JSON.stringify(SEED_USERS));
-      return SEED_USERS;
-    }
+    if (!raw) return [];
     return JSON.parse(raw) as AdminUser[];
   } catch {
-    return SEED_USERS;
+    return [];
   }
 }
 

@@ -204,11 +204,12 @@ function BeforeAfterCard({
   lang: string;
   index: number;
 }) {
+  const { t } = useTranslation();
   const [showAfter, setShowAfter] = useState(false);
   const label = lang === "fr" ? item.labelFR : item.labelEN;
   const tag = lang === "fr" ? item.tagFR : item.tagEN;
-  const beforeLabel = lang === "fr" ? "Avant" : "Before";
-  const afterLabel = lang === "fr" ? "Après" : "After";
+  const beforeLabel = t.ui.uiBefore;
+  const afterLabel = t.ui.uiAfter;
 
   return (
     <motion.div
@@ -331,13 +332,7 @@ function BeforeAfterCard({
               color: "oklch(0.55 0.14 60)",
             }}
           >
-            {showAfter
-              ? lang === "fr"
-                ? "✓ Terminé"
-                : "✓ Done"
-              : lang === "fr"
-                ? "Avant"
-                : "Before"}
+            {showAfter ? t.ui.uiDone : t.ui.uiBefore}
           </span>
         </div>
       </div>
@@ -429,6 +424,7 @@ function RealisationsSection({
   lang: string;
   onGatedAction: () => boolean;
 }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <section
@@ -473,7 +469,7 @@ function RealisationsSection({
               borderColor: "oklch(0.88 0.08 60)",
             }}
           >
-            ✨ {lang === "fr" ? "Réalisations vérifiées" : "Verified work"}
+            ✨ {t.ui.uiVerifiedWork}
           </div>
           <h2
             className="font-display text-3xl md:text-5xl font-black mb-4 leading-tight"
@@ -497,9 +493,7 @@ function RealisationsSection({
             )}
           </h2>
           <p className="text-muted-foreground text-lg max-w-lg mx-auto">
-            {lang === "fr"
-              ? "Des professionnels vérifiés TaskVoilà. Chaque chantier, une preuve photo."
-              : "From verified TaskVoilà professionals. Every job, photo-proven."}
+            {t.ui.uiVerifiedProsDesc}
           </p>
         </motion.div>
 
@@ -539,9 +533,7 @@ function RealisationsSection({
             className="text-sm font-semibold mb-4"
             style={{ color: "oklch(0.55 0.10 60)" }}
           >
-            {lang === "fr"
-              ? "Chaque mission est documentée et horodatée sur la blockchain."
-              : "Every mission is documented and timestamped on the blockchain."}
+            {t.ui.uiBlockchainDoc}
           </p>
           <button
             type="button"
@@ -552,7 +544,7 @@ function RealisationsSection({
             className="inline-flex items-center gap-2 font-black text-sm px-6 py-3 rounded-full text-white shadow-lg hover:scale-[1.03] transition-transform"
             style={{ background: "oklch(0.55 0.15 55)" }}
           >
-            {lang === "fr" ? "Poster ma mission" : "Post my task"}
+            {t.ui.uiPostMyTask}
             <ArrowRight className="h-4 w-4" />
           </button>
         </motion.div>
@@ -734,10 +726,7 @@ export function LandingPage() {
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
                 <Badge className="mb-6 bg-white/15 text-white border-white/25 hover:bg-white/25 text-sm px-4 py-1.5 w-fit backdrop-blur-sm">
-                  🚀{" "}
-                  {lang === "fr"
-                    ? "Marketplace #1 de services locaux"
-                    : "#1 Local Services Marketplace"}
+                  🚀 {t.ui.uiMarketplace1}
                 </Badge>
               </motion.div>
 
@@ -847,19 +836,15 @@ export function LandingPage() {
                 {[
                   {
                     icon: "🔒",
-                    label:
-                      lang === "fr" ? "Paiement sécurisé" : "Secure payment",
+                    label: t.ui.uiSecurePaymentLc,
                   },
                   {
                     icon: "✅",
-                    label: lang === "fr" ? "Pros vérifiés" : "Verified pros",
+                    label: t.ui.uiVerifiedPros,
                   },
                   {
                     icon: "⭐",
-                    label:
-                      lang === "fr"
-                        ? "4.8/5 satisfaction"
-                        : "4.8/5 satisfaction",
+                    label: t.ui.uiSatisfactionRate,
                   },
                 ].map((badge) => (
                   <div
@@ -903,7 +888,7 @@ export function LandingPage() {
               >
                 <span className="text-xl">🔧</span>
                 <span className="text-white text-sm font-semibold">
-                  {lang === "fr" ? "Handyman proche" : "Nearby Handyman"}
+                  {t.ui.uiNearbyHandyman}
                 </span>
               </motion.div>
 
@@ -934,11 +919,7 @@ export function LandingPage() {
               >
                 <img
                   src="/assets/uploads/generated-image-1.png"
-                  alt={
-                    lang === "fr"
-                      ? "Services locaux TaskVoilà"
-                      : "TaskVoilà local services"
-                  }
+                  alt={t.ui.uiLocalServicesTV}
                   className="w-full h-full object-cover"
                   loading="eager"
                   fetchPriority="high"
@@ -1111,9 +1092,7 @@ export function LandingPage() {
                         </svg>
                         <div>
                           <div className="text-white/60 text-[10px] font-medium leading-none mb-0.5">
-                            {lang === "fr"
-                              ? "Disponible sur"
-                              : "Download on the"}
+                            {t.ui.uiDownloadOn}
                           </div>
                           <div className="text-white font-bold text-sm leading-tight">
                             App Store
@@ -1139,7 +1118,7 @@ export function LandingPage() {
                         </svg>
                         <div>
                           <div className="text-white/60 text-[10px] font-medium leading-none mb-0.5">
-                            {lang === "fr" ? "Disponible sur" : "Get it on"}
+                            {t.ui.uiGetItOn}
                           </div>
                           <div className="text-white font-bold text-sm leading-tight">
                             Google Play
@@ -1159,9 +1138,7 @@ export function LandingPage() {
                       className="w-36 h-36 sm:w-44 sm:h-44 object-contain rounded-xl"
                     />
                     <p className="text-center text-xs font-semibold text-gray-500 max-w-[140px] leading-snug">
-                      {lang === "fr"
-                        ? "📱 Scannez pour télécharger"
-                        : "📱 Scan to download"}
+                      {t.ui.uiScanDownload}
                     </p>
                   </div>
                 </div>
@@ -1184,7 +1161,7 @@ export function LandingPage() {
                 className="font-display text-3xl md:text-4xl font-black mb-2"
                 style={{ color: "oklch(0.18 0.06 250)" }}
               >
-                {lang === "fr" ? "Les plus demandés" : "Most requested"}
+                {t.ui.uiMostRequested}
               </motion.h2>
               <p className="text-muted-foreground text-base md:text-lg">
                 {t.categories.subtitle}
@@ -1294,12 +1271,10 @@ export function LandingPage() {
                   className="font-display text-3xl md:text-4xl font-black mb-1"
                   style={{ color: "oklch(0.18 0.06 250)" }}
                 >
-                  {lang === "fr" ? "Pros Premium" : "Premium Pros"}
+                  {t.ui.uiPremiumPros}
                 </h2>
                 <p className="text-muted-foreground text-base">
-                  {lang === "fr"
-                    ? "Les professionnels les mieux équipés de votre région"
-                    : "The best-equipped professionals in your area"}
+                  {t.ui.uiBestProfs}
                 </p>
               </div>
               <Link
@@ -1307,8 +1282,7 @@ export function LandingPage() {
                 className="hidden md:flex items-center gap-1 text-sm font-bold hover:underline shrink-0"
                 style={{ color: "oklch(0.35 0.15 250)" }}
               >
-                {lang === "fr" ? "Voir tous" : "View all"}{" "}
-                <ArrowRight className="h-4 w-4" />
+                {t.ui.uiViewAll} <ArrowRight className="h-4 w-4" />
               </Link>
             </motion.div>
 
@@ -1416,7 +1390,7 @@ export function LandingPage() {
                       }}
                       data-ocid={`landing.premium_pro.view_button.${i + 1}`}
                     >
-                      {lang === "fr" ? "Voir le profil" : "View profile"}
+                      {t.ui.uiViewProfile}
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Button>
                   </motion.div>

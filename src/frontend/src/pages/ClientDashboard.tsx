@@ -457,24 +457,14 @@ export function ClientDashboard() {
                           : "bg-muted text-muted-foreground border-border";
                 const statusLabel =
                   mission.status === "open"
-                    ? lang === "fr"
-                      ? "Ouverte"
-                      : "Open"
+                    ? t.ui.uiOpen
                     : mission.status === "in_progress"
-                      ? lang === "fr"
-                        ? "En cours"
-                        : "In progress"
+                      ? t.ui.uiInProgress
                       : mission.status === "accepted"
-                        ? lang === "fr"
-                          ? "Acceptée"
-                          : "Accepted"
+                        ? t.ui.uiAccepted
                         : mission.status === "paid"
-                          ? lang === "fr"
-                            ? "Payée"
-                            : "Paid"
-                          : lang === "fr"
-                            ? "Terminée"
-                            : "Completed";
+                          ? t.ui.uiPaid
+                          : t.ui.uiCompleted;
                 return (
                   <div
                     key={mission.id}
@@ -507,10 +497,7 @@ export function ClientDashboard() {
                           )}
                           {mission.status === "open" && offers.length > 0 && (
                             <span className="text-xs text-primary font-medium">
-                              {offers.length}{" "}
-                              {lang === "fr"
-                                ? "offre(s) reçue(s)"
-                                : "offer(s) received"}
+                              {offers.length} {t.ui.uiOffersReceived2}
                             </span>
                           )}
                           <span className="text-xs text-muted-foreground">
@@ -586,9 +573,7 @@ export function ClientDashboard() {
             <div className="p-12 text-center">
               <p className="text-4xl mb-4">💬</p>
               <p className="text-sm text-muted-foreground">
-                {lang === "fr"
-                  ? "Aucun message pour l'instant."
-                  : "No messages yet."}
+                {t.ui.uiNoMessages}
               </p>
             </div>
           ) : (
@@ -625,11 +610,7 @@ export function ClientDashboard() {
                         </div>
                         {lastMsg && (
                           <p className="text-xs text-muted-foreground truncate mt-0.5">
-                            {lastMsg.senderId === userId
-                              ? lang === "fr"
-                                ? "Vous : "
-                                : "You: "
-                              : ""}
+                            {lastMsg.senderId === userId ? t.ui.uiYouColon : ""}
                             {lastMsg.text}
                           </p>
                         )}
@@ -677,11 +658,7 @@ export function ClientDashboard() {
               data-ocid="client.documents.empty_state"
             >
               <p className="text-4xl mb-4">📄</p>
-              <p className="text-sm text-muted-foreground">
-                {lang === "fr"
-                  ? "Aucun document pour l'instant."
-                  : "No documents yet."}
-              </p>
+              <p className="text-sm text-muted-foreground">{t.ui.uiNoDocs}</p>
             </div>
           ) : (
             <div className="divide-y divide-border">
@@ -694,10 +671,7 @@ export function ClientDashboard() {
                     </div>
                     <div className="flex-1">
                       <p className="font-semibold text-sm text-foreground">
-                        {awaitingSignature.length}{" "}
-                        {lang === "fr"
-                          ? "document(s) en attente de signature"
-                          : "document(s) awaiting signature"}
+                        {awaitingSignature.length} {t.ui.uiDocsAwaitingSig}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {awaitingSignature[0].missionTitle}
@@ -710,7 +684,7 @@ export function ClientDashboard() {
                       data-ocid="client.documents.sign_button"
                     >
                       <PenLine className="h-3.5 w-3.5" />
-                      {lang === "fr" ? "Signer" : "Sign"}
+                      {t.ui.uiSign}
                     </Button>
                   </div>
                 </div>
@@ -730,16 +704,10 @@ export function ClientDashboard() {
                     <div className="flex items-center gap-2 mt-0.5">
                       <span className="text-xs text-muted-foreground">
                         {doc.docType === "devis"
-                          ? lang === "fr"
-                            ? "Devis"
-                            : "Quote"
+                          ? t.ui.uiQuote
                           : doc.docType === "bonPourAccord"
-                            ? lang === "fr"
-                              ? "Bon pour accord"
-                              : "Agreement"
-                            : lang === "fr"
-                              ? "Facture"
-                              : "Invoice"}
+                            ? t.ui.uiAgreement
+                            : t.ui.uiInvoice}
                       </span>
                       <span className="text-xs text-muted-foreground">•</span>
                       <span
@@ -752,16 +720,10 @@ export function ClientDashboard() {
                         }`}
                       >
                         {doc.status === "signed"
-                          ? lang === "fr"
-                            ? "Signé"
-                            : "Signed"
+                          ? t.ui.uiSigned
                           : doc.status === "sent"
-                            ? lang === "fr"
-                              ? "Envoyé"
-                              : "Sent"
-                            : lang === "fr"
-                              ? "Brouillon"
-                              : "Draft"}
+                            ? t.ui.uiSent
+                            : t.ui.uiDraft}
                       </span>
                     </div>
                   </div>
@@ -804,7 +766,7 @@ export function ClientDashboard() {
           >
             <Link to="/nfts">
               <ExternalLink className="h-3 w-3" />
-              {lang === "fr" ? "Voir tout" : "See all"}
+              {t.ui.uiSeeAll}
             </Link>
           </Button>
         </div>
@@ -812,11 +774,7 @@ export function ClientDashboard() {
         {myNFTs.length === 0 ? (
           <div className="p-12 text-center" data-ocid="client.nft.empty_state">
             <p className="text-3xl mb-3">🖼️</p>
-            <p className="text-sm text-muted-foreground">
-              {lang === "fr"
-                ? "Vos preuves NFT apparaîtront ici après validation des jalons."
-                : "Your NFT proofs will appear here after milestone validation."}
-            </p>
+            <p className="text-sm text-muted-foreground">{t.ui.uiNFTEmpty1}</p>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 p-5">
@@ -869,7 +827,7 @@ export function ClientDashboard() {
               <Calendar className="h-4 w-4 text-primary" />
               <h2 className="font-display font-bold text-lg text-foreground">
                 {lang === "fr"
-                  ? "Mes ru00e9servations"
+                  ? "Mes réservations"
                   : lang === "de"
                     ? "Meine Buchungen"
                     : lang === "es"
@@ -889,11 +847,9 @@ export function ClientDashboard() {
               className="p-12 text-center"
               data-ocid="client.bookings.empty_state"
             >
-              <p className="text-4xl mb-4">ud83dudcc5</p>
+              <p className="text-4xl mb-4">📅</p>
               <p className="text-sm text-muted-foreground">
-                {lang === "fr"
-                  ? "Aucune ru00e9servation pour l'instant."
-                  : "No bookings yet."}
+                {t.ui.uiNoBookings}
               </p>
             </div>
           ) : (
@@ -909,13 +865,12 @@ export function ClientDashboard() {
                   cancelled: "bg-gray-100 text-gray-500 border-gray-200",
                 };
                 const statusLabels: Record<string, string> = {
-                  pending: lang === "fr" ? "En attente" : "Pending",
-                  accepted: lang === "fr" ? "Acceptu00e9e" : "Accepted",
-                  declined: lang === "fr" ? "Refusu00e9e" : "Declined",
-                  counter_proposed:
-                    lang === "fr" ? "Contre-proposition" : "Counter-proposal",
-                  confirmed: lang === "fr" ? "Confirmu00e9e" : "Confirmed",
-                  cancelled: lang === "fr" ? "Annulu00e9e" : "Cancelled",
+                  pending: t.ui.uiPending,
+                  accepted: t.ui.uiAccepted,
+                  declined: t.ui.uiDeclined,
+                  counter_proposed: t.ui.uiCounterProposal,
+                  confirmed: t.ui.uiConfirmedF,
+                  cancelled: t.ui.uiCancelledF,
                 };
                 return (
                   <div
@@ -929,8 +884,8 @@ export function ClientDashboard() {
                           {booking.proName}
                         </p>
                         <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
-                          <span>ud83dudcc5 {booking.date}</span>
-                          <span>ud83dudd50 {booking.timeSlot}</span>
+                          <span>📅 {booking.date}</span>
+                          <span>🕐 {booking.timeSlot}</span>
                         </div>
                         <p className="text-xs text-muted-foreground mt-1 line-clamp-1">
                           {booking.description}
@@ -945,27 +900,19 @@ export function ClientDashboard() {
                     {booking.status === "counter_proposed" && (
                       <div className="mt-2 space-y-2">
                         <p className="text-xs text-blue-700 font-medium">
-                          {lang === "fr"
-                            ? "Nouvelle date proposu00e9e"
-                            : "New date proposed"}
-                          : {booking.counterDate} u00e0 {booking.counterTime}
+                          {t.ui.uiNewDateProposed}: {booking.counterDate} u00e0{" "}
+                          {booking.counterTime}
                         </p>
                         <Button
                           size="sm"
                           className="h-7 text-xs bg-primary hover:bg-primary/90 text-primary-foreground"
                           onClick={() => {
                             confirmCounterProposal(booking.id);
-                            toast.success(
-                              lang === "fr"
-                                ? "Nouvelle date confirmu00e9e !"
-                                : "New date confirmed!",
-                            );
+                            toast.success(t.ui.uiNewDateConfirmed);
                           }}
                           data-ocid={`client.bookings.confirm.confirm_button.${i + 1}`}
                         >
-                          {lang === "fr"
-                            ? "Confirmer la nouvelle date"
-                            : "Confirm new date"}
+                          {t.ui.uiConfirmNewDate}
                         </Button>
                       </div>
                     )}
@@ -977,15 +924,11 @@ export function ClientDashboard() {
                         className="h-7 text-xs text-destructive mt-2"
                         onClick={() => {
                           cancelBooking(booking.id);
-                          toast.success(
-                            lang === "fr" ? "Annulu00e9e." : "Cancelled.",
-                          );
+                          toast.success(t.ui.uiCancelledFDot);
                         }}
                         data-ocid={`client.bookings.cancel.delete_button.${i + 1}`}
                       >
-                        {lang === "fr"
-                          ? "Annuler la ru00e9servation"
-                          : "Cancel booking"}
+                        {t.ui.uiCancelBooking}
                       </Button>
                     )}
                   </div>
@@ -1246,9 +1189,7 @@ export function ClientDashboard() {
               </div>
 
               <p className="text-xs text-muted-foreground/70 italic">
-                {lang === "fr"
-                  ? "💡 Une photo ou vidéo aide le professionnel à évaluer les travaux avant de se déplacer."
-                  : "💡 A photo or video helps the professional estimate the work before visiting."}
+                {t.ui.uiPhotoTip}
               </p>
             </div>
 
@@ -1310,6 +1251,7 @@ function LockedCountryMessage({ message }: { message: string }) {
 }
 
 function ClientCountrySection({ lang }: { lang: string }) {
+  const { t } = useTranslation();
   const { selectedCountry, canChangeCountry, changeCountry } =
     useCountryStore();
   const [showSelector, setShowSelector] = useState(false);
@@ -1382,11 +1324,7 @@ function ClientCountrySection({ lang }: { lang: string }) {
               )}
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">
-              {lang === "fr"
-                ? "Aucun pays sélectionné."
-                : "No country selected."}
-            </p>
+            <p className="text-sm text-muted-foreground">{t.ui.uiNoCountry}</p>
           )}
         </div>
       </div>

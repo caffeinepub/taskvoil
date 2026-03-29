@@ -286,6 +286,9 @@ const LABELS: Record<
     coverageUnit: string;
     websitePlaceholder: string;
     coverageHelp: string;
+    fullAddress: string;
+    fullAddressPlaceholder: string;
+    fullAddressNote: string;
   }
 > = {
   fr: {
@@ -343,6 +346,10 @@ const LABELS: Record<
     coverageUnit: "km",
     websitePlaceholder: "https://monsite.fr",
     coverageHelp: "Rayon maximal autour de votre ville",
+    fullAddress: "Adresse complète (rue + code postal)",
+    fullAddressPlaceholder: "Ex: 12 rue de la Paix, 75001 Paris",
+    fullAddressNote:
+      "Votre adresse complète est requise avant de publier une demande. Elle ne sera jamais affichée publiquement.",
   },
   en: {
     title: "My profile",
@@ -399,6 +406,10 @@ const LABELS: Record<
     coverageUnit: "miles",
     websitePlaceholder: "https://mywebsite.co.uk",
     coverageHelp: "Maximum radius around your city",
+    fullAddress: "Full address (street + postal code)",
+    fullAddressPlaceholder: "Ex: 12 Main Street, London W1A 1AA",
+    fullAddressNote:
+      "Your full address is required before posting a task. It will never be displayed publicly.",
   },
   ie: {
     title: "My profile",
@@ -455,6 +466,10 @@ const LABELS: Record<
     coverageUnit: "miles",
     websitePlaceholder: "https://mywebsite.ie",
     coverageHelp: "Maximum radius around your city",
+    fullAddress: "Full address (street + postal code)",
+    fullAddressPlaceholder: "Ex: 12 Main Street, Dublin 1",
+    fullAddressNote:
+      "Your full address is required before posting a task. It will never be displayed publicly.",
   },
   de: {
     title: "Mein Profil",
@@ -511,6 +526,10 @@ const LABELS: Record<
     coverageUnit: "km",
     websitePlaceholder: "https://meine-webseite.de",
     coverageHelp: "Maximaler Radius um Ihre Stadt",
+    fullAddress: "Vollständige Adresse (Straße + PLZ)",
+    fullAddressPlaceholder: "z.B. Hauptstraße 12, 10115 Berlin",
+    fullAddressNote:
+      "Ihre vollständige Adresse wird vor der Auftragsveröffentlichung benötigt. Sie wird nie öffentlich angezeigt.",
   },
   es: {
     title: "Mi perfil",
@@ -567,6 +586,10 @@ const LABELS: Record<
     coverageUnit: "km",
     websitePlaceholder: "https://miweb.es",
     coverageHelp: "Radio máximo alrededor de tu ciudad",
+    fullAddress: "Dirección completa (calle + código postal)",
+    fullAddressPlaceholder: "Ej: Calle Mayor 12, 28001 Madrid",
+    fullAddressNote:
+      "Su dirección completa es necesaria antes de publicar una solicitud. Nunca se mostrará públicamente.",
   },
   it: {
     title: "Il mio profilo",
@@ -623,6 +646,10 @@ const LABELS: Record<
     coverageUnit: "km",
     websitePlaceholder: "https://miositoweb.it",
     coverageHelp: "Raggio massimo intorno alla tua città",
+    fullAddress: "Indirizzo completo (via + CAP)",
+    fullAddressPlaceholder: "Es: Via Roma 12, 00100 Roma",
+    fullAddressNote:
+      "Il suo indirizzo completo è richiesto prima di pubblicare una richiesta. Non verrà mai visualizzato pubblicamente.",
   },
   pt: {
     title: "O meu perfil",
@@ -679,6 +706,10 @@ const LABELS: Record<
     coverageUnit: "km",
     websitePlaceholder: "https://meusitenaweb.pt",
     coverageHelp: "Raio máximo à volta da tua cidade",
+    fullAddress: "Endereço completo (rua + código postal)",
+    fullAddressPlaceholder: "Ex: Rua da Paz 12, 1000-001 Lisboa",
+    fullAddressNote:
+      "O seu endereço completo é necessário antes de publicar um pedido. Nunca será exibido publicamente.",
   },
   nl: {
     title: "Mijn profiel",
@@ -735,6 +766,10 @@ const LABELS: Record<
     coverageUnit: "km",
     websitePlaceholder: "https://mijnwebsite.nl",
     coverageHelp: "Maximale straal rondom uw stad",
+    fullAddress: "Volledig adres (straat + postcode)",
+    fullAddressPlaceholder: "Bijv: Hoofdstraat 12, 1000 AA Amsterdam",
+    fullAddressNote:
+      "Uw volledige adres is vereist voordat u een aanvraag publiceert. Het wordt nooit openbaar weergegeven.",
   },
   el: {
     title: "Το προφίλ μου",
@@ -792,6 +827,70 @@ const LABELS: Record<
     coverageUnit: "km",
     websitePlaceholder: "https://mywebsite.gr",
     coverageHelp: "Μέγιστη ακτίνα γύρω από την πόλη σας",
+    fullAddress: "Πλήρης διεύθυνση (οδός + ΤΚ)",
+    fullAddressPlaceholder: "Π.χ. Οδός Αθηνάς 12, 10552 Αθήνα",
+    fullAddressNote:
+      "Η πλήρης διεύθυνσή σας απαιτείται πριν δημοσιεύσετε αίτημα. Δεν θα εμφανιστεί ποτέ δημόσια.",
+  },
+  lu: {
+    title: "Mon profil",
+    subtitle: "Renseignez vos informations pour pouvoir utiliser la plateforme",
+    publicSection: "Informations publiques",
+    privateSection: "Informations privées",
+    privateNote:
+      "Ces informations sont privées et ne seront partagées qu'après acceptation d'un devis",
+    proSection: "Informations professionnelles",
+    proLegalNote:
+      "Ces informations sont requises pour travailler légalement en tant que professionnel dans votre pays.",
+    pseudo: "Pseudo (affiché publiquement)",
+    role: "Rôle",
+    roleClient: "Particulier",
+    rolePro: "Professionnel",
+    firstName: "Prénom",
+    lastName: "Nom de famille",
+    phone: "Téléphone",
+    address: "Adresse (rue, numéro)",
+    postalCode: "Code postal",
+    city: "Ville",
+    country: "Pays",
+    companyName: "Nom de l'entreprise / Raison sociale",
+    businessDesc: "Description de l'activité",
+    categories: "Catégories de services",
+    coverage: "Zone d'intervention",
+    website: "Site web",
+    save: "Enregistrer mon profil",
+    saving: "Enregistrement...",
+    saved: "Profil enregistré !",
+    required: "Champ obligatoire",
+    back: "Retour",
+    verificationSection: "Vérification du compte",
+    idDocLabel: "Pièce d'identité",
+    idDocHint: "Passeport, carte nationale d'identité ou permis de conduire",
+    regDocHint: "Document officiel d'immatriculation de votre entreprise",
+    uploadBtn: "Choisir un fichier",
+    uploading: "Téléversement en cours...",
+    uploadSuccess: "Fichier ajouté ✓",
+    verificationPending: "En attente de vérification",
+    verificationVerified: "Compte vérifié",
+    verificationRejected: "Documents rejetés — veuillez re-téléverser",
+    maxSizeError: "Fichier trop volumineux (max 10 Mo)",
+    formatError: "Format non accepté (PDF, JPG, PNG, WEBP uniquement)",
+    pseudoPlaceholder: "BricoBob, JardinierPro…",
+    phonePlaceholder: "+352 621 000 000",
+    addressPlaceholder: "12 rue de la Paix",
+    postalCodePlaceholder: "1234",
+    cityPlaceholder: "Luxembourg",
+    companyPlaceholder: "Mon Entreprise SARL",
+    businessDescPlaceholder:
+      "Décrivez votre activité, expérience, spécialités…",
+    coveragePlaceholder: "Luxembourg et alentours",
+    coverageUnit: "km",
+    websitePlaceholder: "https://monsite.lu",
+    coverageHelp: "Rayon maximal autour de votre ville",
+    fullAddress: "Adresse complète (rue + code postal)",
+    fullAddressPlaceholder: "Ex: 12 rue de la Paix, 1234 Luxembourg",
+    fullAddressNote:
+      "Votre adresse complète est requise avant de publier une demande. Elle ne sera jamais affichée publiquement.",
   },
 };
 
@@ -1398,19 +1497,7 @@ export function EditProfilePage() {
                   className="text-sm font-semibold flex items-center gap-1"
                 >
                   <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
-                  {lang === "fr"
-                    ? "Adresse complète (rue + code postal)"
-                    : lang === "de"
-                      ? "Vollständige Adresse"
-                      : lang === "es"
-                        ? "Dirección completa"
-                        : lang === "it"
-                          ? "Indirizzo completo"
-                          : lang === "pt"
-                            ? "Endereço completo"
-                            : lang === "nl"
-                              ? "Volledig adres"
-                              : "Full address"}
+                  {lbl.fullAddress}
                 </Label>
                 <Input
                   id="fullAddress"
@@ -1418,28 +1505,12 @@ export function EditProfilePage() {
                   onChange={(e) =>
                     setForm((p) => ({ ...p, fullAddress: e.target.value }))
                   }
-                  placeholder={
-                    lang === "fr"
-                      ? "Ex: 12 rue de la Paix, 75001 Paris"
-                      : "Ex: 12 Main Street, Dublin 1"
-                  }
+                  placeholder={lbl.fullAddressPlaceholder}
                   data-ocid="profile.fulladdress.input"
                 />
                 <p className="text-xs text-muted-foreground flex items-start gap-1">
                   <Lock className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                  {lang === "fr"
-                    ? "Votre adresse complète est requise avant de publier une demande. Elle ne sera jamais affichée publiquement."
-                    : lang === "de"
-                      ? "Ihre vollständige Adresse wird vor der Auftragsveröffentlichung benötigt. Sie wird nie öffentlich angezeigt."
-                      : lang === "es"
-                        ? "Su dirección completa es necesaria antes de publicar una solicitud. Nunca se mostrará públicamente."
-                        : lang === "it"
-                          ? "Il suo indirizzo completo è richiesto prima di pubblicare una richiesta. Non verrà mai visualizzato pubblicamente."
-                          : lang === "pt"
-                            ? "O seu endereço completo é necessário antes de publicar um pedido. Nunca será exibido publicamente."
-                            : lang === "nl"
-                              ? "Uw volledige adres is vereist voordat u een aanvraag publiceert. Het wordt nooit openbaar weergegeven."
-                              : "Your full address is required before posting a task. It will never be displayed publicly."}
+                  {lbl.fullAddressNote}
                 </p>
               </div>
             )}

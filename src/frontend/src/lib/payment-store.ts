@@ -28,40 +28,6 @@ export type Payment = {
   promoCode?: string;
 };
 
-// Seed demo payments
-const SEED_PAYMENTS: Payment[] = [
-  {
-    id: "pay_demo_1",
-    missionId: 2,
-    missionTitle: "Installation prise électrique salon",
-    amount: 180,
-    commission: 14,
-    insurance: 0,
-    discount: 0,
-    total: 194,
-    method: "card",
-    status: "confirmed",
-    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    confirmedAt: new Date(
-      Date.now() - 3 * 24 * 60 * 60 * 1000 + 2000,
-    ).toISOString(),
-  },
-  {
-    id: "pay_demo_2",
-    missionId: 5,
-    missionTitle: "Déménagement studio Paris",
-    amount: 450,
-    commission: 36,
-    insurance: 14,
-    discount: 25,
-    total: 475,
-    method: "icp",
-    status: "pending",
-    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-    promoCode: "FIDELITE25",
-  },
-];
-
 type PaymentStoreCtx = {
   payments: Payment[];
   addPayment: (
@@ -80,7 +46,7 @@ const PaymentStoreContext = createContext<PaymentStoreCtx | undefined>(
 );
 
 export function PaymentStoreProvider({ children }: { children: ReactNode }) {
-  const [payments, setPayments] = useState<Payment[]>(SEED_PAYMENTS);
+  const [payments, setPayments] = useState<Payment[]>([]);
 
   function addPayment(
     data: Omit<Payment, "id" | "createdAt"> & { confirmedAt?: string },

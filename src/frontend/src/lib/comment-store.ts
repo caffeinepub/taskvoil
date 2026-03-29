@@ -171,99 +171,6 @@ export function moderateContent(text: string): {
   return { valid: true };
 }
 
-// ─── Seed data ────────────────────────────────────────────────────────────────
-
-const now = new Date();
-function daysAgo(d: number) {
-  return new Date(now.getTime() - d * 24 * 60 * 60 * 1000);
-}
-
-const SEED_COMMENTS: Comment[] = [
-  {
-    id: "c1",
-    missionId: "1",
-    authorId: 1,
-    authorName: "Jean Dupont",
-    authorRole: "client",
-    content:
-      "Bonjour, est-ce que la mission est toujours disponible ? Je suis disponible ce week-end.",
-    createdAt: daysAgo(2),
-    likes: 3,
-    likedBy: [2, 4, 5],
-    replies: [
-      {
-        id: "r1",
-        commentId: "c1",
-        authorId: 2,
-        authorName: "Marc Dubois",
-        authorRole: "pro",
-        content:
-          "Oui, toujours disponible ! N'hésitez pas à me contacter via la messagerie.",
-        createdAt: daysAgo(1),
-        likes: 1,
-        likedBy: [1],
-      },
-    ],
-  },
-  {
-    id: "c2",
-    missionId: "1",
-    authorId: 4,
-    authorName: "Sophie Martin",
-    authorRole: "client",
-    content:
-      "Très bon professionnel, je recommande vivement pour ce type de travaux.",
-    createdAt: daysAgo(3),
-    likes: 5,
-    likedBy: [1, 2, 3, 5, 6],
-    replies: [],
-  },
-  {
-    id: "c3",
-    missionId: "2",
-    authorId: 2,
-    authorName: "Marc Dubois",
-    authorRole: "pro",
-    content:
-      "Je peux intervenir rapidement pour ce type de mission. Devis gratuit.",
-    createdAt: daysAgo(1),
-    likes: 2,
-    likedBy: [1, 3],
-    replies: [
-      {
-        id: "r2",
-        commentId: "c3",
-        authorId: 1,
-        authorName: "Jean Dupont",
-        authorRole: "client",
-        content: "Merci ! Je vous envoie un message via la plateforme.",
-        createdAt: daysAgo(0),
-        likes: 0,
-        likedBy: [],
-      },
-    ],
-  },
-  {
-    id: "c4",
-    missionId: "3",
-    authorId: 5,
-    authorName: "Pierre Laurent",
-    authorRole: "client",
-    content:
-      "Quelqu'un a-t-il déjà fait ce type de mission dans le secteur ? Des retours ?",
-    createdAt: daysAgo(4),
-    likes: 0,
-    likedBy: [],
-    replies: [],
-  },
-];
-
-const SEED_MISSION_LIKES: Record<string, number[]> = {
-  "1": [1, 2, 4],
-  "2": [3, 5],
-  "3": [],
-};
-
 // ─── Context ──────────────────────────────────────────────────────────────────
 
 type CommentStoreContextType = {
@@ -289,9 +196,10 @@ const CommentStoreContext = createContext<CommentStoreContextType | undefined>(
 );
 
 export function CommentStoreProvider({ children }: { children: ReactNode }) {
-  const [comments, setComments] = useState<Comment[]>(SEED_COMMENTS);
-  const [missionLikes, setMissionLikes] =
-    useState<Record<string, number[]>>(SEED_MISSION_LIKES);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [missionLikes, setMissionLikes] = useState<Record<string, number[]>>(
+    {},
+  );
 
   const getComments = useCallback(
     (missionId: string) => comments.filter((c) => c.missionId === missionId),

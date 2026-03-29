@@ -100,35 +100,6 @@ export const KYC_VALIDATION: Record<KYCIdType, RegExp> = {
   KVK_NL: /^\d{8}$/,
 };
 
-// ── Demo KYC requests (admin view) ────────────────────────────────────────────
-
-const DEMO_KYC_REQUESTS: KYCRequest[] = [
-  {
-    userId: "pro_2",
-    idType: "SIRET",
-    idNumber: "123 456 789 00012",
-    country: "FR",
-    submittedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    status: "pending",
-  },
-  {
-    userId: "pro_3",
-    idType: "COMPANY_NUMBER_GB",
-    idNumber: "08736023",
-    country: "GB",
-    submittedAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-    status: "pending",
-  },
-  {
-    userId: "pro_4",
-    idType: "PARTITA_IVA_IT",
-    idNumber: "IT12345678901",
-    country: "IT",
-    submittedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    status: "pending",
-  },
-];
-
 // ── Store ─────────────────────────────────────────────────────────────────────
 
 type KYCStoreContextType = {
@@ -147,8 +118,7 @@ const KYCStoreContext = createContext<KYCStoreContextType | undefined>(
 export function KYCStoreProvider({ children }: { children: ReactNode }) {
   const [myKYC, setMyKYC] = useState<KYCRequest | null>(null);
 
-  const [allRequests, setAllRequests] =
-    useState<KYCRequest[]>(DEMO_KYC_REQUESTS);
+  const [allRequests, setAllRequests] = useState<KYCRequest[]>([]);
 
   const submitKYC = useCallback(
     (req: Omit<KYCRequest, "submittedAt" | "status">) => {

@@ -28,14 +28,44 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type AdminUser, maskIBAN, useAdminStore } from "@/lib/admin-store";
 import { type CurrentUser, useAuthStore } from "@/lib/auth-store";
-import type {
-  DemoDispute as AdminDispute,
-  DemoReport as AdminReport,
-  DemoTask as AdminTask,
-  DemoUser as DemoUserRecord,
-} from "@/lib/demo-data";
 import { LOCALE_MAP, useTranslation } from "@/lib/i18n";
 import { useKYCStore } from "@/lib/kyc-store";
+// Local admin types (formerly imported from demo-data)
+type AdminTask = {
+  id: number;
+  title: string;
+  category: string;
+  n2?: string;
+  city: string;
+  budgetMin: number;
+  budgetMax: number;
+  status: "open" | "inProgress" | "completed" | "cancelled" | "disputed";
+  offerCount: number;
+  createdAt: string;
+  scheduledDate: string;
+  description: string;
+  clientId: number;
+  country?: string;
+};
+type AdminDispute = {
+  id: number;
+  taskId: number;
+  clientId: number;
+  proId: number;
+  amount: number;
+  reason: string;
+  status: "pending" | "resolved_client" | "resolved_pro" | "split";
+  createdAt: string;
+};
+type AdminReport = {
+  id: number;
+  type: "message" | "profile" | "mission";
+  reporterId: number;
+  reportedUserId: number;
+  contentPreview: string;
+  createdAt: string;
+  status: "pending" | "resolved" | "dismissed";
+};
 import {
   type PromoTarget,
   type PromoType,
@@ -479,7 +509,7 @@ export function AdminDashboard() {
                 data-ocid="admin.subscriptions.tab"
               >
                 <Crown className="h-3.5 w-3.5 mr-1" />
-                {lang === "fr" ? "Abonnements" : "Subscriptions"}
+                {t.ui.uiSubscriptions}
               </TabsTrigger>
               <TabsTrigger
                 value="kyc"
@@ -1340,9 +1370,7 @@ export function AdminDashboard() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               <div className="bg-card rounded-xl border border-border/50 p-4">
                 <p className="text-xs text-muted-foreground mb-1">
-                  {lang === "fr"
-                    ? "Abonnements actifs"
-                    : "Active subscriptions"}
+                  {t.ui.uiActiveSubscriptions}
                 </p>
                 <p className="text-2xl font-bold text-foreground">
                   {subscriptions.filter((s) => s.status === "active").length}
@@ -1350,7 +1378,7 @@ export function AdminDashboard() {
               </div>
               <div className="bg-card rounded-xl border border-border/50 p-4">
                 <p className="text-xs text-muted-foreground mb-1">
-                  {lang === "fr" ? "Revenus mensuels" : "Monthly revenue"}
+                  {t.ui.uiMonthlyRevenue}
                 </p>
                 <p className="text-2xl font-bold text-primary">
                   {subscriptions
@@ -1385,10 +1413,10 @@ export function AdminDashboard() {
                       <TableHead className="text-xs">Statut</TableHead>
                       <TableHead className="text-xs">Prix</TableHead>
                       <TableHead className="text-xs">
-                        {lang === "fr" ? "Renouvellement" : "Renewal"}
+                        {t.ui.uiRenewal}
                       </TableHead>
                       <TableHead className="text-xs">
-                        {lang === "fr" ? "Assistant IA" : "AI Assistant"}
+                        {t.ui.uiAIAssistant}
                       </TableHead>
                     </TableRow>
                   </TableHeader>
@@ -1446,13 +1474,7 @@ export function AdminDashboard() {
                                 : "bg-muted text-muted-foreground border-border"
                             }`}
                           >
-                            {sub.aiAssistantEnabled
-                              ? lang === "fr"
-                                ? "Activé"
-                                : "On"
-                              : lang === "fr"
-                                ? "Désactivé"
-                                : "Off"}
+                            {sub.aiAssistantEnabled ? t.ui.uiOn : t.ui.uiOff}
                           </Badge>
                         </TableCell>
                       </TableRow>
@@ -1473,8 +1495,7 @@ export function AdminDashboard() {
                 </h2>
                 {pendingKYC.length > 0 && (
                   <Badge className="bg-destructive/20 text-destructive border-destructive/30 text-xs ml-auto">
-                    {pendingKYC.length}{" "}
-                    {lang === "fr" ? "en attente" : "pending"}
+                    {pendingKYC.length} {t.ui.uiPendingLower}
                   </Badge>
                 )}
               </div>
@@ -1491,9 +1512,7 @@ export function AdminDashboard() {
                     {t.kyc.adminNoRequests}
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    {lang === "fr"
-                      ? "Toutes les demandes KYC ont été traitées."
-                      : "All KYC requests have been processed."}
+                    {t.ui.uiKYCProcessed}
                   </p>
                 </div>
               ) : (
@@ -1781,7 +1800,7 @@ export function AdminDashboard() {
                 <div className="flex items-center gap-2">
                   <Tag className="h-4 w-4 text-primary" />
                   <h2 className="font-display font-bold text-base text-foreground">
-                    {lang === "fr" ? "Codes Promo" : "Promo Codes"}
+                    {t.ui.uiPromoCodes}
                   </h2>
                   <Badge className="bg-muted text-muted-foreground border-border text-xs">
                     {promoCodes.length}
@@ -1798,7 +1817,7 @@ export function AdminDashboard() {
                       data-ocid="admin.promo.open_modal_button"
                     >
                       <Plus className="h-3.5 w-3.5" />
-                      {lang === "fr" ? "Créer un code" : "Create code"}
+                      {t.ui.uiCreateCode}
                     </Button>
                   </DialogTrigger>
                   <DialogContent
@@ -1808,9 +1827,7 @@ export function AdminDashboard() {
                     <DialogHeader>
                       <DialogTitle className="font-display flex items-center gap-2">
                         <Tag className="h-4 w-4" />
-                        {lang === "fr"
-                          ? "Créer un code promo"
-                          : "Create promo code"}
+                        {t.ui.uiCreatePromo}
                       </DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4 mt-2">
@@ -1884,9 +1901,7 @@ export function AdminDashboard() {
                       <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-1.5">
                           <Label className="text-xs font-semibold">
-                            {lang === "fr"
-                              ? "Limite d'usage (0 = illimité)"
-                              : "Usage limit (0 = unlimited)"}
+                            {t.ui.uiUsageLimit}
                           </Label>
                           <Input
                             type="number"
@@ -1904,7 +1919,7 @@ export function AdminDashboard() {
                         </div>
                         <div className="space-y-1.5">
                           <Label className="text-xs font-semibold">
-                            {lang === "fr" ? "Expiration" : "Expires at"}
+                            {t.ui.uiExpiresAt}
                           </Label>
                           <Input
                             type="date"
@@ -1922,7 +1937,7 @@ export function AdminDashboard() {
                       </div>
                       <div className="space-y-1.5">
                         <Label className="text-xs font-semibold">
-                          {lang === "fr" ? "Cible" : "Target"}
+                          {t.ui.uiTarget}
                         </Label>
                         <Select
                           value={promoForm.targetRole}
@@ -1997,7 +2012,7 @@ export function AdminDashboard() {
                           onClick={handleCreatePromo}
                           data-ocid="admin.promo.submit_button"
                         >
-                          {lang === "fr" ? "Créer" : "Create"}
+                          {t.ui.uiCreate}
                         </Button>
                       </div>
                     </div>
@@ -2012,7 +2027,7 @@ export function AdminDashboard() {
                 >
                   <Tag className="h-8 w-8 text-muted-foreground/40 mx-auto mb-3" />
                   <p className="text-muted-foreground text-sm">
-                    {lang === "fr" ? "Aucun code promo." : "No promo codes."}
+                    {t.ui.uiNoPromoCodes}
                   </p>
                 </div>
               ) : (
@@ -2023,10 +2038,10 @@ export function AdminDashboard() {
                         <TableHead className="text-xs">Code</TableHead>
                         <TableHead className="text-xs">Type</TableHead>
                         <TableHead className="text-xs">
-                          {lang === "fr" ? "Usages" : "Usage"}
+                          {t.ui.uiUsage}
                         </TableHead>
                         <TableHead className="text-xs">
-                          {lang === "fr" ? "Expiration" : "Expires"}
+                          {t.ui.uiExpires}
                         </TableHead>
                         <TableHead className="text-xs">Cible</TableHead>
                         <TableHead className="text-xs">Actif</TableHead>

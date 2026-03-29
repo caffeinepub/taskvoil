@@ -25,7 +25,7 @@ import { motion } from "motion/react";
 // ─── NFT Certificate Dialog ───────────────────────────────────────────────────
 
 function NFTCertificateDialog({ nft }: { nft: DemoNFT }) {
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
 
   return (
     <Dialog>
@@ -37,14 +37,14 @@ function NFTCertificateDialog({ nft }: { nft: DemoNFT }) {
           data-ocid="nft.certificate.open_modal_button"
         >
           <ExternalLink className="h-3 w-3" />
-          {lang === "fr" ? "Voir le certificat" : "View certificate"}
+          {t.ui.uiViewCert}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg" data-ocid="nft.certificate.dialog">
         <DialogHeader>
           <DialogTitle className="font-display flex items-center gap-2">
             <Award className="h-5 w-5 text-primary" />
-            {lang === "fr" ? "Certificat NFT" : "NFT Certificate"}
+            {t.ui.uiNFTCert}
           </DialogTitle>
         </DialogHeader>
 
@@ -66,14 +66,10 @@ function NFTCertificateDialog({ nft }: { nft: DemoNFT }) {
             <ShieldCheck className="h-5 w-5 text-secondary shrink-0" />
             <div>
               <p className="font-semibold text-sm text-foreground">
-                {lang === "fr"
-                  ? "Certifié sur ICP Blockchain"
-                  : "Certified on ICP Blockchain"}
+                {t.ui.uiICPCertifiedFull}
               </p>
               <p className="text-xs text-muted-foreground">
-                {lang === "fr"
-                  ? "Preuve immuable enregistrée on-chain"
-                  : "Immutable proof recorded on-chain"}
+                {t.ui.uiImmutableProof}
               </p>
             </div>
           </div>
@@ -89,7 +85,7 @@ function NFTCertificateDialog({ nft }: { nft: DemoNFT }) {
               </div>
               <div className="bg-muted/40 rounded-lg p-3">
                 <p className="text-xs text-muted-foreground mb-1">
-                  {lang === "fr" ? "Date de mint" : "Minted at"}
+                  {t.ui.uiMintedAt}
                 </p>
                 <p className="font-mono text-xs text-foreground">
                   {new Date(nft.mintedAt).toLocaleDateString(
@@ -102,19 +98,19 @@ function NFTCertificateDialog({ nft }: { nft: DemoNFT }) {
 
             <div className="bg-muted/40 rounded-lg p-3">
               <p className="text-xs text-muted-foreground mb-1">
-                {lang === "fr" ? "Mission" : "Task"}
+                {t.ui.uiMission}
               </p>
               <p className="text-sm font-medium text-foreground">
                 {nft.missionTitle}
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                {lang === "fr" ? "Jalon" : "Milestone"}: {nft.milestoneLabel}
+                {t.ui.uiMilestone}: {nft.milestoneLabel}
               </p>
             </div>
 
             <div className="bg-muted/40 rounded-lg p-3">
               <p className="text-xs text-muted-foreground mb-1">
-                {lang === "fr" ? "Description" : "Description"}
+                {t.ui.uiDescription}
               </p>
               <p className="text-sm text-foreground/80 leading-relaxed">
                 {nft.description}
@@ -138,7 +134,7 @@ function NFTCertificateDialog({ nft }: { nft: DemoNFT }) {
             {/* Metadata */}
             <div className="bg-muted/40 rounded-lg p-3">
               <p className="text-xs text-muted-foreground mb-2">
-                {lang === "fr" ? "Métadonnées" : "Metadata"}
+                {t.ui.uiMetadata}
               </p>
               <div className="space-y-1 text-xs font-mono">
                 <div className="flex gap-2">
@@ -177,7 +173,7 @@ function NFTCertificateDialog({ nft }: { nft: DemoNFT }) {
 // ─── NFT Card ────────────────────────────────────────────────────────────────
 
 function NFTCard({ nft, index }: { nft: DemoNFT; index: number }) {
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
 
   const mintedDate = new Date(nft.mintedAt).toLocaleDateString(
     LOCALE_MAP[lang as keyof typeof LOCALE_MAP] ?? "en-GB",
@@ -237,13 +233,13 @@ function NFTCard({ nft, index }: { nft: DemoNFT; index: number }) {
           {nft.missionTitle}
         </h3>
         <p className="text-xs text-muted-foreground mb-3">
-          {lang === "fr" ? "Jalon" : "Milestone"}: {nft.milestoneLabel}
+          {t.ui.uiMilestone}: {nft.milestoneLabel}
         </p>
 
         <div className="space-y-1.5 mb-4">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground">
-              {lang === "fr" ? "Minté le" : "Minted"}
+              {t.ui.uiMinted}
             </span>
             <span className="text-xs font-medium text-foreground">
               {mintedDate}
@@ -272,7 +268,7 @@ function NFTCard({ nft, index }: { nft: DemoNFT; index: number }) {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export function NFTGalleryPage() {
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const { getNFTsByUser } = useNFTStore();
@@ -321,12 +317,10 @@ export function NFTGalleryPage() {
               </Badge>
             </div>
             <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-3">
-              {lang === "fr" ? "Mes NFT de Preuves" : "My Proof NFTs"}
+              {t.ui.uiMyNFTs}
             </h1>
             <p className="text-white/70 text-base leading-relaxed max-w-xl">
-              {lang === "fr"
-                ? "Vos photos de travaux sont mintées en NFT sur la blockchain ICP. Chaque NFT est une preuve immuable et horodatée de l'avancement d'une mission."
-                : "Your work photos are minted as NFTs on the ICP blockchain. Each NFT is an immutable, timestamped proof of task progress."}
+              {t.ui.uiNFTDesc}
             </p>
 
             {/* Stats row */}
@@ -336,9 +330,7 @@ export function NFTGalleryPage() {
                   <p className="text-2xl font-bold text-white">
                     {myNFTs.length}
                   </p>
-                  <p className="text-white/60 text-xs">
-                    {lang === "fr" ? "NFT total" : "Total NFTs"}
-                  </p>
+                  <p className="text-white/60 text-xs">{t.ui.uiNFTTotal}</p>
                 </div>
                 <div className="w-px bg-white/20" />
                 <div>
@@ -346,7 +338,7 @@ export function NFTGalleryPage() {
                     {uniqueMissions}
                   </p>
                   <p className="text-white/60 text-xs">
-                    {lang === "fr" ? "Missions couvertes" : "Missions covered"}
+                    {t.ui.uiMissionsCovered}
                   </p>
                 </div>
               </div>
@@ -368,36 +360,30 @@ export function NFTGalleryPage() {
               <Image className="h-8 w-8 text-muted-foreground/50" />
             </div>
             <h2 className="font-display text-xl font-bold text-foreground mb-2">
-              {lang === "fr" ? "Aucun NFT pour l'instant" : "No NFTs yet"}
+              {t.ui.uiNoNFTs}
             </h2>
             <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
-              {lang === "fr"
-                ? "Vos preuves NFT apparaîtront ici lorsqu'un jalon de mission sera validé. Explorez la marketplace pour commencer."
-                : "Your proof NFTs will appear here when a task milestone is validated. Browse the marketplace to get started."}
+              {t.ui.uiNFTEmpty2}
             </p>
             <Button
               asChild
               className="bg-primary hover:bg-primary/90 text-white gap-2"
             >
-              <Link to="/marketplace">
-                {lang === "fr"
-                  ? "Explorer la marketplace"
-                  : "Browse marketplace"}
-              </Link>
+              <Link to="/marketplace">{t.ui.uiBrowseMarketplace}</Link>
             </Button>
           </motion.div>
         ) : (
           <>
             <div className="flex items-center justify-between mb-6">
               <h2 className="font-display text-lg font-bold text-foreground">
-                {lang === "fr" ? "Votre collection" : "Your collection"}
+                {t.ui.uiYourCollection}
                 <span className="ml-2 text-sm font-normal text-muted-foreground">
                   ({myNFTs.length} NFT{myNFTs.length > 1 ? "s" : ""})
                 </span>
               </h2>
               <Badge className="bg-secondary/15 text-secondary border-secondary/30 font-semibold">
                 <ShieldCheck className="h-3 w-3 mr-1" />
-                {lang === "fr" ? "Certifié ICP" : "ICP Certified"}
+                {t.ui.uiICPCertified}
               </Badge>
             </div>
 

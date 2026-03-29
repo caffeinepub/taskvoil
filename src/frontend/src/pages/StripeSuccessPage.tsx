@@ -71,6 +71,13 @@ export function StripeSuccessPage() {
       back: "Terug naar dashboard",
       ref: "Betalingsreferentie",
     },
+    lu: {
+      title: "Paiement confirmé !",
+      subtitle:
+        "Votre paiement a été traité avec succès. Vous pouvez maintenant accéder à votre mission.",
+      back: "Retour au tableau de bord",
+      ref: "Référence de paiement",
+    },
     el: {
       title: "Payment confirmed!",
       subtitle: "Your payment has been processed successfully.",

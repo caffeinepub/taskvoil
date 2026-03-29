@@ -1,4 +1,5 @@
 // LangCode includes "ie" for Ireland (English with Irish flag in navbar)
+// and "lu" for Luxembourg (French-based Luxembourgish UI)
 export type LangCode =
   | "fr"
   | "en"
@@ -8,7 +9,8 @@ export type LangCode =
   | "es"
   | "pt"
   | "el"
-  | "ie";
+  | "ie"
+  | "lu";
 
 export type CountryData = {
   code: string;
@@ -17,6 +19,8 @@ export type CountryData = {
   flag: string;
   /** The language automatically applied when this country is selected */
   defaultLang: LangCode;
+  /** Optional additional languages for bilingual countries (e.g. Switzerland FR/DE) */
+  languages?: LangCode[];
   isPriority: boolean;
 };
 
@@ -66,7 +70,6 @@ export const priorityCountries: CountryData[] = [
     nameFR: "Irlande",
     nameEN: "Ireland",
     flag: "🇮🇪",
-    // "ie" = English translations with the Irish 🇮🇪 flag — NEVER shows 🇬🇧
     defaultLang: "ie",
     isPriority: true,
   },
@@ -75,7 +78,7 @@ export const priorityCountries: CountryData[] = [
     nameFR: "Luxembourg",
     nameEN: "Luxembourg",
     flag: "🇱🇺",
-    defaultLang: "fr",
+    defaultLang: "lu",
     isPriority: true,
   },
   {
@@ -108,6 +111,8 @@ export const priorityCountries: CountryData[] = [
     nameEN: "Switzerland",
     flag: "🇨🇭",
     defaultLang: "fr",
+    // Switzerland is bilingual: user chooses FR or DE after selecting the country
+    languages: ["fr", "de"],
     isPriority: true,
   },
   {
@@ -120,7 +125,6 @@ export const priorityCountries: CountryData[] = [
   },
 ];
 
-// Only priority countries are shown — secondary EU countries removed per user request
 export const otherEUCountries: CountryData[] = [];
 
 export const allCountries: CountryData[] = [

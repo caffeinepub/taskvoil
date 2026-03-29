@@ -9,6 +9,7 @@ import { el } from "./translations/el";
 import { en } from "./translations/en";
 import { es } from "./translations/es";
 import { type TranslationKeys, fr } from "./translations/fr";
+export type { TranslationKeys };
 import { it } from "./translations/it";
 import { lu } from "./translations/lu";
 import { nl } from "./translations/nl";

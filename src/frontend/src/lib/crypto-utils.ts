@@ -1,35 +1,46 @@
 /**
  * AES-GCM 256 encryption utilities using Web Crypto API.
- * NOTE: In production, the key should be derived from a user-specific secret
- * or managed by a secure key management service, not a hardcoded constant.
+ * The key is derived from the user's ICP principal — unique per account.
+ * Falls back to a session-scoped random key if no principal is available.
  */
 
-// A fixed salt for PBKDF2 key derivation (demo only)
-const DEMO_PASSWORD = "taskvoila-demo-encryption-key-2026";
-const DEMO_SALT = new Uint8Array([
-  84, 97, 115, 107, 86, 111, 105, 108, 195, 160, 75, 101, 121, 50, 48, 50,
-]);
-
-let cachedKey: CryptoKey | null = null;
+// Cache: one key per principal to avoid re-deriving on every call
+const keyCache = new Map<string, CryptoKey>();
 
 /**
- * Generate (or return cached) AES-GCM 256 key derived via PBKDF2.
+ * Derive an AES-GCM 256 key from the user's ICP principal.
+ * The salt is derived from the principal itself (public, non-secret).
+ * This ensures each user has a unique encryption key.
  */
-export async function generateKey(): Promise<CryptoKey> {
-  if (cachedKey) return cachedKey;
+export async function generateKey(principal?: string): Promise<CryptoKey> {
+  const keyId = principal ?? "__session__";
 
-  const keyMaterial = await window.crypto.subtle.importKey(
+  const cached = keyCache.get(keyId);
+  if (cached) return cached;
+
+  // Derive a per-user password from the principal string
+  // The principal is user-specific — no two users share the same key
+  const password = principal
+    ? `tv-${principal}-2026`
+    : `tv-session-${crypto.getRandomValues(new Uint8Array(16)).join("-")}`;
+
+  // Salt is derived from the principal bytes (unique per user)
+  const saltSource = new TextEncoder().encode(principal ?? password);
+  const saltHash = await crypto.subtle.digest("SHA-256", saltSource);
+  const salt = new Uint8Array(saltHash).slice(0, 16);
+
+  const keyMaterial = await crypto.subtle.importKey(
     "raw",
-    new TextEncoder().encode(DEMO_PASSWORD),
+    new TextEncoder().encode(password),
     "PBKDF2",
     false,
     ["deriveKey"],
   );
 
-  cachedKey = await window.crypto.subtle.deriveKey(
+  const key = await crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
-      salt: DEMO_SALT,
+      salt,
       iterations: 100000,
       hash: "SHA-256",
     },
@@ -39,7 +50,19 @@ export async function generateKey(): Promise<CryptoKey> {
     ["encrypt", "decrypt"],
   );
 
-  return cachedKey;
+  keyCache.set(keyId, key);
+  return key;
+}
+
+/**
+ * Clear cached key (e.g., on logout).
+ */
+export function clearKeyCache(principal?: string): void {
+  if (principal) {
+    keyCache.delete(principal);
+  } else {
+    keyCache.clear();
+  }
 }
 
 /**
@@ -50,16 +73,15 @@ export async function encryptField(
   value: string,
   key: CryptoKey,
 ): Promise<string> {
-  const iv = window.crypto.getRandomValues(new Uint8Array(12));
+  const iv = crypto.getRandomValues(new Uint8Array(12));
   const encoded = new TextEncoder().encode(value);
 
-  const ciphertext = await window.crypto.subtle.encrypt(
+  const ciphertext = await crypto.subtle.encrypt(
     { name: "AES-GCM", iv },
     key,
     encoded,
   );
 
-  // Combine IV + ciphertext
   const combined = new Uint8Array(iv.length + ciphertext.byteLength);
   combined.set(iv, 0);
   combined.set(new Uint8Array(ciphertext), iv.length);
@@ -83,7 +105,7 @@ export async function decryptField(
   const iv = combined.slice(0, 12);
   const ciphertext = combined.slice(12);
 
-  const decrypted = await window.crypto.subtle.decrypt(
+  const decrypted = await crypto.subtle.decrypt(
     { name: "AES-GCM", iv },
     key,
     ciphertext,
@@ -108,12 +130,13 @@ export interface EncryptedUserData {
 
 /**
  * Encrypt all sensitive personal data fields.
- * Returns the same structure with encrypted base64 values.
+ * Pass the user's ICP principal for a user-unique key.
  */
 export async function encryptUserData(
   data: UserDataToEncrypt,
+  principal?: string,
 ): Promise<EncryptedUserData> {
-  const key = await generateKey();
+  const key = await generateKey(principal);
 
   const [phone, email, address, fullName] = await Promise.all([
     data.phone ? encryptField(data.phone, key) : Promise.resolve(undefined),

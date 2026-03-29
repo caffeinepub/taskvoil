@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/lib/auth-store";
 import { useChatStore } from "@/lib/chat-store";
-import { categoryEmojis, getProById } from "@/lib/demo-data";
+import { categoryEmojis } from "@/lib/demo-data";
 import { useTranslation } from "@/lib/i18n";
 import { useKYCStore } from "@/lib/kyc-store";
 import {
@@ -34,20 +34,17 @@ import {
 import { useState } from "react";
 
 // Contact-info warning banner shown on profiles with violations
-function ContactInfoViolationBanner({ lang }: { lang: string }) {
+function ContactInfoViolationBanner({ lang: _lang }: { lang: string }) {
+  const { t } = useTranslation();
   return (
     <div className="flex items-start gap-3 rounded-xl border border-destructive/40 bg-destructive/10 p-4 mb-4">
       <ShieldAlert className="h-5 w-5 text-destructive mt-0.5 shrink-0" />
       <div>
         <p className="text-sm font-semibold text-destructive">
-          {lang === "fr"
-            ? "⚠️ Profil signalé : informations de contact détectées"
-            : "⚠️ Flagged profile: contact information detected"}
+          {t.ui.uiProfileFlagged}
         </p>
         <p className="text-xs text-destructive/80 mt-0.5">
-          {lang === "fr"
-            ? "Ce profil contient des informations de contact qui ont été masquées. Toutes les communications doivent passer par TaskVoilà."
-            : "This profile contains contact information that has been hidden. All communications must go through TaskVoilà."}
+          {t.ui.uiContactHiddenProfile}
         </p>
       </div>
     </div>
@@ -61,21 +58,57 @@ export function ProDetailPage() {
   const { getOrCreateConversation } = useChatStore();
   const { getProfile } = useProfileStore();
   const { getKYCForUser } = useKYCStore();
-  const pro = getProById(Number(id));
-  const [callOpen, setCallOpen] = useState(false);
   const { currentUser } = useAuthStore();
+  const profileImages = id ? getProfile(id) : undefined;
+  // Use currentUser data if viewing own profile, otherwise show not found
+  const isOwnProfile = currentUser && String(currentUser.id) === id;
+  const pro =
+    isOwnProfile && currentUser
+      ? {
+          id: String(currentUser.id),
+          firstName: currentUser.firstName ?? "",
+          lastName: currentUser.lastName ?? "",
+          pseudo: currentUser.pseudo ?? "",
+          companyName: currentUser.companyName ?? "",
+          bio: currentUser.businessDescription ?? "",
+          avatar: profileImages?.avatarDataUrl ?? "",
+          coverImage: profileImages?.coverDataUrl ?? "",
+          city: currentUser.city ?? "",
+          country: currentUser.country ?? "",
+          role: currentUser.role,
+          rating: 0,
+          reviewCount: 0,
+          serviceRadius: Number(currentUser.coverageArea ?? 20),
+          categories: currentUser.serviceCategories ?? [],
+          skills: [] as string[],
+          languages: [] as string[],
+          website: currentUser.website ?? "",
+          isVerified: currentUser.verificationStatus === "verified",
+          isPremium: false,
+          radius: 20,
+          description: currentUser.businessDescription ?? "",
+          totalMissions: 0,
+          hourlyRate: 0,
+          category: (currentUser.serviceCategories ?? [])[0] ?? "",
+          yearsExperience: 0,
+        }
+      : null;
+  const [callOpen, setCallOpen] = useState(false);
   const [bookingDate, setBookingDate] = useState<string | null>(null);
   const [bookingTime, setBookingTime] = useState<string | null>(null);
-  const proKYC = getKYCForUser("pro_1");
+  const proKYC = getKYCForUser(id ?? "");
 
   function handleContact() {
-    if (!pro) return;
+    if (!pro || !id) return;
+    const clientId = currentUser ? String(currentUser.id) : "guest";
+    const clientName =
+      currentUser?.pseudo ?? currentUser?.firstName ?? "Client";
     const convId = getOrCreateConversation(
       undefined,
-      "client_1",
-      `pro_${pro.id}`,
+      clientId,
+      id,
       undefined,
-      "Jean Dupont",
+      clientName,
       `${pro.firstName} ${pro.lastName}`,
     );
     void navigate({ to: "/messages", search: { conv: convId } });
@@ -87,9 +120,7 @@ export function ProDetailPage() {
         <div className="text-center">
           <p className="text-4xl mb-4">👷</p>
           <h2 className="font-display text-xl font-bold text-foreground mb-2">
-            {lang === "fr"
-              ? "Professionnel introuvable"
-              : "Professional not found"}
+            {t.ui.uiProNotFound}
           </h2>
           <Button
             variant="outline"
@@ -214,7 +245,7 @@ export function ProDetailPage() {
                   data-ocid="pro.call.button"
                 >
                   <Phone className="h-4 w-4" />
-                  {lang === "fr" ? "Appeler" : "Call"}
+                  {t.ui.uiCallBtn}
                 </Button>
               </div>
             </div>
@@ -279,9 +310,7 @@ export function ProDetailPage() {
               {descHasContact && (
                 <div className="mt-3 flex items-center gap-2 text-xs text-destructive bg-destructive/10 rounded-lg px-3 py-2">
                   <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
-                  {lang === "fr"
-                    ? "Des informations de contact ont été masquées dans cette description."
-                    : "Contact information was hidden in this description."}
+                  {t.ui.uiContactHidden}
                 </div>
               )}
             </div>
@@ -352,17 +381,13 @@ export function ProDetailPage() {
             {/* Certifications */}
             <div className="bg-white rounded-xl p-5 card-shadow border border-border/50">
               <h3 className="font-display font-bold text-base text-foreground mb-3">
-                {lang === "fr" ? "Certifications" : "Certifications"}
+                {t.ui.uiCertifications}
               </h3>
               <div className="space-y-2">
                 {pro.isVerified && (
                   <div className="flex items-center gap-2 text-sm text-secondary">
                     <Award className="h-4 w-4" />
-                    <span>
-                      {lang === "fr"
-                        ? "Identité vérifiée"
-                        : "Verified identity"}
-                    </span>
+                    <span>{t.ui.uiVerifiedIdentity}</span>
                   </div>
                 )}
                 {proKYC?.status === "verified" && (
@@ -373,11 +398,7 @@ export function ProDetailPage() {
                 )}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Check className="h-4 w-4 text-secondary" />
-                  <span>
-                    {lang === "fr"
-                      ? "Assurance RC Pro"
-                      : "Professional liability"}
-                  </span>
+                  <span>{t.ui.uiProfLiability}</span>
                 </div>
               </div>
             </div>
@@ -388,14 +409,10 @@ export function ProDetailPage() {
                 <AlertTriangle className="h-4 w-4 text-amber-600 mt-0.5 shrink-0" />
                 <div>
                   <p className="text-xs font-semibold text-amber-700 mb-1">
-                    {lang === "fr"
-                      ? "Pour votre sécurité"
-                      : "For your security"}
+                    {t.ui.uiForYourSecurity}
                   </p>
                   <p className="text-xs text-amber-600">
-                    {lang === "fr"
-                      ? "Communiquez uniquement via la messagerie TaskVoilà. Ne partagez jamais vos coordonnées directement."
-                      : "Communicate only through TaskVoilà messaging. Never share your contact details directly."}
+                    {t.ui.uiSecurityWarning}
                   </p>
                 </div>
               </div>
@@ -404,7 +421,7 @@ export function ProDetailPage() {
             {/* Company */}
             <div className="bg-white rounded-xl p-5 card-shadow border border-border/50">
               <h3 className="font-display font-bold text-base text-foreground mb-3">
-                {lang === "fr" ? "Entreprise" : "Company"}
+                {t.ui.uiCompany}
               </h3>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Building2 className="h-4 w-4 text-primary" />
@@ -437,9 +454,7 @@ export function ProDetailPage() {
             <div className="flex flex-col items-center justify-center py-8 text-center gap-3">
               <Lock className="h-8 w-8 text-muted-foreground/50" />
               <p className="text-sm text-muted-foreground">
-                {lang === "fr"
-                  ? "Connectez-vous pour voir les disponibilitu00e9s de ce pro"
-                  : "Log in to view this professional's availability"}
+                {t.ui.uiLoginCalendar}
               </p>
               <Button
                 size="sm"
@@ -468,7 +483,7 @@ export function ProDetailPage() {
                 className="gap-2"
               >
                 <Calendar className="h-4 w-4" />
-                {lang === "fr" ? "Gu00e9rer mon agenda" : "Manage my schedule"}
+                {t.ui.uiManageSchedule}
               </Button>
             </div>
           )}
