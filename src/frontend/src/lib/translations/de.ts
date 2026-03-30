@@ -34,7 +34,7 @@ export const de: TranslationKeys = {
   categories: {
     title: "Unsere Kategorien",
     subtitle: "Finden Sie den richtigen Fachmann für jeden Bedarf",
-    handytask: "HandyTask",
+    handytask: "Handwerker & Nachbarschaftshilfe",
     nettoyage: "Reinigung & Haushalt",
     demenagement: "Umzug & Transport",
     montage: "Möbelmontage",
@@ -1235,5 +1235,38 @@ export const de: TranslationKeys = {
       "Überprüfen und anpassen Sie Ihre Anfragen vor der Veröffentlichung",
     editTitle: "Titel bearbeiten",
     publish: "Veröffentlichen",
+  },
+  feed: {
+    title: "Neuigkeiten",
+    like: "Gefällt mir",
+    liked: "Gefällt mir ✓",
+    follow: "Folgen",
+    following: "Gefolgt ✓",
+    featuredPro: "Premium-Profi",
+    pinnedTitle1: "🏡 Dringend? In 2 Min. veröffentlichen",
+    pinnedDesc1:
+      "Verifizierte Profis in Ihrer Nähe antworten in weniger als 1 Stunde",
+    pinnedTitle2: "🔧 15.000+ verifizierte Profis",
+    pinnedDesc2: "Klempnerei, Elektrik, Gartenarbeit, Umzug...",
+    pinnedTitle3: "🌟 Sichere Zahlung bei jeder Mission",
+    pinnedDesc3:
+      "Meilenstein-Treuhand. Geben Sie Gelder nur frei, wenn Sie zufrieden sind.",
+    tipTitle1: "💡 Tipp: Vorher/Nachher-Fotos",
+    tipDesc1:
+      "Fordern Sie Vorher- und Nachher-Fotos für jeden Einsatz an, um die Qualität der Arbeit zu bestätigen.",
+    tipTitle2: "📋 Schreiben Sie ein klares Briefing",
+    tipDesc2:
+      "Je präziser Ihre Beschreibung, desto relevantere und schnellere Angebote erhalten Sie.",
+    tipTitle3: "⭐ Hinterlassen Sie nach jeder Mission eine Bewertung",
+    tipDesc3:
+      "Ihre Bewertungen helfen der Community, die besten Profis auszuwählen.",
+    promoStarter: "Starter-Paket",
+    promoStarterDesc: "5 Anfragen/Monat beantworten, verifiziertes Profil",
+    promoPro: "Pro-Paket",
+    promoProDesc: "Unbegrenzte Anfragen, Premium-Badge, hervorgehoben",
+    promoExpert: "Experten-Paket",
+    promoExpertDesc: "Alles aus Pro + Prioritätszugang zu Dringlichkeiten",
+    promoCtaLabel: "Angebote ansehen",
+    newThisWeek: "Diese Woche",
   },
 };

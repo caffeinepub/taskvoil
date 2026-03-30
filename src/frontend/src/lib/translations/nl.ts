@@ -34,7 +34,7 @@ export const nl: TranslationKeys = {
   categories: {
     title: "Onze categorieën",
     subtitle: "Vind de juiste professional voor elke behoefte",
-    handytask: "HandyTask",
+    handytask: "Ambachtslieden & buurthelp",
     nettoyage: "Schoonmaak & Huishouden",
     demenagement: "Verhuizing & Transport",
     montage: "Meubelassemblage",
@@ -1227,5 +1227,37 @@ export const nl: TranslationKeys = {
     recapSubtitle: "Controleer en pas je aanvragen aan voor publicatie",
     editTitle: "Titel bewerken",
     publish: "Publiceren",
+  },
+  feed: {
+    title: "Nieuwsfeed",
+    like: "Vind ik leuk",
+    liked: "Leuk gevonden ✓",
+    follow: "Volgen",
+    following: "Gevolgd ✓",
+    featuredPro: "Premium Pro",
+    pinnedTitle1: "🏡 Dringend? Plaats in 2 min",
+    pinnedDesc1:
+      "Geverifieerde professionals bij u in de buurt reageren in minder dan 1 uur",
+    pinnedTitle2: "🔧 15.000+ geverifieerde professionals",
+    pinnedDesc2: "Loodgieterij, elektriciteit, tuinieren, verhuizen...",
+    pinnedTitle3: "🌟 Veilige betaling bij elke missie",
+    pinnedDesc3: "Mijlpaalescrow. Maak fondsen vrij pas als u tevreden bent.",
+    tipTitle1: "💡 Tip: voor/na-foto's",
+    tipDesc1:
+      "Vraag voor- en na-foto's van elke interventie om de kwaliteit van het werk te valideren.",
+    tipTitle2: "📋 Schrijf een duidelijke briefing",
+    tipDesc2:
+      "Hoe preciezer uw beschrijving, hoe meer relevante en snelle offertes u ontvangt.",
+    tipTitle3: "⭐ Laat een beoordeling achter na elke missie",
+    tipDesc3:
+      "Uw beoordelingen helpen de gemeenschap de beste professionals te kiezen.",
+    promoStarter: "Starter Pakket",
+    promoStarterDesc: "Reageer op 5 aanvragen/maand, geverifieerd profiel",
+    promoPro: "Pro Pakket",
+    promoProDesc: "Onbeperkte aanvragen, Premium badge, uitgelicht",
+    promoExpert: "Expert Pakket",
+    promoExpertDesc: "Alles van Pro + prioritaire toegang tot urgente klussen",
+    promoCtaLabel: "Bekijk plannen",
+    newThisWeek: "Deze week",
   },
 };

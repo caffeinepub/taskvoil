@@ -204,6 +204,27 @@ const REG_TEXTS: Record<
       "Συμφωνώ να λαμβάνω διαφημιστικά email και ειδοποιήσεις από το TaskVoila.",
     gdprRequired: "Πρέπει να αποδεχτείτε τους όρους για να συνεχίσετε.",
   },
+  lu: {
+    title: "Créez votre compte",
+    subtitle: "Choisissez votre méthode d'inscription sécurisée",
+    step: "Étape 1/2 — Authentification ICP",
+    iiSubtitle: "Biométrie · Clé d'appareil",
+    nfidSubtitle: "Connexion avec Google possible",
+    plugSubtitle: "Wallet Web3 · Sans mot de passe",
+    decentralized: "Authentification décentralisée sécurisée par ICP",
+    alreadyAccount: "Déjà inscrit ?",
+    signIn: "Se connecter",
+    cancelledError: "Connexion annulée ou échouée",
+    terms: "conditions d'utilisation",
+    privacy: "En vous inscrivant, vous acceptez nos",
+    gdprMandatory: "J'ai lu et j'accepte la",
+    gdprMandatoryPrivacy: "Politique de confidentialité",
+    gdprMandatoryAnd: "et les",
+    gdprMandatoryTerms: "Conditions générales d'utilisation",
+    gdprMarketing:
+      "J'accepte de recevoir des emails promotionnels et des notifications de TaskVoilà.",
+    gdprRequired: "Vous devez accepter les conditions avant de continuer.",
+  },
 };
 
 export function RegisterPage() {

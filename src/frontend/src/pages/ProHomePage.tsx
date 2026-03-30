@@ -1,3 +1,4 @@
+import { NewsFeed } from "@/components/NewsFeed";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,6 +14,7 @@ import {
   Users,
   Zap,
 } from "lucide-react";
+import { Newspaper } from "lucide-react";
 import { motion } from "motion/react";
 
 function SectionHeader({
@@ -26,7 +28,7 @@ function SectionHeader({
       <Button
         variant="ghost"
         size="sm"
-        className="text-amber-600 hover:text-amber-700 p-0 h-auto"
+        className="text-blue-600 hover:text-blue-700 p-0 h-auto"
         asChild
       >
         <Link to={ctaHref as any} className="flex items-center gap-1">
@@ -57,7 +59,7 @@ function EmptyBlock({
         <p className="text-muted-foreground text-sm mb-3">{message}</p>
         <Button
           size="sm"
-          className="bg-amber-500 hover:bg-amber-600 text-white"
+          className="bg-blue-600 hover:bg-blue-700 text-white"
           asChild
         >
           <Link to={ctaHref as any}>{ctaLabel}</Link>
@@ -122,10 +124,15 @@ export function ProHomePage() {
         className="grid grid-cols-3 gap-3"
         data-ocid="pro.stats.section"
       >
-        {stats.map(({ icon: Icon, value, label }) => (
+        {stats.map(({ icon: Icon, value, label }, idx) => (
           <Card key={label} className="border-border">
             <CardContent className="p-3 text-center">
-              <Icon size={18} className="mx-auto text-amber-500 mb-1" />
+              <Icon
+                size={18}
+                className={`mx-auto mb-1 ${
+                  idx === 1 ? "text-emerald-500" : "text-blue-500"
+                }`}
+              />
               <p className="text-xl font-bold text-foreground">{value}</p>
               <p className="text-xs text-muted-foreground leading-tight">
                 {label}
@@ -138,7 +145,7 @@ export function ProHomePage() {
       {/* Quick actions */}
       <div className="grid grid-cols-2 gap-3">
         <Button
-          className="bg-amber-500 hover:bg-amber-600 text-white h-12 text-sm font-semibold"
+          className="bg-blue-600 hover:bg-blue-700 text-white h-12 text-sm font-semibold"
           data-ocid="pro.marketplace_button"
           asChild
         >
@@ -146,7 +153,7 @@ export function ProHomePage() {
         </Button>
         <Button
           variant="outline"
-          className="h-12 text-sm font-semibold border-amber-300 text-amber-700 hover:bg-amber-50"
+          className="h-12 text-sm font-semibold border-blue-300 text-blue-700 hover:bg-blue-50"
           data-ocid="pro.schedule_button"
           asChild
         >
@@ -171,7 +178,7 @@ export function ProHomePage() {
             {availableMissions.slice(0, 3).map((m, i) => (
               <Card
                 key={m.id}
-                className="border-border hover:border-amber-300 transition-colors"
+                className="border-border hover:border-blue-300 transition-colors"
                 data-ocid={`pro.request.item.${i + 1}`}
               >
                 <CardContent className="p-3 flex items-center justify-between">
@@ -196,11 +203,11 @@ export function ProHomePage() {
             ctaLabel={t.home.pro.ctaRequests}
             ctaHref="/profile/edit"
             fallback={
-              <Card className="border-amber-200 bg-amber-50/50 dark:bg-amber-950/10">
+              <Card className="border-blue-200 bg-blue-50/50 dark:bg-blue-950/10">
                 <CardContent className="p-4 flex items-start gap-3">
                   <Lightbulb
                     size={20}
-                    className="text-amber-500 shrink-0 mt-0.5"
+                    className="text-emerald-500 shrink-0 mt-0.5"
                   />
                   <div>
                     <p className="text-sm font-semibold text-foreground">
@@ -242,7 +249,7 @@ export function ProHomePage() {
                     {m.title}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">{m.city}</p>
-                  <p className="text-xs font-medium text-amber-600 mt-1">
+                  <p className="text-xs font-medium text-blue-600 mt-1">
                     {m.budgetMin}–{m.budgetMax}€
                   </p>
                 </CardContent>
@@ -323,7 +330,7 @@ export function ProHomePage() {
           {tipLabels.map((tip) => (
             <Card
               key={tip.emoji}
-              className="border-amber-200 bg-amber-50/30 dark:bg-amber-950/10"
+              className="border-blue-200 bg-blue-50/30 dark:bg-blue-950/10"
             >
               <CardContent className="p-4 flex items-start gap-3">
                 <span className="text-2xl">{tip.emoji}</span>
@@ -339,6 +346,20 @@ export function ProHomePage() {
             </Card>
           ))}
         </div>
+      </motion.section>
+
+      {/* News Feed */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.35, duration: 0.4 }}
+        data-ocid="pro.feed.section"
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <Newspaper size={18} className="text-blue-600" />
+          <h2 className="text-lg font-bold text-foreground">{t.feed.title}</h2>
+        </div>
+        <NewsFeed />
       </motion.section>
     </div>
   );

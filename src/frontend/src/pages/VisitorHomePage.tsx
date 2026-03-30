@@ -29,36 +29,48 @@ export function VisitorHomePage() {
   ];
 
   const trustFeatures = [
-    { icon: Shield, label: t.ui.uiVerifiedPros },
-    { icon: CheckCircle, label: t.ui.uiSecurePayment },
-    { icon: Star, label: t.ui.uiSatisfactionRate },
-    { icon: Zap, label: t.hero.titleHighlight },
+    { icon: Shield, label: t.ui.uiVerifiedPros, green: true },
+    { icon: CheckCircle, label: t.ui.uiSecurePayment, green: true },
+    { icon: Star, label: t.ui.uiSatisfactionRate, green: false },
+    { icon: Zap, label: t.hero.titleHighlight, green: false },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 dark:from-amber-950/30 dark:via-orange-950/20 dark:to-amber-900/20">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-400/20 via-transparent to-transparent" />
+      <section
+        className="relative overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(135deg, oklch(0.25 0.18 258) 0%, oklch(0.32 0.20 252) 50%, oklch(0.42 0.22 245) 100%)",
+        }}
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at top right, oklch(0.55 0.18 250 / 0.25) 0%, transparent 60%)",
+          }}
+        />
         <div className="relative max-w-5xl mx-auto px-4 py-16 md:py-24 text-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Badge className="mb-4 bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-100">
+            <Badge className="mb-4 bg-blue-100 text-blue-800 border-blue-300 hover:bg-blue-100">
               TaskVoilà — Europe
             </Badge>
-            <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4 leading-tight">
+            <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
               {t.home.visitor.hero}
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               {t.home.visitor.slogan}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
                 size="lg"
-                className="bg-amber-500 hover:bg-amber-600 text-white text-base font-semibold px-8"
+                className="bg-blue-600 hover:bg-blue-700 text-white text-base font-semibold px-8"
                 data-ocid="visitor.client_cta_button"
                 onClick={() => void navigate({ to: "/register" })}
               >
@@ -67,7 +79,7 @@ export function VisitorHomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-amber-500 text-amber-700 hover:bg-amber-50 text-base font-semibold px-8"
+                className="border-blue-300 text-white bg-white/10 hover:bg-white/20 hover:text-white text-base font-semibold px-8"
                 data-ocid="visitor.pro_cta_button"
                 onClick={() => void navigate({ to: "/register" })}
               >
@@ -83,12 +95,15 @@ export function VisitorHomePage() {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="mt-10 flex flex-wrap justify-center gap-4"
           >
-            {trustFeatures.map(({ icon: Icon, label }) => (
+            {trustFeatures.map(({ icon: Icon, label, green }) => (
               <div
                 key={label}
-                className="flex items-center gap-1.5 text-sm text-amber-800 dark:text-amber-300"
+                className="flex items-center gap-1.5 text-sm text-blue-100"
               >
-                <Icon size={16} className="text-amber-500" />
+                <Icon
+                  size={16}
+                  className={green ? "text-emerald-400" : "text-blue-300"}
+                />
                 <span>{label}</span>
               </div>
             ))}
@@ -110,9 +125,9 @@ export function VisitorHomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.15, duration: 0.5 }}
-              className="relative bg-card border border-border rounded-2xl p-6 text-center"
+              className="relative bg-card border border-border rounded-2xl p-6 text-center hover:border-blue-200 transition-colors"
             >
-              <div className="text-5xl font-black text-amber-100 dark:text-amber-900/40 absolute top-4 right-4 leading-none">
+              <div className="text-5xl font-black text-blue-50 dark:text-blue-900/40 absolute top-4 right-4 leading-none">
                 {step.num}
               </div>
               <div className="relative">
@@ -137,7 +152,7 @@ export function VisitorHomePage() {
               <motion.div
                 key={cat.key}
                 whileHover={{ scale: 1.03 }}
-                className="bg-card border border-border rounded-xl p-4 text-center cursor-pointer hover:border-amber-400 hover:shadow-sm transition-all"
+                className="bg-card border border-border rounded-xl p-4 text-center cursor-pointer hover:border-blue-400 hover:shadow-sm transition-all"
                 data-ocid={`visitor.category.${cat.order}`}
               >
                 <div className="text-3xl mb-2">{cat.emoji}</div>
@@ -161,7 +176,7 @@ export function VisitorHomePage() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button
             size="lg"
-            className="bg-amber-500 hover:bg-amber-600 text-white font-semibold"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
             data-ocid="visitor.signup_button"
             onClick={() => void navigate({ to: "/register" })}
           >
@@ -170,7 +185,7 @@ export function VisitorHomePage() {
           <Button
             size="lg"
             variant="ghost"
-            className="text-amber-700 hover:text-amber-800"
+            className="text-blue-700 hover:text-blue-800"
             data-ocid="visitor.login_button"
             asChild
           >

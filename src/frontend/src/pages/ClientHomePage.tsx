@@ -1,3 +1,4 @@
+import { NewsFeed } from "@/components/NewsFeed";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import { useTranslation } from "@/lib/i18n";
 import { useMissionStore } from "@/lib/mission-store";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Lightbulb, MapPin, Zap } from "lucide-react";
+import { Newspaper } from "lucide-react";
 import { motion } from "motion/react";
 
 const SCENARIO_TEASERS = [
@@ -32,7 +34,7 @@ function SectionHeader({
       <Button
         variant="ghost"
         size="sm"
-        className="text-amber-600 hover:text-amber-700 p-0 h-auto"
+        className="text-blue-600 hover:text-blue-700 p-0 h-auto"
         asChild
       >
         <Link to={ctaHref as any} className="flex items-center gap-1">
@@ -63,7 +65,7 @@ function EmptyBlock({
         <p className="text-muted-foreground text-sm mb-3">{message}</p>
         <Button
           size="sm"
-          className="bg-amber-500 hover:bg-amber-600 text-white"
+          className="bg-blue-600 hover:bg-blue-700 text-white"
           asChild
         >
           <Link to={ctaHref as any}>{ctaLabel}</Link>
@@ -106,7 +108,7 @@ export function ClientHomePage() {
       {/* Quick actions */}
       <div className="grid grid-cols-2 gap-3">
         <Button
-          className="bg-amber-500 hover:bg-amber-600 text-white h-12 text-sm font-semibold"
+          className="bg-blue-600 hover:bg-blue-700 text-white h-12 text-sm font-semibold"
           data-ocid="client.post_task_button"
           onClick={() => void navigate({ to: "/post-task" })}
         >
@@ -114,7 +116,7 @@ export function ClientHomePage() {
         </Button>
         <Button
           variant="outline"
-          className="h-12 text-sm font-semibold border-amber-300 text-amber-700 hover:bg-amber-50"
+          className="h-12 text-sm font-semibold border-blue-300 text-blue-700 hover:bg-blue-50"
           data-ocid="client.find_pros_button"
           asChild
         >
@@ -143,7 +145,7 @@ export function ClientHomePage() {
               {n1Categories.slice(0, 4).map((cat, i) => (
                 <Card
                   key={cat.key}
-                  className="min-w-[130px] border-border hover:border-amber-300 transition-colors"
+                  className="min-w-[130px] border-border hover:border-blue-300 transition-colors"
                   data-ocid={`client.category.item.${i + 1}`}
                 >
                   <CardContent className="p-3 text-center">
@@ -180,7 +182,7 @@ export function ClientHomePage() {
               {n1Categories.slice(0, 3).map((cat, i) => (
                 <Card
                   key={cat.key}
-                  className="min-w-[150px] bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-amber-200"
+                  className="min-w-[150px] bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200"
                   data-ocid={`client.nearby.item.${i + 1}`}
                 >
                   <CardContent className="p-4">
@@ -189,7 +191,7 @@ export function ClientHomePage() {
                       {cat.labelFR}
                     </p>
                     <div className="flex items-center gap-1 mt-1">
-                      <MapPin size={10} className="text-amber-500" />
+                      <MapPin size={10} className="text-blue-500" />
                       <span className="text-xs text-muted-foreground">
                         ... km
                       </span>
@@ -246,7 +248,7 @@ export function ClientHomePage() {
                 {POPULAR_TASK_IDEAS.map((idea, i) => (
                   <Card
                     key={idea.labelKey}
-                    className="min-w-[140px] border-amber-200 bg-amber-50/50 dark:bg-amber-950/10"
+                    className="min-w-[140px] border-blue-200 bg-blue-50/50 dark:bg-blue-950/10"
                     data-ocid={`client.task_idea.item.${i + 1}`}
                   >
                     <CardContent className="p-3 text-center">
@@ -298,11 +300,11 @@ export function ClientHomePage() {
             ctaLabel={t.home.client.ctaUrgencies}
             ctaHref="/marketplace"
             fallback={
-              <Card className="border-amber-200 bg-amber-50/50 dark:bg-amber-950/10">
+              <Card className="border-blue-200 bg-blue-50/50 dark:bg-blue-950/10">
                 <CardContent className="p-4 flex items-start gap-3">
                   <Lightbulb
                     size={20}
-                    className="text-amber-500 shrink-0 mt-0.5"
+                    className="text-emerald-500 shrink-0 mt-0.5"
                   />
                   <div>
                     <p className="text-sm font-semibold text-foreground">
@@ -333,7 +335,7 @@ export function ClientHomePage() {
           <Button
             variant="ghost"
             size="sm"
-            className="text-amber-600 hover:text-amber-700 p-0 h-auto"
+            className="text-blue-600 hover:text-blue-700 p-0 h-auto"
             asChild
           >
             <Link to="/scenarios" className="flex items-center gap-1">
@@ -345,7 +347,7 @@ export function ClientHomePage() {
           {SCENARIO_TEASERS.map((s, i) => (
             <Card
               key={s.key}
-              className="min-w-[160px] bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-amber-200 cursor-pointer hover:border-amber-400 transition-colors"
+              className="min-w-[160px] bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200 cursor-pointer hover:border-blue-400 transition-colors"
               data-ocid={`client.scenario.item.${i + 1}`}
               onClick={() => void navigate({ to: "/scenarios" })}
             >
@@ -362,12 +364,26 @@ export function ClientHomePage() {
           ))}
         </div>
         <Button
-          className="w-full mt-3 bg-amber-500 hover:bg-amber-600 text-white"
+          className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white"
           data-ocid="client.discover_scenarios_button"
           asChild
         >
           <Link to="/scenarios">{t.home.client.discoverScenarios}</Link>
         </Button>
+      </motion.section>
+
+      {/* News Feed */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.35, duration: 0.4 }}
+        data-ocid="client.feed.section"
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <Newspaper size={18} className="text-blue-600" />
+          <h2 className="text-lg font-bold text-foreground">{t.feed.title}</h2>
+        </div>
+        <NewsFeed />
       </motion.section>
     </div>
   );

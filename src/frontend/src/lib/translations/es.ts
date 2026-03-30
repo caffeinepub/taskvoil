@@ -34,7 +34,7 @@ export const es: TranslationKeys = {
   categories: {
     title: "Nuestras categorías",
     subtitle: "Encuentra el profesional adecuado para cada necesidad",
-    handytask: "HandyTask",
+    handytask: "Artesanos & ayuda local",
     nettoyage: "Limpieza y Hogar",
     demenagement: "Mudanza y Transporte",
     montage: "Montaje de Muebles",
@@ -1225,5 +1225,38 @@ export const es: TranslationKeys = {
     recapSubtitle: "Revisa y ajusta tus solicitudes antes de publicar",
     editTitle: "Editar título",
     publish: "Publicar",
+  },
+  feed: {
+    title: "Noticias",
+    like: "Me gusta",
+    liked: "Me gustó ✓",
+    follow: "Seguir",
+    following: "Siguiendo ✓",
+    featuredPro: "Pro Premium",
+    pinnedTitle1: "🏡 ¿Necesitas ayuda urgente? Publica en 2 min",
+    pinnedDesc1:
+      "Profesionales verificados cerca de ti responden en menos de 1 hora",
+    pinnedTitle2: "🔧 +15.000 artesanos verificados",
+    pinnedDesc2: "Fontanería, electricidad, jardinería, mudanzas...",
+    pinnedTitle3: "🌟 Pago seguro en cada misión",
+    pinnedDesc3:
+      "Pago por hitos. Libera los fondos solo cuando estés satisfecho.",
+    tipTitle1: "💡 Consejo: fotos antes/después",
+    tipDesc1:
+      "Pide fotos antes y después de cada intervención para validar la calidad del trabajo.",
+    tipTitle2: "📋 Escribe un brief claro",
+    tipDesc2:
+      "Cuanto más precisa sea tu descripción, más ofertas relevantes y rápidas recibirás.",
+    tipTitle3: "⭐ Deja una reseña después de cada misión",
+    tipDesc3:
+      "Tus reseñas ayudan a la comunidad a elegir a los mejores profesionales.",
+    promoStarter: "Plan Starter",
+    promoStarterDesc: "Responde a 5 solicitudes/mes, perfil verificado",
+    promoPro: "Plan Pro",
+    promoProDesc: "Solicitudes ilimitadas, insignia Premium, destacado",
+    promoExpert: "Plan Expert",
+    promoExpertDesc: "Todo lo de Pro + acceso prioritario a urgencias",
+    promoCtaLabel: "Ver planes",
+    newThisWeek: "Esta semana",
   },
 };

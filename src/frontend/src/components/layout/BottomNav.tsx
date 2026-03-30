@@ -21,7 +21,7 @@ import {
   X,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const RECENT_SEARCHES_BY_LANG: Record<string, string[]> = {
   fr: ["Plombier Paris", "Électricien Lyon", "Ménage à domicile"],
@@ -52,6 +52,25 @@ export function BottomNav() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [visible, setVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY < 60) {
+        setVisible(true);
+      } else if (currentScrollY > lastScrollY.current + 5) {
+        setVisible(false);
+      } else if (currentScrollY < lastScrollY.current - 5) {
+        setVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const currentPath = location.pathname;
 
@@ -121,10 +140,11 @@ export function BottomNav() {
     <>
       {/* Bottom Nav Bar */}
       <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-border"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-border transition-transform duration-300 ease-in-out"
         style={{
           paddingBottom: "env(safe-area-inset-bottom, 0px)",
           boxShadow: "0 -2px 16px rgba(0,0,0,0.08)",
+          transform: visible ? "translateY(0)" : "translateY(100%)",
         }}
         data-ocid="bottom_nav.panel"
       >
@@ -174,17 +194,17 @@ export function BottomNav() {
                     className="h-5 w-5 transition-colors"
                     style={{
                       color: active
-                        ? "oklch(0.72 0.18 65)"
+                        ? "oklch(0.50 0.22 258)"
                         : "oklch(0.55 0.01 0)",
                     }}
-                    fill={active ? "oklch(0.72 0.18 65)" : "none"}
+                    fill={active ? "oklch(0.50 0.22 258)" : "none"}
                     strokeWidth={active ? 2.5 : 1.8}
                   />
                   {active && (
                     <motion.div
                       layoutId="nav-indicator"
                       className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full"
-                      style={{ background: "oklch(0.72 0.18 65)" }}
+                      style={{ background: "oklch(0.50 0.22 258)" }}
                     />
                   )}
                 </div>
@@ -192,7 +212,7 @@ export function BottomNav() {
                   className="text-[10px] font-medium leading-none transition-colors"
                   style={{
                     color: active
-                      ? "oklch(0.72 0.18 65)"
+                      ? "oklch(0.50 0.22 258)"
                       : "oklch(0.55 0.01 0)",
                   }}
                 >

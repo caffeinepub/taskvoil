@@ -33,7 +33,7 @@ export const lu = {
     title: "Nos catégories",
     subtitle: "Trouvez le bon professionnel pour chaque besoin",
     // N1 categories
-    handytask: "HandyTask",
+    handytask: "Handwierker & lokal Hëllef",
     nettoyage: "Nettoyage & Ménage",
     demenagement: "Déménagement & Transport",
     montage: "Montage Meubles",
@@ -1237,5 +1237,38 @@ export const lu = {
     recapSubtitle: "Iwwerpréif a passen Är Ufroe virun der Publikatioun un",
     editTitle: "Titel änneren",
     publish: "Publizéieren",
+  },
+  feed: {
+    title: "Aktuell Noriichten",
+    like: "Gefällt mir",
+    liked: "Gefall ✓",
+    follow: "Suivre",
+    following: "Gesuivt ✓",
+    featuredPro: "Premium Pro",
+    pinnedTitle1: "🏡 Dringend? Publizéiert a 2 Min",
+    pinnedDesc1:
+      "Verifizéiert Profien an Ärer Géigend äntwerten a manner wéi 1 Stonn",
+    pinnedTitle2: "🔧 15.000+ verifizéiert Profien",
+    pinnedDesc2: "Klempnerei, Elektrik, Gaardenaarbecht, Ëmzuch...",
+    pinnedTitle3: "🌟 Sécher Bezuehlung bei all Missioun",
+    pinnedDesc3:
+      "Escrow par étapes. Liberéiert d'Gelder nëmme wann Dir zefridden sidd.",
+    tipTitle1: "💡 Tipp: Virher/Nodeher Fotoen",
+    tipDesc1:
+      "Freet Fotoen virdrun a nodrun fir all Aarbecht fir d'Qualitéit ze validéieren.",
+    tipTitle2: "📋 Schreiwe e klore Brief",
+    tipDesc2:
+      "Jo méi präzis Är Beschreiwung, jo méi relevant an séier Offeren Dir kritt.",
+    tipTitle3: "⭐ Hannerloost eng Bewäertung no all Missioun",
+    tipDesc3:
+      "Är Bewäertunge hëllefe der Gemeinschaft déi bescht Profien auszewielen.",
+    promoStarter: "Starter Forfait",
+    promoStarterDesc: "5 Demanden/Mount beäntwerten, verifizéiert Profil",
+    promoPro: "Pro Forfait",
+    promoProDesc: "Onlimitéiert Demanden, Premium Badge, ervirgehuewen",
+    promoExpert: "Expert Forfait",
+    promoExpertDesc: "Alles aus Pro + Prioritéitszougang zu Dringlechkeeten",
+    promoCtaLabel: "Offeren gesinn",
+    newThisWeek: "Dës Woch",
   },
 };

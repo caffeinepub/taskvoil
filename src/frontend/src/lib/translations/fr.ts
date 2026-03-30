@@ -33,7 +33,7 @@ export const fr = {
     title: "Nos catégories",
     subtitle: "Trouvez le bon professionnel pour chaque besoin",
     // N1 categories
-    handytask: "HandyTask",
+    handytask: "Artisans & aide de proximité",
     nettoyage: "Nettoyage & Ménage",
     demenagement: "Déménagement & Transport",
     montage: "Montage Meubles",
@@ -1235,6 +1235,37 @@ export const fr = {
     recapSubtitle: "Vérifiez et ajustez vos demandes avant publication",
     editTitle: "Modifier le titre",
     publish: "Publier",
+  },
+  feed: {
+    title: "Fil d'actualité",
+    like: "J'aime",
+    liked: "Aimé",
+    follow: "Suivre",
+    following: "Suivi \u2713",
+    featuredPro: "Pro Premium",
+    pinnedTitle1: "\ud83c\udfe1 Besoin urgent ? Publiez en 2 min",
+    pinnedDesc1: "Des pros vérifiés près de vous répondent en moins d'1h",
+    pinnedTitle2: "\ud83d\udd27 +15 000 artisans vérifiés",
+    pinnedDesc2: "Plomberie, électricité, jardinage, déménagement...",
+    pinnedTitle3: "\ud83c\udf1f Paiement sécurisé à chaque mission",
+    pinnedDesc3:
+      "Escrow par jalons. Libérez les fonds uniquement quand vous êtes satisfait.",
+    tipTitle1: "\ud83d\udca1 Astuce : photos avant/après",
+    tipDesc1:
+      "Demandez des photos avant et après chaque intervention pour valider la qualité du travail.",
+    tipTitle2: "\ud83d\udccb Rédigez un brief clair",
+    tipDesc2:
+      "Plus votre description est précise, plus vous recevrez d'offres pertinentes et rapides.",
+    tipTitle3: "\u2b50 Laissez un avis après chaque mission",
+    tipDesc3: "Vos avis aident la communauté à choisir les meilleurs pros.",
+    promoStarter: "Forfait Starter",
+    promoStarterDesc: "Répondez à 5 demandes/mois, profil vérifié",
+    promoPro: "Forfait Pro",
+    promoProDesc: "Demandes illimitées, badge Premium, mis en avant",
+    promoExpert: "Forfait Expert",
+    promoExpertDesc: "Tout le Pro + accès prioritaire aux urgences",
+    promoCtaLabel: "Voir les offres",
+    newThisWeek: "Cette semaine",
   },
 };
 

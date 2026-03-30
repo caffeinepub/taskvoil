@@ -34,7 +34,7 @@ export const it: TranslationKeys = {
   categories: {
     title: "Le nostre categorie",
     subtitle: "Trova il professionista giusto per ogni esigenza",
-    handytask: "HandyTask",
+    handytask: "Artigiani & aiuto locale",
     nettoyage: "Pulizie e Casa",
     demenagement: "Trasloco e Trasporto",
     montage: "Montaggio Mobili",
@@ -1230,5 +1230,38 @@ export const it: TranslationKeys = {
       "Verifica e modifica le tue richieste prima della pubblicazione",
     editTitle: "Modifica titolo",
     publish: "Pubblica",
+  },
+  feed: {
+    title: "Notizie",
+    like: "Mi piace",
+    liked: "Piaciuto ✓",
+    follow: "Segui",
+    following: "Seguito ✓",
+    featuredPro: "Pro Premium",
+    pinnedTitle1: "🏡 Urgente? Pubblica in 2 min",
+    pinnedDesc1:
+      "Professionisti verificati vicino a te rispondono in meno di 1 ora",
+    pinnedTitle2: "🔧 15.000+ professionisti verificati",
+    pinnedDesc2: "Idraulica, elettricità, giardinaggio, trasloco...",
+    pinnedTitle3: "🌟 Pagamento sicuro per ogni missione",
+    pinnedDesc3:
+      "Pagamento a tappe. Rilascia i fondi solo quando sei soddisfatto.",
+    tipTitle1: "💡 Suggerimento: foto prima/dopo",
+    tipDesc1:
+      "Chiedi foto prima e dopo ogni intervento per convalidare la qualità del lavoro.",
+    tipTitle2: "📋 Scrivi un brief chiaro",
+    tipDesc2:
+      "Più precisa è la tua descrizione, più offerte pertinenti e veloci riceverai.",
+    tipTitle3: "⭐ Lascia una recensione dopo ogni missione",
+    tipDesc3:
+      "Le tue recensioni aiutano la community a scegliere i migliori professionisti.",
+    promoStarter: "Piano Starter",
+    promoStarterDesc: "Rispondi a 5 richieste/mese, profilo verificato",
+    promoPro: "Piano Pro",
+    promoProDesc: "Richieste illimitate, badge Premium, in primo piano",
+    promoExpert: "Piano Expert",
+    promoExpertDesc: "Tutto del Pro + accesso prioritario alle urgenze",
+    promoCtaLabel: "Vedi i piani",
+    newThisWeek: "Questa settimana",
   },
 };

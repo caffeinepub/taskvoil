@@ -34,7 +34,7 @@ export const pt: TranslationKeys = {
   categories: {
     title: "As nossas categorias",
     subtitle: "Encontre o profissional certo para cada necessidade",
-    handytask: "HandyTask",
+    handytask: "Artesãos & ajuda local",
     nettoyage: "Limpeza e Casa",
     demenagement: "Mudanças e Transporte",
     montage: "Montagem de Móveis",
@@ -1220,5 +1220,38 @@ export const pt: TranslationKeys = {
     recapSubtitle: "Verifica e ajusta os teus pedidos antes de publicar",
     editTitle: "Editar título",
     publish: "Publicar",
+  },
+  feed: {
+    title: "Novidades",
+    like: "Gostei",
+    liked: "Gostado ✓",
+    follow: "Seguir",
+    following: "Seguindo ✓",
+    featuredPro: "Pro Premium",
+    pinnedTitle1: "🏡 Urgente? Publique em 2 min",
+    pinnedDesc1:
+      "Profissionais verificados perto de si respondem em menos de 1 hora",
+    pinnedTitle2: "🔧 +15.000 artesãos verificados",
+    pinnedDesc2: "Canalização, eletricidade, jardinagem, mudanças...",
+    pinnedTitle3: "🌟 Pagamento seguro em cada missão",
+    pinnedDesc3:
+      "Custódia por etapas. Libere os fundos apenas quando estiver satisfeito.",
+    tipTitle1: "💡 Dica: fotos antes/depois",
+    tipDesc1:
+      "Peça fotos antes e depois de cada intervenção para validar a qualidade do trabalho.",
+    tipTitle2: "📋 Escreva um briefing claro",
+    tipDesc2:
+      "Quanto mais precisa for a sua descrição, mais propostas relevantes e rápidas receberá.",
+    tipTitle3: "⭐ Deixe uma avaliação após cada missão",
+    tipDesc3:
+      "As suas avaliações ajudam a comunidade a escolher os melhores profissionais.",
+    promoStarter: "Plano Starter",
+    promoStarterDesc: "Responda a 5 pedidos/mês, perfil verificado",
+    promoPro: "Plano Pro",
+    promoProDesc: "Pedidos ilimitados, badge Premium, destaque",
+    promoExpert: "Plano Expert",
+    promoExpertDesc: "Tudo do Pro + acesso prioritário a urgências",
+    promoCtaLabel: "Ver planos",
+    newThisWeek: "Esta semana",
   },
 };

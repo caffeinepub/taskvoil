@@ -33,7 +33,7 @@ export const el = {
     title: "Our Categories",
     subtitle: "Find the right professional for every need",
     // N1 categories
-    handytask: "HandyTask",
+    handytask: "Τεχνίτες & τοπική βοήθεια",
     nettoyage: "Cleaning",
     demenagement: "Moving & Transport",
     montage: "Furniture Assembly",
@@ -1229,5 +1229,38 @@ export const el = {
     recapSubtitle: "Ελέγξτε και προσαρμόστε τα αιτήματά σας πριν τη δημοσίευση",
     editTitle: "Επεξεργασία τίτλου",
     publish: "Δημοσίευση",
+  },
+  feed: {
+    title: "Νέα",
+    like: "Μου αρέσει",
+    liked: "Άρεσε ✓",
+    follow: "Ακολουθώ",
+    following: "Ακολουθείται ✓",
+    featuredPro: "Premium Pro",
+    pinnedTitle1: "🏡 Επείγουσα ανάγκη; Δημοσιεύστε σε 2 λεπτά",
+    pinnedDesc1:
+      "Επαληθευμένοι επαγγελματίες κοντά σας απαντούν σε λιγότερο από 1 ώρα",
+    pinnedTitle2: "🔧 15.000+ επαληθευμένοι επαγγελματίες",
+    pinnedDesc2: "Υδραυλικά, ηλεκτρολογικά, κηπουρική, μετακόμιση...",
+    pinnedTitle3: "🌟 Ασφαλής πληρωμή σε κάθε αποστολή",
+    pinnedDesc3:
+      "Escrow ανά ορόσημο. Αποδεσμεύστε κεφάλαια μόνο όταν είστε ικανοποιημένοι.",
+    tipTitle1: "💡 Συμβουλή: φωτογραφίες πριν/μετά",
+    tipDesc1:
+      "Ζητήστε φωτογραφίες πριν και μετά από κάθε εργασία για να επαληθεύσετε την ποιότητα.",
+    tipTitle2: "📋 Γράψτε ένα σαφές briefing",
+    tipDesc2:
+      "Όσο πιο ακριβής είναι η περιγραφή σας, τόσο πιο σχετικές και γρήγορες προσφορές θα λάβετε.",
+    tipTitle3: "⭐ Αφήστε αξιολόγηση μετά από κάθε αποστολή",
+    tipDesc3:
+      "Οι αξιολογήσεις σας βοηθούν την κοινότητα να επιλέξει τους καλύτερους επαγγελματίες.",
+    promoStarter: "Πακέτο Starter",
+    promoStarterDesc: "Απαντήστε σε 5 αιτήματα/μήνα, επαληθευμένο προφίλ",
+    promoPro: "Πακέτο Pro",
+    promoProDesc: "Απεριόριστα αιτήματα, Premium badge, προβολή",
+    promoExpert: "Πακέτο Expert",
+    promoExpertDesc: "Τα πάντα του Pro + προτεραιότητα σε επείγοντα",
+    promoCtaLabel: "Δείτε τα πακέτα",
+    newThisWeek: "Αυτή την εβδομάδα",
   },
 };
