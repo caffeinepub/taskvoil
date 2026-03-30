@@ -31,6 +31,7 @@ import { AdminDashboard } from "@/pages/AdminDashboard";
 import { BookingDetailPage } from "@/pages/BookingDetailPage";
 import { CategoriesPage } from "@/pages/CategoriesPage";
 import { ClientDashboard } from "@/pages/ClientDashboard";
+import { ClientHomePage } from "@/pages/ClientHomePage";
 import { CompleteProfilePage } from "@/pages/CompleteProfilePage";
 import { CookiePolicyPage } from "@/pages/CookiePolicyPage";
 import { DocumentsPage } from "@/pages/DocumentsPage";
@@ -50,18 +51,23 @@ import { PostTaskPage } from "@/pages/PostTaskPage";
 import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 import { ProDashboard } from "@/pages/ProDashboard";
 import { ProDetailPage } from "@/pages/ProDetailPage";
+import { ProHomePage } from "@/pages/ProHomePage";
 import { ProSchedulePage } from "@/pages/ProSchedulePage";
 import { ProsListPage } from "@/pages/ProsListPage";
 import { RegisterPage } from "@/pages/RegisterPage";
 import { RentalCategoryPage } from "@/pages/RentalCategoryPage";
 import { RentalHomePage } from "@/pages/RentalHomePage";
 import { RentalListingPage } from "@/pages/RentalListingPage";
+import { ScenarioDetailPage } from "@/pages/ScenarioDetailPage";
+import { ScenarioRecapPage } from "@/pages/ScenarioRecapPage";
+import { ScenariosPage } from "@/pages/ScenariosPage";
 import { SettingsPage } from "@/pages/SettingsPage";
 import { StripeCancelPage } from "@/pages/StripeCancelPage";
 import { StripeSuccessPage } from "@/pages/StripeSuccessPage";
 import { SubscriptionPage } from "@/pages/SubscriptionPage";
 import { TermsPage } from "@/pages/TermsPage";
 import { VerifyEmailPage } from "@/pages/VerifyEmailPage";
+import { VisitorHomePage } from "@/pages/VisitorHomePage";
 import {
   Navigate,
   Outlet,
@@ -97,6 +103,16 @@ function AppLayout() {
       </div>
     </VisitorGateProvider>
   );
+}
+
+// Smart home page — routes to the correct home based on user role
+function SmartHomePage() {
+  const { currentUser } = useAuthStore();
+  if (!currentUser) return <VisitorHomePage />;
+  if (currentUser.role === "client") return <ClientHomePage />;
+  if (currentUser.role === "pro" || currentUser.role === "admin")
+    return <ProHomePage />;
+  return <LandingPage />;
 }
 
 // Protected layout for any logged-in user (marketplace, categories, pros, post-task)
@@ -168,7 +184,7 @@ const layoutRoute = createRoute({
 const indexRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: "/",
-  component: LandingPage,
+  component: SmartHomePage,
 });
 
 const blurredAccessRoute = createRoute({
@@ -254,6 +270,7 @@ const cookiesRoute = createRoute({
   path: "/cookies",
   component: CookiePolicyPage,
 });
+
 const favoritesRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: "/favorites",
@@ -345,6 +362,25 @@ const postTaskRoute = createRoute({
   component: PostTaskPage,
 });
 
+// Scenarios routes (public, accessible without login)
+const scenariosRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: "/scenarios",
+  component: ScenariosPage,
+});
+
+const scenarioRecapRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: "/scenarios/recap",
+  component: ScenarioRecapPage,
+});
+
+const scenarioDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: "/scenarios/$scenarioId",
+  component: ScenarioDetailPage,
+});
+
 // Protected routes
 const protectedClientRoute = createRoute({
   getParentRoute: () => layoutRoute,
@@ -393,6 +429,7 @@ const editProfileRoute = createRoute({
   path: "/profile/edit",
   component: EditProfilePage,
 });
+
 const proScheduleRoute = createRoute({
   getParentRoute: () => protectedProRoute,
   path: "/pro/schedule",
@@ -420,6 +457,9 @@ const routeTree = rootRoute.addChildren([
     faqRoute,
     cookiesRoute,
     favoritesRoute,
+    scenariosRoute,
+    scenarioRecapRoute,
+    scenarioDetailRoute,
     blurredAccessRoute.addChildren([
       proDetailRoute,
       missionRoute,
